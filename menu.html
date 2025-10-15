@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>قائمة الطعام | LaScala</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-gold': '#D4AF37',
+                        'dark-bg': '#1a1a1a',
+                        'dark-card': '#272727',
+                        'light-text': '#f0f0f0',
+                        'muted-text': '#a0a0a0',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-dark-bg text-light-text">
+
+    <header class="site-header">
+        <div class="container mx-auto px-4 flex justify-between items-center h-20">
+            <a class="logo" href="index.html">
+                <img src="assets/images/logo.png" alt="LaScala Logo" class="h-16">
+            </a>
+            <nav class="main-nav hidden md:flex space-x-6 space-x-reverse">
+                <a href="index.html">الرئيسية</a>
+                <a href="about.html">عن المطعم</a>
+                <a href="menu.html" class="active">المنيو</a>
+                <a href="booking.html">الحجز</a>
+                <a href="contact.html">تواصل</a>
+            </nav>
+            <button id="mobile-menu-btn" class="md:hidden text-2xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-card">
+            <a href="index.html" class="block py-2 px-4 text-center border-b border-gray-700">الرئيسية</a>
+            <a href="about.html" class="block py-2 px-4 text-center border-b border-gray-700">عن المطعم</a>
+            <a href="menu.html" class="block py-2 px-4 text-center border-b border-gray-700">المنيو</a>
+            <a href="booking.html" class="block py-2 px-4 text-center border-b border-gray-700">الحجز</a>
+            <a href="contact.html" class="block py-2 px-4 text-center">تواصل</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-16">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-primary-gold">قائمة طعامنا</h1>
+            <p class="mt-4 text-lg text-muted-text max-w-2xl mx-auto">مختارات إيطالية وعالمية بلمسة فخامة من LaScala، محضّرة من مكونات طازجة.</p>
+        </div>
+
+        <div class="menu-toolbar">
+            <div id="menu-filters" class="filter-chips">
+                </div>
+            <div class="search-container">
+                <input type="search" id="menuSearch" placeholder="ابحث عن طبق..." class="search-input">
+                <i class="fa-solid fa-search search-icon"></i>
+            </div>
+        </div>
+
+        <section id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
+            </section>
+    </main>
+    
+    <div id="quickViewModal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4" aria-modal="true" role="dialog">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content-grid">
+            <div class="modal-image-container">
+                <img id="qvImg" src="" alt="" class="modal-image">
+            </div>
+            <div class="modal-details">
+                <button id="closeModalBtn" class="modal-close-btn">×</button>
+                <h3 id="qvTitle" class="text-3xl font-bold text-primary-gold"></h3>
+                <p id="qvLongDesc" class="mt-4 text-muted-text leading-relaxed"></p>
+                
+                <div id="qvChefNoteContainer" class="mt-6 hidden">
+                    <h4 class="detail-heading"><i class="fa-solid fa-star-of-life mr-2 text-primary-gold"></i> لمسة الشيف</h4>
+                    <p id="qvChefNote" class="detail-text"></p>
+                </div>
+
+                <div id="qvAllergensContainer" class="mt-6 hidden">
+                    <h4 class="detail-heading"><i class="fa-solid fa-triangle-exclamation mr-2 text-primary-gold"></i> تنبيه الحساسية</h4>
+                    <div id="qvAllergens" class="flex flex-wrap gap-2">
+                        </div>
+                </div>
+
+                <div class="mt-8 flex justify-between items-center">
+                    <span id="qvPrice" class="text-3xl font-bold text-primary-gold"></span>
+                    <a href="booking.html" class="btn primary">اطلبه الآن</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<footer class="site-footer">
+        <div class="container mx-auto px-4">
+            <div class="footer-glass-card">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <h4>LaScala</h4>
+                        <p>تجربة طعام فاخرة تجمع بين الأصالة الإيطالية واللمسات العصرية في قلب الخبر.</p>
+                        <div class="footer-social-icons">
+                            <a href="https://www.youtube.com/@lascalasa" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                            <a href="https://x.com/lascalasa" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="https://www.instagram.com/lascalasa" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://wa.me/966546480098" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                            <a href="https://www.tiktok.com/@lascalasa" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-links-grid">
+                        <div class="footer-links-col">
+                            <h4>المطعم</h4>
+                            <a href="about.html">عن LaScala</a>
+                            <a href="menu.html">قائمة الطعام</a>
+                            <a href="booking.html">الحجز</a>
+                            <a href="contact.html">تواصل معنا</a>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>خدمات</h4>
+                            <a href="#">الطلبات الخارجية</a>
+                            <a href="#">الفعاليات الخاصة</a>
+                            <a href="#">الوظائف</a>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>قانوني</h4>
+                            <a href="#">سياسة الخصوصية</a>
+                            <a href="#">الشروط والأحكام</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> LaScala Restaurant. جميع الحقوق محفوظة.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="success-message">
+        <i class="fa-solid fa-check-circle"></i>
+        <span>تم الاشتراك بنجاح!</span>
+    </div>
+    
+    <script src="assets/js/main.js"></script>
+    
+    <div id="success-message">
+        <i class="fa-solid fa-check-circle"></i>
+        <span>تم الاشتراك بنجاح!</span>
+    </div>
+    
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

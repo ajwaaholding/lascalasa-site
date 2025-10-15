@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الحجز | LaScala</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-gold': '#D4AF37',
+                        'dark-bg': '#1a1a1a',
+                        'dark-card': '#272727',
+                        'light-text': '#f0f0f0',
+                        'muted-text': '#a0a0a0',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-dark-bg text-light-text">
+
+    <header class="site-header">
+        <div class="container mx-auto px-4 flex justify-between items-center h-20">
+            <a class="logo" href="index.html">
+                <img src="assets/images/logo.png" alt="LaScala Logo" class="h-16">
+            </a>
+            <nav class="main-nav hidden md:flex space-x-6 space-x-reverse">
+                <a href="index.html">الرئيسية</a>
+                <a href="about.html">عن المطعم</a>
+                <a href="menu.html">المنيو</a>
+                <a href="booking.html" class="active">الحجز</a>
+                <a href="contact.html">تواصل</a>
+            </nav>
+            <button id="mobile-menu-btn" class="md:hidden text-2xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-card">
+            <a href="index.html" class="block py-2 px-4 text-center border-b border-gray-700">الرئيسية</a>
+            <a href="about.html" class="block py-2 px-4 text-center border-b border-gray-700">عن المطعم</a>
+            <a href="menu.html" class="block py-2 px-4 text-center border-b border-gray-700">المنيو</a>
+            <a href="booking.html" class="block py-2 px-4 text-center border-b border-gray-700">الحجز</a>
+            <a href="contact.html" class="block py-2 px-4 text-center">تواصل</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-16">
+        <div class="text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-primary-gold">احجز طاولتك الآن</h1>
+            <p class="mt-4 text-lg text-muted-text max-w-2xl mx-auto">أمسية فاخرة بانتظارك — املأ النموذج التالي وسيتواصل فريقنا لتأكيد الحجز.</p>
+        </div>
+
+        <div class="mt-12 grid lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-dark-card p-8 rounded-lg shadow-lg">
+                <h2 class="text-2xl font-bold mb-6">نموذج الحجز</h2>
+                <form id="reservationForm" class="space-y-6">
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div>
+                            <label for="full-name" class="form-label">الاسم الكامل</label>
+                            <input type="text" id="full-name" required class="form-input" placeholder="مثال: محمد الأحمد">
+                        </div>
+                        <div>
+                            <label for="phone" class="form-label">رقم الجوال</label>
+                            <input type="tel" id="phone" required class="form-input" placeholder="05xxxxxxxx">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-6">
+                        <div>
+                            <label for="date" class="form-label">التاريخ</label>
+                            <input type="date" id="date" required class="form-input">
+                        </div>
+                        <div>
+                            <label for="time" class="form-label">الوقت</label>
+                            <input type="time" id="time" required min="12:00" max="23:00" class="form-input">
+                        </div>
+                        <div>
+                            <label for="guests" class="form-label">عدد الضيوف</label>
+                            <input type="number" id="guests" min="1" max="12" value="2" required class="form-input">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="email" class="form-label">البريد الإلكتروني (اختياري)</label>
+                        <input type="email" id="email" class="form-input" placeholder="your.email@example.com">
+                    </div>
+                    <div>
+                        <label for="special-requests" class="form-label">طلبات خاصة (اختياري)</label>
+                        <textarea id="special-requests" rows="3" class="form-input" placeholder="ملاحظات حول المناسبة، قيود غذائية، إلخ."></textarea>
+                    </div>
+                    <button type="submit" class="btn primary w-full !py-3 !text-base">إرسال طلب الحجز</button>
+                </form>
+            </div>
+
+            <aside class="space-y-6">
+                <div class="bg-dark-card p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4 text-primary-gold">ساعات العمل</h3>
+                    <ul class="text-muted-text space-y-2">
+                        <li>السبت – الأربعاء: 12:00 ظهراً – 12:00 صباحاً</li>
+                        <li>الخميس – الجمعة: 12:00 ظهراً – 1:00 صباحاً</li>
+                    </ul>
+                </div>
+                <div class="bg-dark-card p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4 text-primary-gold">أسئلة متكررة</h3>
+                    <div class="space-y-4" id="faq-accordion">
+                        <div>
+                            <button class="acc-btn">هل توجد منطقة عوائل؟ <i class="fa-solid fa-chevron-down chevron"></i></button>
+                            <div class="acc-body"><p>نعم، لدينا جلسات عائلية مخصّصة بخصوصية وراحة.</p></div>
+                        </div>
+                        <div>
+                            <button class="acc-btn">هل يمكن تعديل الحجز؟ <i class="fa-solid fa-chevron-down chevron"></i></button>
+                            <div class="acc-body"><p>يمكن تعديل الحجز قبل الموعد بـ 4 ساعات عبر الاتصال.</p></div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="bg-dark-card p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4 text-primary-gold">تواصل سريع</h3>
+                    <a href="tel:+966546480098" class="block text-center btn ghost w-full">اتصل بنا 0546480098</a>
+                </div>
+            </aside>
+        </div>
+    </main>
+    
+<footer class="site-footer">
+        <div class="container mx-auto px-4">
+            <div class="footer-glass-card">
+                <div class="footer-grid">
+                    <div class="footer-brand">
+                        <h4>LaScala</h4>
+                        <p>تجربة طعام فاخرة تجمع بين الأصالة الإيطالية واللمسات العصرية في قلب الخبر.</p>
+                        <div class="footer-social-icons">
+                            <a href="https://www.youtube.com/@lascalasa" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                            <a href="https://x.com/lascalasa" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="https://www.instagram.com/lascalasa" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://wa.me/966546480098" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                            <a href="https://www.tiktok.com/@lascalasa" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                        </div>
+                    </div>
+                    <div class="footer-links-grid">
+                        <div class="footer-links-col">
+                            <h4>المطعم</h4>
+                            <a href="about.html">عن LaScala</a>
+                            <a href="menu.html">قائمة الطعام</a>
+                            <a href="booking.html">الحجز</a>
+                            <a href="contact.html">تواصل معنا</a>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>خدمات</h4>
+                            <a href="#">الطلبات الخارجية</a>
+                            <a href="#">الفعاليات الخاصة</a>
+                            <a href="#">الوظائف</a>
+                        </div>
+                        <div class="footer-links-col">
+                            <h4>قانوني</h4>
+                            <a href="#">سياسة الخصوصية</a>
+                            <a href="#">الشروط والأحكام</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    © <span id="year"></span> LaScala Restaurant. جميع الحقوق محفوظة.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="success-message">
+        <i class="fa-solid fa-check-circle"></i>
+        <span>تم الاشتراك بنجاح!</span>
+    </div>
+    
+    <script src="assets/js/main.js"></script>
+    
+    <div id="customModal" class="fixed inset-0 z-[999] hidden items-center justify-center bg-black bg-opacity-70 backdrop-blur-sm">
+        <div class="bg-dark-card p-8 rounded-lg shadow-xl max-w-sm w-11/12 text-center transform scale-95 transition-all duration-300">
+            <h4 id="modalTitle" class="text-2xl font-bold text-primary-gold mb-3"></h4>
+            <p id="modalMessage" class="text-muted-text mb-6"></p>
+            <button id="modalCloseBtn" class="btn primary w-full">حسنًا</button>
+        </div>
+    </div>
+    
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

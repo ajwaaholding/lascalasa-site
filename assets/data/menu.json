@@ -1,0 +1,344 @@
+[
+  {
+    "id": 1,
+    "category": "starters",
+    "title": "Ceaser Salad",
+    "desc": "قطع من خس البيبي جيم مع صوص السيزر الخاص، دجاج مشوي وجبنة البارميزان — 401 سعرة حرارية",
+    "long_desc": "سلطة السيزر الكلاسيكية تأخذ بعدًا جديدًا في مطبخنا. نستخدم قلب خس البيبي جيم المقرمش ونمزجه بصوص السيزر الغني الذي نحضره يدويًا، مع قطع من صدر الدجاج المتبل والمشوي بعناية، ونزينها بشرائح جبنة البارميزان الإيطالية العريقة وقطع الخبز المحمص بالثوم والأعشاب.",
+    "allergens": ["ألبان", "جلوتين", "بيض"],
+    "chef_note": "تعتبر خيارًا مثاليًا كبداية خفيفة ومنعشة لوجبتك.",
+    "price": "46 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/ceaser_salad_17145791455084016.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 2,
+    "category": "starters",
+    "title": "Fresh Greens Halloumi",
+    "desc": "Fresh vegetables with halloumi, fresh pomegranate sauce — 560 kcal",
+    "price": "45 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/fresh_greens_halloumi_17145792022662770.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 3,
+    "category": "starters",
+    "title": "Quinoa Salad",
+    "desc": "Red quinoa with tropical fruits, rocca, green apple, pomegranate, walnuts, vinaigrette — 283 kcal",
+    "price": "49 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/qunea_salad_17145792489332946.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 4,
+    "category": "starters",
+    "title": "Tropical Salad",
+    "desc": "Mixed greens with tropical touches — 578 kcal",
+    "price": "54 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/tropical_salad_17145793283742034.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 5,
+    "category": "soups",
+    "title": "Mushroom Soup",
+    "desc": "Pan-seared mushrooms with fresh cream, artisan bread, melted mozzarella — 369 kcal",
+    "price": "29 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/mushroom_soup_17116283457028002.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 6,
+    "category": "soups",
+    "title": "Pumpkin Soup",
+    "desc": "Mashed pumpkin with vegetables, served with crispy bread — 169 kcal",
+    "price": "29 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/pumpkin_soup_17116283657254568.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 7,
+    "category": "starters",
+    "title": "Dynamite Shrimp",
+    "desc": "قطع من الروبيان المقلي مع صوص الديناميت الخاص — 599 سعرة حرارية",
+    "price": "55 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/dynamite_shrimp_17116283833446698.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 8,
+    "category": "starters",
+    "title": "Arancini Balls",
+    "desc": "كرات الريزوتو المقلية مع جبنة الموزاريلا والبارميزان وصوص الطماطم الإيطالي — 464 سعرة حرارية",
+    "price": "44 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/arancini_balls_17116284003058850.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 9,
+    "category": "starters",
+    "title": "Crispy Chicken",
+    "desc": "قطع من الدجاج المقلي تقدم مع اختيارك من الصوصات — 429 سعرة حرارية",
+    "price": "41 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/crispy_chicken_1711628416489376.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 10,
+    "category": "starters",
+    "title": "Beef Tacos",
+    "desc": "خبز التاكو المحضر منزليًا مع اللحم المفروم والأفوكادو وصلصة الطماطم المشوية — 380 سعرة حرارية",
+    "price": "42 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/beef_tacos_17116284347713438.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 11,
+    "category": "starters",
+    "title": "French Fries",
+    "desc": "بطاطس مقلية — 480 سعرة حرارية",
+    "price": "19 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/french_fries_17116284617066922.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 12,
+    "category": "mains",
+    "title": "Chicken Pesto",
+    "desc": "صدور دجاج مشوية مع صلصة البيستو والبطاطس المهروسة — 709 سعرة حرارية",
+    "price": "69 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/chicken_pesto_1711628509337341.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 13,
+    "category": "mains",
+    "title": "Grilled Salmon",
+    "desc": "سلمون مشوي مع الهليون وصلصة الليمون بالزبدة — 560 سعرة حرارية",
+    "price": "95 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/grilled_salmon_17116285289947846.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 14,
+    "category": "pasta",
+    "title": "Truffle Pasta",
+    "desc": "باستا محضرة بصلصة الكمأة السوداء والجبن — 860 سعرة حرارية",
+    "price": "79 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/truffle_pasta_17116285552994403.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 15,
+    "category": "pasta",
+    "title": "Pesto Pasta",
+    "desc": "باستا بصلصة البيستو، جبنة البارميزان، والصنوبر المحمص — 730 سعرة حرارية",
+    "price": "59 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/pesto_pasta_1711628581895693.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 16,
+    "category": "pasta",
+    "title": "Pink Pasta",
+    "desc": "باستا بالصلصة الوردية مع جبنة البارميزان والدجاج — 750 سعرة حرارية",
+    "price": "61 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/pink_pasta_17116285959585698.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 17,
+    "category": "pizza",
+    "title": "Truffle Pizza",
+    "desc": "بيتزا بصلصة الكمأة، جبنة الموزاريلا، والجرجير — 1020 سعرة حرارية",
+    "price": "75 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/truffle_pizza_17116286151744837.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 18,
+    "category": "pizza",
+    "title": "Pepperoni Pizza",
+    "desc": "بيتزا بصلصة الطماطم، جبنة الموزاريلا، والبيبروني — 980 سعرة حرارية",
+    "price": "55 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/pepproni_pizza_1711628630737409.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 19,
+    "category": "pizza",
+    "title": "Margherita Pizza",
+    "desc": "بيتزا بصلصة الطماطم، جبنة الموزاريلا، والريحان — 850 سعرة حرارية",
+    "price": "49 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/margherita_pizza_1711628646964177.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 20,
+    "category": "risotto",
+    "title": "Mushroom Risotto",
+    "desc": "ريزوتو بالفطر البري، جبنة البارميزان، وزيت الكمأة — 680 سعرة حرارية",
+    "price": "72 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/mushroom_risotto_17116286702334808.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 21,
+    "category": "risotto",
+    "title": "Saffron Risotto",
+    "desc": "ريزوتو بالزعفران والروبيان — 720 سعرة حرارية",
+    "price": "78 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/saffron_risotto_17116286845348883.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 22,
+    "category": "mains",
+    "title": "LaScala Steak",
+    "desc": "قطعة ستيك مميزة من اختيار الشيف.",
+    "long_desc": "طبقنا الفاخر والمميز، قطعة من لحم التندرلوين الفاخر المشوي بإتقان حسب درجة الاستواء التي تفضلها. يُقدم مع صلصة الفطر بالكريمة والكمأة السوداء، إلى جانب بيوريه البطاطس المخملي وهليون طازج سوتيه بزبدة الأعشاب.",
+    "allergens": ["ألبان"],
+    "chef_note": "نوصي بدرجة استواء 'ميديوم' للاستمتاع بأقصى درجات الطراوة والنكهة.",
+    "price": "150 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/lascala_steak_17163907732971420.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 23,
+    "category": "sandwiches",
+    "title": "Halloumi Sandwich",
+    "desc": "ساندويتش حلومي بخبز الشيباتا — 550 سعرة حرارية",
+    "price": "39 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/halloumi_sandwitch_1711628734265691.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 24,
+    "category": "sandwiches",
+    "title": "Chicken Sandwich",
+    "desc": "ساندويتش دجاج بخبز الشيباتا — 620 سعرة حرارية",
+    "price": "45 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/chicken_sandwitch_17116287479051873.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 25,
+    "category": "kids_menu",
+    "title": "Kids Pasta",
+    "desc": "باستا صغيرة بصلصة الطماطم أو الكريمة — 450 سعرة حرارية",
+    "price": "35 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/kids_pasta_17116287752654313.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 26,
+    "category": "kids_menu",
+    "title": "Kids Pizza",
+    "desc": "بيتزا مارجريتا صغيرة — 550 سعرة حرارية",
+    "price": "38 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/kids_pizza_17116287893156643.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 27,
+    "category": "desserts",
+    "title": "Tiramisu",
+    "desc": "طبقات من البسكويت الإيطالي، كريمة الماسكربوني، والقهوة — 480 سعرة حرارية",
+    "price": "42 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/tiramisu_17116288151906979.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 28,
+    "category": "desserts",
+    "title": "Saffron Cake",
+    "desc": "كيكة الزعفران بالحليب — 520 سعرة حرارية",
+    "price": "45 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/saffron_cake_17116288301768406.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 29,
+    "category": "desserts",
+    "title": "LaScala French Toast",
+    "desc": "فرنش توست مع الآيس كريم والفواكه الموسمية — 650 سعرة حرارية",
+    "price": "55 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/lascala_french_toast_1711628854441584.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 30,
+    "category": "mojitos",
+    "title": "Classic Mojito",
+    "desc": "موهيتو كلاسيك — 150 سعرة حرارية",
+    "price": "28 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/classic_mojito_17116288762512134.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 31,
+    "category": "mojitos",
+    "title": "Passion Fruit Mojito",
+    "desc": "موهيتو باشن فروت — 180 سعرة حرارية",
+    "price": "32 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/passion_fruit_mojito_17116288924036117.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 32,
+    "category": "mojitos",
+    "title": "Strawberry Mojito",
+    "desc": "موهيتو فراولة — 170 سعرة حرارية",
+    "price": "30 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/strawberry_mojito_1711628906373752.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 33,
+    "category": "hot_drinks",
+    "title": "Espresso",
+    "desc": "اسبريسو — 5 سعرات حرارية",
+    "price": "12 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/espresso_17116289569052062.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 34,
+    "category": "hot_drinks",
+    "title": "Americano",
+    "desc": "أمريكانو — 10 سعرات حرارية",
+    "price": "15 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/americano_17116289703417719.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 35,
+    "category": "hot_drinks",
+    "title": "Cappuccino",
+    "desc": "كابتشينو — 120 سعرة حرارية",
+    "price": "18 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/cappuccino_17116289828456073.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 36,
+    "category": "hot_drinks",
+    "title": "Latte",
+    "desc": "لاتيه — 150 سعرة حرارية",
+    "price": "20 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/latte_17116289943482596.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 37,
+    "category": "cold_drinks",
+    "title": "Iced Americano",
+    "desc": "أمريكانو مثلج — 10 سعرات حرارية",
+    "price": "17 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/iced_americano_17116290176846174.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 38,
+    "category": "cold_drinks",
+    "title": "Iced Latte",
+    "desc": "لاتيه مثلج — 150 سعرة حرارية",
+    "price": "22 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/iced_latte_17116290312686866.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 39,
+    "category": "cold_drinks",
+    "title": "Orange Juice",
+    "desc": "عصير برتقال طازج — 120 سعرة حرارية",
+    "price": "25 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/orange_juice_17116290509647248.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 40,
+    "category": "cold_drinks",
+    "title": "Lemon Mint",
+    "desc": "عصير ليمون بالنعناع — 100 سعرة حرارية",
+    "price": "23 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/lemon_mint_1711629065664326.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 41,
+    "category": "water",
+    "title": "Still Water",
+    "desc": "مياه معدنية",
+    "price": "10 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/still_water_1711629090680654.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 42,
+    "category": "water",
+    "title": "Sparkling Water",
+    "desc": "مياه غازية",
+    "price": "15 ريال",
+    "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/sparkling_water_17116291032135653.jpg.150x150_q100_crop.jpg"
+  }
+]

@@ -1,0 +1,16 @@
+// assets/js/footer.js
+(async function mountFooter() {
+  try {
+    const mount = document.getElementById('footerMount');
+    if (!mount) return;
+    const res = await fetch('partials/footer.html', { cache: 'no-cache' });
+    const html = await res.text();
+    mount.innerHTML = html;
+
+    // تحديث سنة الحقوق تلقائياً إن وُجد span#year داخل الفوتر
+    const y = mount.querySelector('#year');
+    if (y) y.textContent = new Date().getFullYear();
+  } catch (e) {
+    console.error('Footer failed to load', e);
+  }
+})();

@@ -1,0 +1,275 @@
+document.addEventListener('DOMContentLoaded', () => {
+
+    // ===== Common Functions (Run on all pages) =====
+    const yearSpan = document.getElementById('year');
+    if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+    }
+
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    }
+
+    const newsletterForm = document.getElementById('newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showSuccessMessage('تم الاشتراك بنجاح ✅');
+            e.target.reset();
+        });
+    }
+
+    function showSuccessMessage(message) {
+        const successEl = document.getElementById('success-message');
+        if (successEl) {
+            const messageSpan = successEl.querySelector('span');
+            if (messageSpan) messageSpan.textContent = message;
+            successEl.classList.add('show');
+            setTimeout(() => successEl.classList.remove('show'), 3000);
+        }
+    }
+
+    // ===== Page-Specific Functions =====
+    if (document.getElementById('signature-dishes-container')) {
+        loadSignatureDishes();
+        setupStatsCounter();
+    }
+    if (document.getElementById('menu-grid')) {
+        initMenuPage();
+    }
+    if (document.getElementById('reservationForm')) {
+        setupBookingPage();
+    }
+    if (document.getElementById('contactForm')) {
+        setupContactForm();
+    }
+
+    // ===== Function Definitions =====
+    async function loadSignatureDishes() {
+        const container = document.getElementById('signature-dishes-container');
+        try {
+            const response = await fetch('assets/data/menu.json');
+            const menuData = await response.json();
+            const signatureItems = menuData.filter(item => ['mains', 'pasta', 'pizza'].includes(item.category)).slice(0, 4);
+            container.innerHTML = signatureItems.map(item => `
+                <div class="bg-dark-card rounded-lg overflow-hidden shadow-lg transform transition-transform hover:scale-105">
+                    <img src="${item.image}" alt="${item.title}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold text-primary-gold">${item.title}</h3>
+                        <p class="text-sm text-muted-text mt-2 h-10 overflow-hidden">${item.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        } catch (error) {
+            container.innerHTML = `<p class="text-center col-span-full">لا يمكن تحميل الأطباق المميزة.</p>`;
+        }
+    }
+
+    function setupStatsCounter() {
+        const stats = document.querySelectorAll('.stat span[data-count]');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseFloat(el.getAttribute('data-count'));
+                    const precision = parseInt(el.getAttribute('data-precision') || '0');
+                    countUp(el, target, 2000, precision);
+                    observer.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+        stats.forEach(stat => observer.observe(stat));
+    }
+    
+    function countUp(el, target, duration, precision) {
+        let start = 0;
+        const startTime = performance.now();
+        const step = (timestamp) => {
+            const progress = (timestamp - startTime) / duration;
+            const current = start + Math.min(progress, 1) * (target - start);
+            el.textContent = current.toFixed(precision);
+            if (progress < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+    }
+
+    async function initMenuPage() {
+        const grid = document.getElementById('menu-grid');
+        const filtersContainer = document.getElementById('menu-filters');
+        const searchInput = document.getElementById('menuSearch');
+        let allDishes = [];
+
+        const categoryMap = {
+            starters: 'المقبلات', mains: 'الأطباق الرئيسية', pasta: 'باستا وريزوتو',
+            pizza: 'بيتزا', sandwiches: 'ساندويتشات', dessert: 'حلويات', drinks: 'مشروبات'
+        };
+
+        try {
+            const response = await fetch('assets/data/menu.json');
+            allDishes = await response.json();
+            renderFilters(allDishes);
+            renderMenu(allDishes);
+        } catch (error) {
+            grid.innerHTML = `<p class="col-span-full text-center">خطأ في تحميل المنيو.</p>`;
+        }
+
+        function renderFilters(dishes) {
+            const categories = ['all', ...new Set(dishes.map(d => d.category))];
+            filtersContainer.innerHTML = categories.map(cat => `
+                <button data-cat="${cat}" class="filter-chip ${cat === 'all' ? 'active' : ''}">
+                    ${cat === 'all' ? 'الكل' : (categoryMap[cat] || cat)}
+                </button>
+            `).join('');
+            
+            filtersContainer.addEventListener('click', (e) => {
+                if (e.target.matches('.filter-chip')) {
+                    filtersContainer.querySelector('.active')?.classList.remove('active');
+                    e.target.classList.add('active');
+                    filterAndRender();
+                }
+            });
+        }
+        
+        function renderMenu(dishes) {
+            if (dishes.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-muted-text">لا توجد نتائج مطابقة.</p>`;
+            } else {
+                grid.innerHTML = dishes.map(dish => `
+                    <div class="menu-card-glass" data-id="${dish.id}">
+                        <img src="${dish.image}" alt="${dish.title}" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-primary-gold">${dish.title}</h3>
+                            <div class="mt-4 text-light-text font-medium">${dish.price}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+             grid.querySelectorAll('.menu-card-glass').forEach(card => {
+                card.addEventListener('click', () => {
+                    const dish = allDishes.find(d => d.id == card.dataset.id);
+                    openQuickView(dish);
+                });
+             });
+        }
+        
+        function filterAndRender() {
+            const activeCategory = filtersContainer.querySelector('.active')?.dataset.cat || 'all';
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredDishes = allDishes.filter(dish => {
+                const categoryMatch = activeCategory === 'all' || dish.category === activeCategory;
+                const searchMatch = dish.title.toLowerCase().includes(searchTerm) || (dish.desc || '').toLowerCase().includes(searchTerm);
+                return categoryMatch && searchMatch;
+            });
+            renderMenu(filteredDishes);
+        }
+        searchInput.addEventListener('input', filterAndRender);
+    }
+
+    const modal = document.getElementById('quickViewModal');
+    if (modal) {
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalBackdrop = modal.querySelector('.modal-backdrop');
+        closeModalBtn.addEventListener('click', () => modal.classList.add('hidden'));
+        modalBackdrop.addEventListener('click', () => modal.classList.add('hidden'));
+    }
+
+    function openQuickView(dish) {
+        if (!dish || !modal) return;
+        document.getElementById('qvImg').src = dish.image;
+        document.getElementById('qvImg').alt = dish.title;
+        document.getElementById('qvTitle').textContent = dish.title;
+        document.getElementById('qvLongDesc').textContent = dish.long_desc || dish.desc;
+        document.getElementById('qvPrice').textContent = dish.price;
+        
+        const allergensContainer = document.getElementById('qvAllergensContainer');
+        const allergensDiv = document.getElementById('qvAllergens');
+        if (dish.allergens && dish.allergens.length > 0) {
+            allergensDiv.innerHTML = dish.allergens.map(a => `<span class="allergen-tag">${a}</span>`).join('');
+            allergensContainer.classList.remove('hidden');
+        } else {
+            allergensContainer.classList.add('hidden');
+        }
+
+        const chefNoteContainer = document.getElementById('qvChefNoteContainer');
+        const chefNoteP = document.getElementById('qvChefNote');
+        if (dish.chef_note) {
+            chefNoteP.textContent = dish.chef_note;
+            chefNoteContainer.classList.remove('hidden');
+        } else {
+            chefNoteContainer.classList.add('hidden');
+        }
+        
+        modal.classList.remove('hidden');
+    }
+
+    function setupBookingPage() {
+        const customModal = document.getElementById('customModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        
+        const showModal = (title, message) => {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            customModal.classList.remove('hidden');
+            customModal.classList.add('flex');
+        };
+        const closeModal = () => customModal.classList.add('hidden');
+        modalCloseBtn.addEventListener('click', closeModal);
+        customModal.addEventListener('click', e => { if (e.target === customModal) closeModal(); });
+
+        const accContainer = document.getElementById('faq-accordion');
+        if (accContainer) {
+            accContainer.addEventListener('click', e => {
+                const btn = e.target.closest('.acc-btn');
+                if (!btn) return;
+                const body = btn.nextElementSibling;
+                const wasActive = btn.classList.contains('active');
+                accContainer.querySelectorAll('.acc-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.nextElementSibling.style.maxHeight = null;
+                });
+                if (!wasActive) {
+                    btn.classList.add('active');
+                    body.style.maxHeight = body.scrollHeight + 'px';
+                }
+            });
+        }
+        
+        const form = document.getElementById('reservationForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const date = document.getElementById('date').value;
+            const today = new Date().toISOString().split('T')[0];
+            if (date < today) {
+                showModal('خطأ في التاريخ', 'لا يمكن الحجز في تاريخ ماضٍ.');
+                return;
+            }
+            showModal('تم إرسال طلب الحجز ✅', 'شكرًا لك! تم استلام طلبك بنجاح وسيتواصل فريقنا معك قريبًا.');
+            form.reset();
+        });
+    }
+
+    function setupContactForm() {
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formStatus = document.getElementById('formStatus');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جارٍ الإرسال...';
+            setTimeout(() => {
+                formStatus.textContent = '✅ شكرًا لك! تم استلام رسالتك بنجاح.';
+                formStatus.className = 'text-green-400 text-center pt-2';
+                form.reset();
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'إرسال الرسالة';
+                setTimeout(() => { formStatus.textContent = '' }, 5000);
+            }, 1000);
+        });
+    }
+});
