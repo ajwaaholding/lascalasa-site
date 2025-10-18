@@ -108,7 +108,7 @@
   },
   {
     "id": 14,
-    "category": "pasta",
+    "category": "pasta_risotto",
     "title": "Truffle Pasta",
     "desc": "باستا محضرة بصلصة الكمأة السوداء والجبن — 860 سعرة حرارية",
     "price": "79 ريال",
@@ -116,7 +116,7 @@
   },
   {
     "id": 15,
-    "category": "pasta",
+    "category": "pasta_risotto",
     "title": "Pesto Pasta",
     "desc": "باستا بصلصة البيستو، جبنة البارميزان، والصنوبر المحمص — 730 سعرة حرارية",
     "price": "59 ريال",
@@ -124,7 +124,7 @@
   },
   {
     "id": 16,
-    "category": "pasta",
+    "category": "pasta_risotto",
     "title": "Pink Pasta",
     "desc": "باستا بالصلصة الوردية مع جبنة البارميزان والدجاج — 750 سعرة حرارية",
     "price": "61 ريال",
@@ -156,7 +156,7 @@
   },
   {
     "id": 20,
-    "category": "risotto",
+    "category": "pasta_risotto",
     "title": "Mushroom Risotto",
     "desc": "ريزوتو بالفطر البري، جبنة البارميزان، وزيت الكمأة — 680 سعرة حرارية",
     "price": "72 ريال",
@@ -164,7 +164,7 @@
   },
   {
     "id": 21,
-    "category": "risotto",
+    "category": "pasta_risotto",
     "title": "Saffron Risotto",
     "desc": "ريزوتو بالزعفران والروبيان — 720 سعرة حرارية",
     "price": "78 ريال",
@@ -239,7 +239,7 @@
   },
   {
     "id": 30,
-    "category": "mojitos",
+    "category": "cold_drinks",
     "title": "Classic Mojito",
     "desc": "موهيتو كلاسيك — 150 سعرة حرارية",
     "price": "28 ريال",
@@ -247,7 +247,7 @@
   },
   {
     "id": 31,
-    "category": "mojitos",
+    "category": "cold_drinks",
     "title": "Passion Fruit Mojito",
     "desc": "موهيتو باشن فروت — 180 سعرة حرارية",
     "price": "32 ريال",
@@ -255,7 +255,7 @@
   },
   {
     "id": 32,
-    "category": "mojitos",
+    "category": "cold_drinks",
     "title": "Strawberry Mojito",
     "desc": "موهيتو فراولة — 170 سعرة حرارية",
     "price": "30 ريال",
@@ -327,7 +327,7 @@
   },
   {
     "id": 41,
-    "category": "water",
+    "category": "cold_drinks",
     "title": "Still Water",
     "desc": "مياه معدنية",
     "price": "10 ريال",
@@ -335,10 +335,19 @@
   },
   {
     "id": 42,
-    "category": "water",
+    "category": "cold_drinks",
     "title": "Sparkling Water",
     "desc": "مياه غازية",
     "price": "15 ريال",
     "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/sparkling_water_17116291032135653.jpg.150x150_q100_crop.jpg"
+  },
+  {
+    "id": 43,
+    "category": "lascala_offers",
+    "title": "عرض غداء الأعمال",
+    "desc": "طبق رئيسي من اختيارك + سلطة سيزر + مشروب غازي",
+    "long_desc": "استمتع بوجبة غداء عمل متكاملة ومميزة. اختر طبقك الرئيسي من بين (تشيكن بيستو، بينك باستا، أو بيتزا مارجريتا) بالإضافة إلى سلطة سيزر المنعشة ومشروب غازي. العرض متاح من الأحد إلى الخميس، من الساعة 1 ظهراً حتى 5 مساءً.",
+    "price": "89 ريال",
+    "image": "https://placehold.co/600x400/272727/D4AF37?text=Business%0ALunch"
   }
 ]
