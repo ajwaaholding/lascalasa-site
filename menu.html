@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>قائمة الطعام |
-LaScala</title>
+    <title>عن LaScala - تجربة فاخرة</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
@@ -15,152 +14,194 @@ LaScala</title>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-            
-            'primary-gold': '#D4AF37',
+   
+                 colors: {
+                        'primary-gold': '#D4AF37',
                         'dark-bg': '#1a1a1a',
                         'dark-card': '#272727',
-                        'light-text': '#f0f0f0',
-            
-            'muted-text': '#a0a0a0',
+       
+                 'light-text': '#f0f0f0',
+                        'muted-text': '#a0a0a0',
                     }
                 }
             }
         }
-    </script>
+ 
+   </script>
 </head>
 
 <body class="bg-dark-bg text-light-text">
 
     <header class="site-header">
         <div class="container mx-auto px-4 flex justify-between items-center h-20">
-     
-       <a class="logo" href="index.html">
+            <a class="logo" href="index.html">
                 <img src="assets/images/logo.png" alt="LaScala Logo" class="h-16">
             </a>
             <nav class="main-nav hidden md:flex space-x-6 space-x-reverse">
-                <a href="index.html">الرئيسية</a>
-                <a href="about.html">عن المطعم</a>
-       
-         <a href="menu.html" class="active">المنيو</a>
+            
+    <a href="index.html">الرئيسية</a>
+                <a href="about.html" class="active">عن المطعم</a>
+                <a href="menu.html">المنيو</a>
                 <a href="booking.html">الحجز</a>
                 <a href="contact.html">تواصل</a>
             </nav>
-            <button id="mobile-menu-btn" class="md:hidden text-2xl">
+            <button 
+id="mobile-menu-btn" class="md:hidden text-2xl">
                 <i class="fa-solid fa-bars"></i>
-          
-  </button>
+            </button>
         </div>
         <div id="mobile-menu" class="hidden md:hidden bg-dark-card">
             <a href="index.html" class="block py-2 px-4 text-center border-b border-gray-700">الرئيسية</a>
             <a href="about.html" class="block py-2 px-4 text-center border-b border-gray-700">عن المطعم</a>
-            <a href="menu.html" class="block py-2 px-4 text-center border-b border-gray-700">المنيو</a>
+         
+   <a href="menu.html" class="block py-2 px-4 text-center border-b border-gray-700">المنيو</a>
             <a href="booking.html" class="block py-2 px-4 text-center border-b border-gray-700">الحجز</a>
- 
-           <a href="contact.html" class="block py-2 px-4 text-center">تواصل</a>
+            <a href="contact.html" class="block py-2 px-4 text-center">تواصل</a>
         </div>
     </header>
 
-    <main class="container mx-auto px-4 py-16">
-        <div class="text-center">
-            <h1 class="text-4xl md:text-5xl font-bold text-primary-gold">قائمة طعامنا</h1>
-            <p class="mt-4 text-lg text-muted-text max-w-2xl mx-auto">مختارات إيطالية وعالمية بلمسة فخامة من LaScala، محضّرة من مكونات طازجة.</p>
-        </div>
-
-   
-     <div class="menu-toolbar">
-            <div id="menu-filters" class="filter-chips">
-                </div>
-            <div class="search-container">
-                <input type="search" id="menuSearch" placeholder="ابحث عن طبق..." class="search-input">
-                <i class="fa-solid fa-search search-icon"></i>
-          
-  </div>
-        </div>
-
-        <section id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mt-8">
-            </section>
-    </main>
-    
-    <div id="quickViewModal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4" aria-modal="true" role="dialog">
-        <div class="modal-backdrop"></div>
-        <div class="modal-content-grid">
-            <div class="modal-image-container">
-         
-       <img id="qvImg" src="" alt="" class="modal-image">
+    <main>
+        <section class="relative h-[80vh] min-h-[600px] flex items-center justify-center text-center text-white overflow-hidden">
+            <img class="absolute inset-0 w-full h-full object-cover z-0 brightness-[0.3]" src="assets\images\_MG_8256.jpeg" 
+alt="Interior del restaurante LaScala">
+            <div class="hero-overlay absolute inset-0 z-10"></div>
+            <div class="container mx-auto px-4 relative z-20">
+                <span class="eyebrow">مطعم لا سكالا</span>
+                <h1 class="text-4xl md:text-5xl font-bold mt-2 text-primary-gold">تجربة تذوّق فاخرة بروحٍ إيطالية</h1>
+                <p class="mt-4 text-lg max-w-3xl 
+mx-auto">رحلة نكهات منسوجة بعناية، تجمع الأصالة الإيطالية مع ابتكارات طهاتنا ومكوّنات مختارة بعناية لضيوف يبحثون عن الفخامة.</p>
             </div>
-            <div class="modal-details">
-                <button id="closeModalBtn" class="modal-close-btn">×</button>
-                <h3 id="qvTitle" class="text-3xl font-bold text-primary-gold"></h3>
-                <p id="qvLongDesc" class="mt-4 text-muted-text leading-relaxed"></p>
-      
+        </section>
+
+        <section class="container mx-auto px-4 -mt-12 relative z-20">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 bg-dark-card p-6 rounded-xl shadow-lg">
+                <div class="text-center">
+            
+        <i class="fa-solid fa-award text-primary-gold text-3xl"></i>
+                    <p class="mt-2 font-medium">جودة معتمدة</p>
+                </div>
+                <div class="text-center">
+                    <i class="fa-solid fa-seedling text-primary-gold text-3xl"></i>
+        
+            <p class="mt-2 font-medium">مكوّنات طازجة</p>
+                </div>
+                <div class="text-center">
+                    <i class="fa-solid fa-champagne-glasses text-primary-gold text-3xl"></i>
+                    <p class="mt-2 font-medium">أجواء فاخرة</p>
+     
+           </div>
+                <div class="text-center">
+                    <i class="fa-solid fa-bell-concierge text-primary-gold text-3xl"></i>
+                    <p class="mt-2 font-medium">خدمة راقية</p>
+                </div>
+         
+   </div>
+        </section>
+
+        <section class="py-16 md:py-24">
+            <div class="container mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
+                <div class="story-text">
+                    <h2 class="section-title text-right">قصتنا</h2>
+                    <p 
+class="mt-4 text-muted-text text-right leading-relaxed">
+                        وُلدت LaScala من شغف بالطهو والتفاصيل الراقية.
+نختار مكوّناتنا بعناية من موردين موثوقين، ونقدّم وصفات كلاسيكية بإعادة تفسير حديث يراعي الذائقة المحلية.
+سواء لسهرة هادئة أو لقاء أعمال، نعدك بتجربة تُلامس معنى الفخامة.
+</p>
+                    <ul class="mt-6 space-y-3 text-right">
+                        <li class="flex justify-end items-center"><span class="mr-3">تحضير طازج فور الطلب</span><i class="fa-regular fa-clock text-primary-gold"></i></li>
+                        <li class="flex justify-end items-center"><span class="mr-3">أطباق موقّعة للشيف</span><i class="fa-solid fa-utensils text-primary-gold"></i></li>
           
-                <div id="qvChefNoteContainer" class="mt-6 hidden">
-                    <h4 class="detail-heading"><i class="fa-solid fa-star-of-life mr-2 text-primary-gold"></i> لمسة الشيف</h4>
-                    <p id="qvChefNote" class="detail-text"></p>
-                </div>
-
+              <li class="flex justify-end items-center"><span class="mr-3">مشروبات مختارة لتكامل النكهات</span><i class="fa-solid fa-wine-glass text-primary-gold"></i></li>
+                    </ul>
+                    <div class="mt-8 text-right">
+                        <a class="btn primary" href="booking.html">احجز طاولتك</a>
       
-          <div id="qvAllergensContainer" class="mt-6 hidden">
-                    <h4 class="detail-heading"><i class="fa-solid fa-triangle-exclamation mr-2 text-primary-gold"></i> تنبيه الحساسية</h4>
-                    <div id="qvAllergens" class="flex flex-wrap gap-2">
-                        </div>
-            
-    </div>
-
-                <div class="mt-8 flex justify-between items-center">
-                    <span id="qvPrice" class="text-3xl font-bold text-primary-gold"></span>
-                    <a href="booking.html" class="btn primary">اطلبه الآن</a>
+              </div>
                 </div>
+                <div class="relative h-96">
+                    <img src="assets\images\3O9A5143.JPG" alt="LaScala Chef" class="absolute w-2/3 h-full rounded-lg object-cover shadow-lg right-0">
+                    <img src="assets\images\3O9A5104.JPG" 
+alt="LaScala Interior" class="absolute w-1/2 h-3/4 rounded-lg object-cover shadow-2xl left-0 bottom-0 border-8 border-dark-bg">
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 md:py-24 bg-dark-card">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title">فريق الطهي</h2>
+         
+       <div class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="chef-card">
+                        <img src="assets\images\Dining+Area.JPG" alt="Head Chef">
+                        <h3 class="text-xl font-bold mt-4">الشيف الرئيسي</h3>
+           
+             <p class="text-muted-text mt-1">خبرة عالمية في المطابخ الإيطالية المعاصرة.</p>
+                    </div>
+                    <div class="chef-card">
+                        <img src="assets\images\about-interior.jpg" alt="Pastry Chef">
             
-</div>
-        </div>
-    </div>
+            <h3 class="text-xl font-bold mt-4">شيف الحلويات</h3>
+                        <p class="text-muted-text mt-1">حلويات موسمية بلمسات أنيقة وخفيفة.</p>
+                    </div>
+                    <div class="chef-card">
+             
+           <img src="assets\images\Chef+Ahmad.JPG" alt="Grill Master">
+                        <h3 class="text-xl font-bold mt-4">شيف البيتزا</h3>
+                        <p class="text-muted-text mt-1">درجات شواء دقيقة ونكهات مدخّنة رائعة.</p>
+                    </div>
+       
+         </div>
+            </div>
+        </section>
+    </main>
 
 <footer class="site-footer">
         <div class="container mx-auto px-4">
             <div class="footer-glass-card">
                 <div class="footer-grid">
                     <div class="footer-brand">
-                        <h4>LaScala</h4>
- 
-                       <p>تجربة طعام فاخرة تجمع بين الأصالة الإيطالية واللمسات العصرية في قلب الخبر.</p>
+    
+                    <h4>LaScala</h4>
+                        <p>تجربة طعام فاخرة تجمع بين الأصالة الإيطالية واللمسات العصرية في قلب الخبر.</p>
                         <div class="footer-social-icons">
-                            <a href="https://www.youtube.com/@lascalasa" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-        
-                    <a href="https://x.com/lascalasa" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
                             <a href="https://www.instagram.com/lascalasa" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-                            <a href="https://wa.me/966546480098" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
-         
-                   <a href="https://www.tiktok.com/@lascalasa" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                            <a href="#" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                            <a href="https://www.tiktok.com/@lascalasa" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                            <a href="#" target="_blank" aria-label="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
+                            <a href="#" target="_blank" aria-label="Threads"><i class="fa-brands fa-threads"></i></a>
+                            <a href="https://x.com/lascalasa" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="https://www.youtube.com/@lascalasa" 
+target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                            <a href="#" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
                         </div>
                     </div>
-                    <div class="footer-links-grid">
            
-             <div class="footer-links-col">
+         <div class="footer-links-grid">
+                        <div class="footer-links-col">
                             <h4>المطعم</h4>
                             <a href="about.html">عن LaScala</a>
-                            
-<a href="menu.html">قائمة الطعام</a>
+       
+                     <a href="menu.html">قائمة الطعام</a>
                             <a href="booking.html">الحجز</a>
                             <a href="contact.html">تواصل معنا</a>
-                        </div>
-               
-         <div class="footer-links-col">
+                  
+      </div>
+                        <div class="footer-links-col">
                             <h4>خدمات</h4>
                             <a href="#">الطلبات الخارجية</a>
-                            <a href="#">الفعاليات الخاصة</a>
-  
-                          <a href="#">الوظائف</a>
+           
+                 <a href="#">الفعاليات الخاصة</a>
+                            <a href="#">الوظائف</a>
                         </div>
                         <div class="footer-links-col">
-                        
-    <h4>قانوني</h4>
+   
+                         <h4>قانوني</h4>
                             <a href="#">سياسة الخصوصية</a>
                             <a href="#">الشروط والأحكام</a>
-                        </div>
-            
-        </div>
+               
+         </div>
+                    </div>
                 </div>
                 <div class="footer-bottom">
                     © <span id="year"></span> LaScala Restaurant.
