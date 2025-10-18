@@ -294,3 +294,12 @@ h1, h2, h3, h4, .font-medium, .main-nav a, .btn {
 .acc-btn.active .chevron { transform: rotate(180deg); }
 .acc-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
 .acc-body p { padding: 0.5rem 1rem 1rem 1rem; color: #a0a0a0; }
+/* انتقال بسيط للقائمة */
+#mobile-menu {
+  transition: transform .25s ease, opacity .25s ease;
+}
+#mobile-menu.hidden {
+  transform: translateY(-8px);
+  opacity: 0;
+  pointer-events: none;
+}
