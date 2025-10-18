@@ -13,16 +13,19 @@
     <script>
         tailwind.config = {
             theme: {
-                extend: {
+          
+      extend: {
                     colors: {
                         'primary-gold': '#D4AF37',
                         'dark-bg': '#1a1a1a',
-                        'dark-card': '#272727',
+                      
+  'dark-card': '#272727',
                         'light-text': '#f0f0f0',
                         'muted-text': '#a0a0a0',
                     }
                 }
-            }
+           
+ }
         }
     </script>
 </head>
@@ -35,19 +38,22 @@
                 <img src="assets/images/logo.png" alt="LaScala Logo" class="h-16">
             </a>
             <nav class="main-nav hidden md:flex space-x-6 space-x-reverse">
-                <a href="index.html" class="active">الرئيسية</a>
+  
+              <a href="index.html" class="active">الرئيسية</a>
                 <a href="about.html">عن المطعم</a>
                 <a href="menu.html">المنيو</a>
                 <a href="booking.html">الحجز</a>
                 <a href="contact.html">تواصل</a>
             </nav>
-            <button id="mobile-menu-btn" class="md:hidden text-2xl">
+   
+         <button id="mobile-menu-btn" class="md:hidden text-2xl">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
         <div id="mobile-menu" class="hidden md:hidden bg-dark-card">
             <a href="index.html" class="block py-2 px-4 text-center border-b border-gray-700">الرئيسية</a>
-            <a href="about.html" class="block py-2 px-4 text-center border-b border-gray-700">عن المطعم</a>
+            <a href="about.html" class="block py-2 px-4 text-center border-b 
+border-gray-700">عن المطعم</a>
             <a href="menu.html" class="block py-2 px-4 text-center border-b border-gray-700">المنيو</a>
             <a href="booking.html" class="block py-2 px-4 text-center border-b border-gray-700">الحجز</a>
             <a href="contact.html" class="block py-2 px-4 text-center">تواصل</a>
@@ -56,42 +62,50 @@
 
     <main>
         <section class="relative h-screen min-h-[600px] flex items-center justify-center text-center text-white overflow-hidden">
-            <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 brightness-[0.4]">
+           
+ <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 brightness-[0.4]">
                 <source src="assets/video/hero.mp4" type="video/mp4">
                 Your browser does not support the video tag.
-            </video>
+</video>
             <div class="hero-overlay absolute inset-0 z-10"></div>
             <div class="container mx-auto px-4 relative z-20">
                 <h1 class="text-4xl md:text-6xl font-bold text-primary-gold drop-shadow-lg animate-fade-in-down">مرحبًا بكم في LaScala</h1>
                 <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto drop-shadow-md animate-fade-in-up">نكهات إيطالية وعالمية في قلب الخبر — مكونات طازجة وتجربة لا تُنسى.</p>
-                <div class="mt-8 flex gap-4 justify-center animate-fade-in-up">
+        
+        <div class="mt-8 flex gap-4 justify-center animate-fade-in-up">
                     <a class="btn primary" href="menu.html"><i class="fa-solid fa-utensils"></i>المنيو</a>
                     <a class="btn ghost" href="booking.html"><i class="fa-regular fa-calendar-check"></i> احجز الآن</a>
                 </div>
             </div>
-        </section>
+       
+ </section>
 
         <section class="py-16 md:py-24 bg-dark-card">
             <div class="container mx-auto px-4 text-center">
                 <h2 class="section-title">تجربة فريدة من نوعها</h2>
                 <p class="section-subtitle">نقدم أجواءً عالمية ونكهات مميزة تجمع بين المطبخ الإيطالي الأصيل والمأكولات العالمية المبتكرة.</p>
                 <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="feature-card">
+  
+                  <div class="feature-card">
                         <i class="fa-solid fa-seedling text-primary-gold text-4xl mb-4"></i>
                         <h3 class="text-xl font-bold mb-2">مكونات طازجة</h3>
-                        <p class="text-muted-text">نختار أفضل المكونات الموسمية والمحلية لضمان نكهة لا تضاهى.</p>
+                        
+<p class="text-muted-text">نختار أفضل المكونات الموسمية والمحلية لضمان نكهة لا تضاهى.</p>
                     </div>
                     <div class="feature-card">
                         <i class="fa-solid fa-champagne-glasses text-primary-gold text-4xl mb-4"></i>
-                        <h3 class="text-xl font-bold mb-2">أجواء فاخرة</h3>
+                     
+   <h3 class="text-xl font-bold mb-2">أجواء فاخرة</h3>
                         <p class="text-muted-text">تصميم داخلي أنيق وخدمة راقية تجعل من زيارتكم ذكرى مميزة.</p>
                     </div>
                     <div class="feature-card">
-                        <i class="fa-solid fa-award text-primary-gold text-4xl mb-4"></i>
+                  
+      <i class="fa-solid fa-award text-primary-gold text-4xl mb-4"></i>
                         <h3 class="text-xl font-bold mb-2">طهاتنا المبدعون</h3>
                         <p class="text-muted-text">فريق من الطهاة بخبرة عالمية يبتكرون أطباقًا تلامس الحواس.</p>
                     </div>
-                </div>
+        
+        </div>
             </div>
         </section>
 
@@ -99,28 +113,33 @@
              <div class="container mx-auto px-4">
                 <h2 class="section-title">الأكثر طلباََ</h2>
                 <p class="section-subtitle">مختارات من قائمتنا تمثل روح مطبخ LaScala.</p>
-                <div id="signature-dishes-container" class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+     
+           <div id="signature-dishes-container" class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     </div>
             </div>
         </section>
 
         <section class="stats-section bg-dark-card py-16">
             <div class="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div class="stat">
+           
+     <div class="stat">
                     <span data-count="8" class="text-4xl font-bold text-primary-gold">0</span>
                     <small class="block mt-2 text-muted-text">سنوات خبرة</small>
                 </div>
                 <div class="stat">
-                    <span data-count="75" class="text-4xl font-bold text-primary-gold">0</span>
+             
+       <span data-count="75" class="text-4xl font-bold text-primary-gold">0</span>
                     <small class="block mt-2 text-muted-text">طبق في قائمتنا</small>
                 </div>
                 <div class="stat">
                     <span data-count="35" class="text-4xl font-bold text-primary-gold">0</span>
-                    <small class="block mt-2 text-muted-text">مكوّن محلي معتمد</small>
+       
+             <small class="block mt-2 text-muted-text">مكوّن محلي معتمد</small>
                 </div>
                 <div class="stat">
                     <span data-count="4.8" data-precision="1" class="text-4xl font-bold text-primary-gold">0</span>
-                    <small class="block mt-2 text-muted-text">متوسط تقييم الضيوف</small>
+                    <small class="block mt-2 text-muted-text">متوسط 
+تقييم الضيوف</small>
                 </div>
             </div>
         </section>
@@ -128,13 +147,15 @@
         <section class="py-16 md:py-24">
             <div class="container mx-auto px-4">
                 <div class="cta-card">
-                    <h3 class="text-3xl font-bold">جاهز لتجربة لا تُنسى؟</h3>
+                    <h3 
+class="text-3xl font-bold">جاهز لتجربة لا تُنسى؟</h3>
                     <p class="mt-2 mb-6 text-muted-text">احجز طاولتك الآن واستمتع بأمسية فاخرة مع من تحب.</p>
                     <a class="btn primary" href="booking.html">احجز طاولتك الآن</a>
                 </div>
             </div>
         </section>
-    </main>
+    
+</main>
 
 <footer class="site-footer">
   <div class="container mx-auto px-4">
@@ -145,7 +166,8 @@
           <p>تجربة طعام فاخرة تجمع بين الأصالة الإيطالية واللمسات العصرية في قلب الخبر.</p>
           <div class="footer-social-icons">
             <a href="https://www.youtube.com/@lascalasa" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
-            <a href="https://x.com/lascalasa" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://x.com/lascalasa" 
+target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
             <a href="https://www.instagram.com/lascalasa" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
             <a href="https://wa.me/966546480098" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
             <a href="https://www.tiktok.com/@lascalasa" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
@@ -153,7 +175,8 @@
         </div>
         <div class="footer-links-grid">
           <div class="footer-links-col">
-            <h4>المطعم</h4>
+        
+    <h4>المطعم</h4>
             <a href="about.html">عن LaScala</a>
             <a href="menu.html">قائمة الطعام</a>
             <a href="booking.html">الحجز</a>
@@ -161,7 +184,8 @@
           </div>
           <div class="footer-links-col">
             <h4>خدمات</h4>
-            <a href="#">الطلبات الخارجية</a>
+        
+    <a href="#">الطلبات الخارجية</a>
             <a href="#">الفعاليات الخاصة</a>
             <a href="#">الوظائف</a>
           </div>
@@ -169,11 +193,13 @@
             <h4>قانوني</h4>
             <a href="#">سياسة الخصوصية</a>
             <a href="#">الشروط والأحكام</a>
-          </div>
+      
+    </div>
         </div>
       </div>
       <div class="footer-bottom">
-        © <span id="year"></span> LaScala Restaurant. جميع الحقوق محفوظة.
+        © <span id="year"></span> LaScala Restaurant.
+جميع الحقوق محفوظة.
       </div>
     </div>
   </div>
@@ -184,5 +210,6 @@
   <span>تم الاشتراك بنجاح!</span>
 </div>
 
-<!-- سكربت واحد فقط -->
 <script src="assets/js/main.js"></script>
+</body>
+</html>
