@@ -3,17 +3,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearSpan = document.getElementById('year');
   if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-  // ===== Mobile menu toggle (الزر ثلاث شرطات) =====
+  // ===== Mobile menu toggle =====
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu    = document.getElementById('mobile-menu');
 
   if (mobileMenuBtn && mobileMenu) {
-    // إظهار/إخفاء القائمة عبر كلاس hidden (Tailwind)
+    mobileMenuBtn.setAttribute('aria-controls', 'mobile-menu');
+    mobileMenuBtn.setAttribute('aria-expanded', 'false');
+
     mobileMenuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-      mobileMenuBtn.classList.toggle('is-open'); // لو حبيت تغيّر شكل الأيقونة
-      // اختياري: قفل التمرير لما القائمة مفتوحة
-      document.documentElement.classList.toggle('overflow-hidden');
+      const isOpen = mobileMenu.classList.toggle('hidden') === false; // مفتوح إذا أزيلنا hidden
+      mobileMenuBtn.classList.toggle('is-open', isOpen);
+      mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
+      document.documentElement.classList.toggle('overflow-hidden', isOpen);
     });
 
     // اغلق القائمة عند الضغط على أي رابط داخلها
@@ -21,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target.matches('a')) {
         mobileMenu.classList.add('hidden');
         mobileMenuBtn.classList.remove('is-open');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
         document.documentElement.classList.remove('overflow-hidden');
       }
     });
@@ -107,10 +110,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function countUp(el, target, duration, precision) {
     const startTime = performance.now();
-    const start = 0;
     const step = (t) => {
       const p = Math.min((t - startTime) / duration, 1);
-      el.textContent = (start + p * (target - start)).toFixed(precision);
+      el.textContent = (p * target).toFixed(precision);
       if (p < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
@@ -241,56 +243,4 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const closeModal = () => customModal.classList.add('hidden');
     modalCloseBtn.addEventListener('click', closeModal);
-    customModal.addEventListener('click', e => { if (e.target === customModal) closeModal(); });
-
-    const accContainer = document.getElementById('faq-accordion');
-    if (accContainer) {
-      accContainer.addEventListener('click', e => {
-        const btn = e.target.closest('.acc-btn');
-        if (!btn) return;
-        const body = btn.nextElementSibling;
-        const wasActive = btn.classList.contains('active');
-        accContainer.querySelectorAll('.acc-btn').forEach(b => {
-          b.classList.remove('active');
-          b.nextElementSibling.style.maxHeight = null;
-        });
-        if (!wasActive) {
-          btn.classList.add('active');
-          body.style.maxHeight = body.scrollHeight + 'px';
-        }
-      });
-    }
-
-    const form = document.getElementById('reservationForm');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const date = document.getElementById('date').value;
-      const today = new Date().toISOString().split('T')[0];
-      if (date < today) {
-        showModal('خطأ في التاريخ', 'لا يمكن الحجز في تاريخ ماضٍ.');
-        return;
-      }
-      showModal('تم إرسال طلب الحجز ✅', 'شكرًا لك! تم استلام طلبك بنجاح وسيتواصل فريقنا معك قريبًا.');
-      form.reset();
-    });
-  }
-
-  function setupContactForm() {
-    const form = document.getElementById('contactForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const formStatus = document.getElementById('formStatus');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'جارٍ الإرسال...';
-      setTimeout(() => {
-        formStatus.textContent = '✅ شكرًا لك! تم استلام رسالتك بنجاح.';
-        formStatus.className = 'text-green-400 text-center pt-2';
-        form.reset();
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'إرسال الرسالة';
-        setTimeout(() => { formStatus.textContent = ''; }, 5000);
-      }, 1000);
-    });
-  }
-});
+    customModal.addEventListener('click', e => { if (e.target === customModal) closeModal();
