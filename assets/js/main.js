@@ -216,18 +216,51 @@ async function loadMenu() {
       .forEach(el => el.classList.remove('is-blurred','blurred'));
   };
 
-  try {
-    const res = await fetch('/data/menu.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    renderMenu(data);
-    cleanupOverlays();
-  } catch (err) {
-    console.error('Menu load failed:', err);
-    cleanupOverlays();
-    // showToast('تعذّر تحميل القائمة. حدّث الصفحة.');
+<script>
+  // دالة ترسم القائمة بعد تحميلها
+  function renderMenu(data) {
+    const menuContainer = document.querySelector("#menu-container"); // عدل حسب الـ ID عندك
+    menuContainer.innerHTML = "";
+
+    data.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "menu-item";
+      card.innerHTML = `
+        <h3>${item.title}</h3>
+        <p>${item.desc}</p>
+        <p><strong>${item.price}</strong></p>
+      `;
+      menuContainer.appendChild(card);
+    });
   }
-}
+
+  // دالة تنظيف أي طبقات أو تغبيش
+  const cleanupOverlays = () => {
+    document.body.classList.remove("overlay-open","search-open","modal-open","loading");
+    document.querySelectorAll(".overlay, .search-overlay, .modal-backdrop, .backdrop")
+      .forEach(el => el.remove());
+    document.querySelectorAll(".is-blurred, .blurred")
+      .forEach(el => el.classList.remove("is-blurred","blurred"));
+  };
+
+  // تحميل القائمة بأمان
+  async function loadMenu() {
+    try {
+      const res = await fetch("/data/menu.json", { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      renderMenu(data);
+      cleanupOverlays(); // إزالة التمويه بعد النجاح
+    } catch (err) {
+      console.error("❌ Menu load failed:", err);
+      cleanupOverlays(); // إزالة التمويه حتى لو فيه خطأ
+      alert("حدث خطأ أثناء تحميل القائمة. تأكد من صحة ملف menu.json");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", loadMenu);
+</script>
+
 
 
   // ===== Menu Page (Original Code) =====
