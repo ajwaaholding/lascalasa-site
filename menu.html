@@ -3,62 +3,79 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>قائمة الطعام</title>
+  <title>المنيو | LaScala</title>
 
-  <!-- ملف التنسيقات الرئيسي لموقعك (عدّل الاسم إن لزم) -->
-  <link rel="stylesheet" href="assets/css/main.css" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
 
-  <!-- ستايلات خفيفة لضمان ظهور الفلاتر والبطاقات حتى لو تعطل CSS الرئيسي -->
-  <style>
-    :root{--bg:#0f1115;--card:#151924;--text:#e8ecf3;--muted:#9aa4b2;--chip:#232a3a;--accent:#7ac6ff}
-    body{background:var(--bg);color:var(--text);font-family:system-ui,Segoe UI,Roboto,Tahoma,Arial;margin:0}
-    header{position:sticky;top:0;background:linear-gradient(180deg,#0f1115 70%,transparent);padding:16px;border-bottom:1px solid #1e2433}
-    h1{margin:0;font-size:20px}
-    .container{max-width:1100px;margin:0 auto;padding:16px}
-    .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:10px 0 14px}
-    #menuSearch{background:#0f1522;border:1px solid #1f2a3b;color:#cfe3ff;border-radius:10px;padding:10px 12px;min-width:260px}
-    #menu-filters{display:flex;flex-wrap:wrap;gap:8px}
-    .filter-chip{background:var(--chip);color:#cdd6e3;border:1px solid #2a3347;border-radius:999px;padding:6px 12px;cursor:pointer;font-size:13px}
-    .filter-chip.active{outline:2px solid var(--accent);color:#fff}
-    #menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-    .menu-card-glass{background:var(--card);border:1px solid #1e2433;border-radius:14px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column}
-    .menu-card-glass img{width:100%;height:170px;object-fit:cover;background:#0d1320}
-    .menu-card-glass .p-4{padding:12px}
-    .text-primary-gold{color:#ffd28a}
-    .text-light-text{color:#e6edf6}
-    .text-muted-text{color:var(--muted)}
-    /* مودال */
-    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:50}
-    .modal.show{display:flex}
-    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6)}
-    .modal-card{position:relative;background:#121725;border:1px solid #1e2433;border-radius:16px;max-width:720px;width:92%;display:grid;grid-template-columns:1fr;overflow:hidden}
-    @media(min-width:720px){.modal-card{grid-template-columns:280px 1fr}}
-    .modal-card img{width:100%;height:100%;object-fit:cover;background:#0d1320}
-    .modal-body{padding:16px}
-    .badge{display:inline-block;background:#1d2332;color:#b6c2d4;border:1px solid #2a3347;border-radius:999px;padding:4px 8px;font-size:12px;margin:0 4px 4px 0}
-    .qv-price{background:#243048;border-radius:999px;padding:6px 12px;font-weight:700;display:inline-block}
-    .close-btn{position:absolute;top:8px;left:8px;background:#1d2332;border:1px solid #2a3347;border-radius:10px;padding:6px 10px;color:#cdd6e3;cursor:pointer}
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <script>
+      tailwind.config = {
+          theme: {
+              extend: {
+                  colors: {
+                      'primary-gold': '#D4AF37',
+                      'dark-bg': '#1a1a1a',
+                      'dark-card': '#272727',
+                      'light-text': '#f0f0f0',
+                      'muted-text': '#a0a0a0',
+                  }
+              }
+          }
+      }
+  </script>
 </head>
-<body>
-  <header>
-    <div class="container">
-      <h1>قائمة الطعام</h1>
+<body class="bg-dark-bg text-light-text">
+
+  <header class="site-header">
+    <div class="container mx-auto px-4 flex justify-between items-center h-20">
+        <a class="logo" href="index.html">
+            <img src="assets/images/logo.png" alt="LaScala Logo" class="h-16">
+        </a>
+        <nav class="main-nav hidden md:flex space-x-6 space-x-reverse">
+            <a href="index.html">الرئيسية</a>
+            <a href="about.html">عن المطعم</a>
+            <a href="menu.html" class="active">المنيو</a>
+            <a href="booking.html">الحجز</a>
+            <a href="contact.html">تواصل</a>
+        </nav>
+        <button id="mobile-menu-btn" class="md:hidden text-2xl">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+    <div id="mobile-menu" class="hidden md:hidden bg-dark-card">
+        <a href="index.html" class="block py-2 px-4 text-center border-b border-gray-700">الرئيسية</a>
+        <a href="about.html" class="block py-2 px-4 text-center border-b border-gray-700">عن المطعم</a>
+        <a href="menu.html" class="block py-2 px-4 text-center border-b border-gray-700">المنيو</a>
+        <a href="booking.html" class="block py-2 px-4 text-center border-b border-gray-700">الحجز</a>
+        <a href="contact.html" class="block py-2 px-4 text-center">تواصل</a>
     </div>
   </header>
 
-  <main class="container">
-    <!-- شريط البحث والفلاتر -->
-    <div class="toolbar">
-      <input id="menuSearch" type="search" placeholder="ابحث باسم الطبق..." aria-label="بحث" />
-      <div id="menu-filters" aria-label="فلاتر الأصناف"></div>
+  <main class="container mx-auto px-4 py-16">
+    <div class="text-center mb-12">
+        <h1 class="section-title">قائمة الطعام</h1>
+        <p class="section-subtitle">تصفح أطباقنا الفاخرة واختر ما يلامس ذائقتك</p>
     </div>
 
-    <!-- شبكة البطاقات -->
-    <div id="menu-grid" aria-live="polite"></div>
+    <div class="toolbar menu-toolbar top-[80px] z-40 bg-dark-bg/80 backdrop-blur-lg -mx-4 px-4 py-4 mb-8 sticky">
+        <div class="search-container max-w-lg mx-auto mb-4">
+            <i class="fa-solid fa-search search-icon !right-4 !left-auto"></i>
+            <input id="menuSearch" type="search" placeholder="ابحث باسم الطبق..." aria-label="بحث" class="form-input search-input !rounded-lg !pl-4 !pr-12">
+        </div>
+        <div id="menu-filters" class="filter-chips" aria-label="فلاتر الأصناف">
+            </div>
+    </div>
+
+    <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" aria-live="polite">
+        </div>
   </main>
 
-  <!-- مودال المعاينة السريعة -->
   <div id="quickViewModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="qvTitle">
     <div class="modal-backdrop" id="modalBackdrop"></div>
     <div class="modal-card">
@@ -69,20 +86,72 @@
         <p id="qvLongDesc" class="text-muted-text" style="margin:0 0 12px;line-height:1.7"></p>
 
         <div id="qvAllergensContainer" style="margin:10px 0" class="">
+          <h4 class="font-bold text-light-text mb-2">مسببات الحساسية:</h4>
           <div id="qvAllergens"></div>
         </div>
 
         <div id="qvChefNoteContainer" style="margin:10px 0" class="">
-          <strong>ملاحظة الشيف:</strong>
+          <strong class="font-bold text-light-text">ملاحظة الشيف:</strong>
           <p id="qvChefNote" class="text-muted-text" style="margin:6px 0 0"></p>
         </div>
 
-        <div class="qv-price" id="qvPrice"></div>
+        <div class="qv-price mt-4" id="qvPrice"></div>
       </div>
     </div>
   </div>
 
-  <!-- سكربت المنيو -->
-  <script defer src="assets/js/main.js"></script>
+  <footer class="site-footer">
+    <div class="container mx-auto px-4">
+      <div class="footer-glass-card">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <h4>LaScala</h4>
+            <p>تجربة طعام فاخرة تجمع بين الأصالة الإيطالية واللمسات العصرية في قلب الخبر.</p>
+            <div class="footer-social-icons">
+              <a href="https://www.instagram.com/lascalasa" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+              <a href="https://www.tiktok.com/@lascalasa" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+              <a href="#" target="_blank" aria-label="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
+              <a href="#" target="_blank" aria-label="Threads"><i class="fa-brands fa-threads"></i></a>
+              <a href="https://x.com/lascalasa" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="https://www.youtube.com/@lascalasa" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+              <a href="#" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+          </div>
+          <div class="footer-links-grid">
+            <div class="footer-links-col">
+              <h4>المطعم</h4>
+              <a href="about.html">عن LaScala</a>
+              <a href="menu.html">قائمة الطعام</a>
+              <a href="booking.html">الحجز</a>
+              <a href="contact.html">تواصل معنا</a>
+            </div>
+            <div class="footer-links-col">
+              <h4>خدمات</h4>
+              <a href="#">الطلبات الخارجية</a>
+              <a href="#">الفعاليات الخاصة</a>
+              <a href="#">الوظائف</a>
+            </div>
+            <div class="footer-links-col">
+              <h4>قانوني</h4>
+              <a href="#">سياسة الخصوصية</a>
+              <a href="#">الشروط والأحكام</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          © <span id="year"></span> LaScala Restaurant.
+          جميع الحقوق محفوظة.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div id="success-message">
+    <i class="fa-solid fa-check-circle"></i>
+    <span>تم الاشتراك بنجاح!</span>
+  </div>
+
+  <script src="assets/js/main.js"></script>
 </body>
 </html>
