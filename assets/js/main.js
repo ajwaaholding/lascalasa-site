@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // UPDATE: Define the exact order for filters
-    const categoryOrder = [ 'all', 'starters', 'soups', 'mains', 'pasta_risotto', 'pizza', 'sandwiches', 'kids_menu', 'desserts', 'hot_drinks', 'cold_drinks', 'lascala_offers'];
+    const categoryOrder = [ 'الكل', 'المقبلات', 'الشوربات', 'الأطباق الرئيسية', 'pasta_risotto', 'البيتزا', 'السندويتشات', 'kids_menu', 'desserts', 'hot_drinks', 'cold_drinks', 'lascala_offers'];
 
 
     try {
