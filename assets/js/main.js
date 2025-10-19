@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // ===== (NEW) Mobile Menu Toggle =====
+  const WHATSAPP_NUMBER = '966546480098';
+
+  // ===== (FIX) Mobile Menu Toggle =====
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
   if (mobileMenuBtn && mobileMenu) {
@@ -8,16 +10,164 @@ document.addEventListener('DOMContentLoaded', () => {
       const icon = mobileMenuBtn.querySelector('i');
       if (icon) {
         icon.classList.toggle('fa-bars');
-        icon.classList.toggle('fa-xmark'); // (FontAwesome 6 icon)
+        icon.classList.toggle('fa-xmark');
       }
     });
   }
 
-  // ===== Common =====
+  // ===== (FIX) Stats Counter Animation =====
+  const statsSection = document.querySelector('.stats-section');
+  
+  function animateCounters() {
+    const counters = document.querySelectorAll('.stat span[data-count]');
+    if (!counters.length) return;
+
+    counters.forEach(counter => {
+      const target = +counter.getAttribute('data-count');
+      const precision = +counter.getAttribute('data-precision') || 0;
+      const duration = 1500; // 1.5 seconds
+      const stepTime = 50; // 50ms interval
+      const totalSteps = duration / stepTime;
+      const increment = target / totalSteps;
+      let current = 0;
+
+      const updateCounter = () => {
+        current += increment;
+        if (current >= target) {
+          counter.textContent = target.toFixed(precision);
+        } else {
+          counter.textContent = current.toFixed(precision);
+          setTimeout(updateCounter, stepTime);
+        }
+      };
+      updateCounter();
+    });
+  }
+
+  if (statsSection) {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        animateCounters();
+        observer.unobserve(statsSection); // Animate only once
+      }
+    }, { threshold: 0.5 }); // Start when 50% visible
+
+    observer.observe(statsSection);
+  }
+  
+  // ===== (NEW) Contact Form to WhatsApp =====
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const subject = document.getElementById('subject').value;
+      const message = document.getElementById('message').value;
+
+      // Basic validation
+      if (!name || !phone || !message) {
+        alert('يرجى ملء الحقول المطلوبة (الاسم، الجوال، الرسالة).');
+        return;
+      }
+
+      let text = `*رسالة جديدة من نموذج التواصل:*\n\n`;
+      text += `*الاسم:* ${name}\n`;
+      text += `*الجوال:* ${phone}\n`;
+      text += `*الموضوع:* ${subject}\n`;
+      text += `*الرسالة:*\n${message}`;
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+      contactForm.reset();
+    });
+  }
+
+  // ===== (NEW) Reservation Form to WhatsApp =====
+  const reservationForm = document.getElementById('reservationForm');
+  if (reservationForm) {
+    reservationForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('full-name').value;
+      const phone = document.getElementById('phone').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const guests = document.getElementById('guests').value;
+      const email = document.getElementById('email').value;
+      const requests = document.getElementById('special-requests').value;
+
+      // Basic validation
+      if (!name || !phone || !date || !time) {
+        alert('يرجى ملء حقول الحجز المطلوبة (الاسم، الجوال، التاريخ، الوقت).');
+        return;
+      }
+
+      let text = `*طلب حجز جديد:*\n\n`;
+      text += `*الاسم:* ${name}\n`;
+      text += `*الجوال:* ${phone}\n`;
+      text += `*التاريخ:* ${date}\n`;
+      text += `*الوقت:* ${time}\n`;
+      text += `*عدد الضيوف:* ${guests}\n`;
+      if (email) text += `*الإيميل:* ${email}\n`;
+      if (requests) text += `*طلبات خاصة:*\n${requests}`;
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+      
+      // Show success modal from booking.html
+      const modal = document.getElementById('customModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalMsg = document.getElementById('modalMessage');
+      if (modal && modalTitle && modalMsg) {
+        modalTitle.textContent = 'تم تجهيز طلب الحجز';
+        modalMsg.textContent = 'سيتم الآن فتح واتساب لإرسال تفاصيل حجزك. سنقوم بالتواصل معك للتأكيد.';
+        modal.classList.remove('hidden');
+        modal.classList.add('flex'); // Assuming it uses flex to show
+        
+        // Add close logic
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        if (modalCloseBtn) {
+          modalCloseBtn.onclick = () => {
+              modal.classList.add('hidden');
+              modal.classList.remove('flex');
+          };
+        }
+      }
+      reservationForm.reset();
+    });
+  }
+
+  // ===== (NEW) FAQ Accordion (for booking.html) =====
+  const accordion = document.getElementById('faq-accordion');
+  if (accordion) {
+    const buttons = accordion.querySelectorAll('.acc-btn');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const body = btn.nextElementSibling;
+        const isActive = btn.classList.contains('active');
+
+        // Close all others (optional)
+        // buttons.forEach(b => {
+        //     b.classList.remove('active');
+        //     b.nextElementSibling.style.maxHeight = null;
+        // });
+
+        if (isActive) {
+          btn.classList.remove('active');
+          body.style.maxHeight = null;
+        } else {
+          btn.classList.add('active');
+          body.style.maxHeight = body.scrollHeight + 'px';
+        }
+      });
+    });
+  }
+
+  // ===== Common (Footer Year) =====
   const yearSpan = document.getElementById('year');
   if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-  // ===== Category normalization =====
+  // ===== Category normalization (Original Code) =====
   const CAT_ALIASES = {
     'starters': 'المقبلات',
     'soups': 'الشوربات',
@@ -50,37 +200,34 @@ document.addEventListener('DOMContentLoaded', () => {
     return CAT_ALIASES[key] || key;
   };
 
-  // ===== Robust JSON loader =====
-function buildMenuUrl() {
-  // نستخدم دومًا مسارًا نسبيًا انطلاقًا من الصفحة الحالية
-  const u = new URL('assets/data/menu.json', document.baseURI);
-  // نضيف باراميتر لمنع الكاش
-  u.searchParams.set('v', Date.now().toString());
-  return u.toString();
-}
-
-
-async function loadMenuJson() {
-  const url = buildMenuUrl();
-  try {
-    const res = await fetch(url, { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}`);
-    const text = await res.text();
-    try {
-      const data = JSON.parse(text);
-      console.log('%c[menu.json loaded]', 'color:#0f0', url, data);
-      return { data, url };
-    } catch (parseErr) {
-      const preview = text.slice(0, 120).replace(/\s+/g, ' ');
-      throw new Error(`JSON parse error @ ${url} :: ${parseErr.message} :: preview="${preview}"`);
-    }
-  } catch (e) {
-    console.error('[fetch menu.json failed]', e);
-    throw e;
+  // ===== Robust JSON loader (Original Code) =====
+  function buildMenuUrl() {
+    const u = new URL('assets/data/menu.json', document.baseURI);
+    u.searchParams.set('v', Date.now().toString());
+    return u.toString();
   }
-}
 
-  // ===== Menu Page =====
+  async function loadMenuJson() {
+    const url = buildMenuUrl();
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}`);
+      const text = await res.text();
+      try {
+        const data = JSON.parse(text);
+        console.log('%c[menu.json loaded]', 'color:#0f0', url, data);
+        return { data, url };
+      } catch (parseErr) {
+        const preview = text.slice(0, 120).replace(/\s+/g, ' ');
+        throw new Error(`JSON parse error @ ${url} :: ${parseErr.message} :: preview="${preview}"`);
+      }
+    } catch (e) {
+      console.error('[fetch menu.json failed]', e);
+      throw e;
+    }
+  }
+
+  // ===== Menu Page (Original Code) =====
   if (document.getElementById('menu-grid')) {
     initMenuPage();
   }
@@ -160,7 +307,7 @@ async function loadMenuJson() {
         const catOK = active === 'الكل' || d.category === active;
         const textOK =
           (d.title || '').toLowerCase().includes(term) ||
-          (d.desc  || '').toLowerCase().includes(term);
+          (d.desc  || '').toLowerCase().push(term);
         return catOK && textOK;
       });
       renderMenu(filtered);
@@ -169,7 +316,7 @@ async function loadMenuJson() {
     searchInput?.addEventListener('input', filterAndRender);
   }
 
-  // ===== MODAL =====
+  // ===== MODAL (Original Code - Modified for 'show' class) =====
   const modal = document.getElementById('quickViewModal');
   if (modal) {
     const closeModalBtn = document.getElementById('closeModalBtn');
