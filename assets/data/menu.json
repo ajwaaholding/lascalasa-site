@@ -594,18 +594,18 @@
     "image": ""
   },
   {
-    "id": 55, // Changed ID from 53 to 55 to be unique
+    "id": 55,
     "category": "المشروبات الساخنة",
     "title": "أمريكانو",
     "desc": "قهوة خفيفة بنكهة غنية — 10 سعرات حرارية",
-    "long_desc": "إسبريسو مخفّف بالماء الساخن ليمنحك نكهة متوازنة ومذاقاً ناعماً يرضي محبي القهوة الخفيفة، مع طبقة رغوة خفيفة تعزز تجربة الشرب.",
+    "long_desc": "إسبريسو مخفّف بالماء الساخن ليمنحك نكهة متوازنة ومذاقاً ناعماً يرضي محبي القهوة الخفيفة، مع طبقة رغوة خفيفة تعزز تجربة الشرب",
     "allergens": [],
-    "chef_note": "مناسب لمحبي القهوة المتوازنة التي تُشرب على مهل.",
+    "chef_note": "مناسب لمحبي القهوة المتوازنة التي تُشرب على مهل",
     "price": "19 ريال",
     "image": ""
   },
   {
-    "id": 56, // Changed ID from 54 to 56 to be unique
+    "id": 56,
     "category": "المشروبات الساخنة",
     "title": "كابتشينو",
     "desc": "قهوة بالحليب ورغوة مخملية — 120 سعرة حرارية",
@@ -616,7 +616,7 @@
     "image": ""
   },
   {
-    "id": 57, // Changed ID from 55 to 57 to be unique
+    "id": 57,
     "category": "المشروبات الساخنة",
     "title": "لاتيه",
     "desc": "قهوة بالحليب الكريمي — 150 سعرة حرارية",
@@ -627,7 +627,7 @@
     "image": ""
   },
   {
-    "id": 58, // Changed ID from 56 to 58 to be unique
+    "id": 58,
     "category": "المشروبات الساخنة",
     "title": "فلات وايت",
     "desc": "قهوة مركزة مع رغوة خفيفة — 130 سعرة حرارية",
@@ -638,7 +638,7 @@
     "image": ""
   },
   {
-    "id": 59, // Changed ID from 57 to 59 to be unique
+    "id": 59,
     "category": "المشروبات الساخنة",
     "title": "كورتادو",
     "desc": "قهوة إسبريسو مع القليل من الحليب — 80 سعرة حرارية",
@@ -649,7 +649,7 @@
     "image": ""
   },
   {
-    "id": 60, // Changed ID from 58 to 60 to be unique
+    "id": 60,
     "category": "المشروبات الساخنة",
     "title": "سبانش لاتيه",
     "desc": "قهوة لاتيه بطابع إسباني — 220 سعرة حرارية",
@@ -660,7 +660,7 @@
     "image": ""
   },
   {
-    "id": 61, // Changed ID from 59 to 61 to be unique
+    "id": 61,
     "category": "المشروبات الساخنة",
     "title": "قهوة تركية",
     "desc": "قهوة مطحونة ناعمة تُقدَّم على الطريقة التقليدية — 60 سعرة حرارية",
@@ -671,7 +671,7 @@
     "image": ""
   },
   {
-    "id": 62, // Changed ID from 60 to 62 to be unique
+    "id": 62,
     "category": "المشروبات الساخنة",
     "title": "قهوة سعودية",
     "desc": "قهوة سعودية أصيلة بالهيل والزعفران — تُقدَّم مع التمر",
@@ -682,7 +682,7 @@
     "image": ""
   },
   {
-    "id": 63, // Changed ID from 61 to 63 to be unique
+    "id": 63,
     "category": "المشروبات الساخنة",
     "title": "دلة قهوة سعودية",
     "desc": "دلة قهوة سعودية تكفي 4 أشخاص — 180 سعرة حرارية",
@@ -693,7 +693,7 @@
     "image": ""
   },
   {
-    "id": 64, // Changed ID from 62 to 64 to be unique
+    "id": 64,
     "category": "المشروبات الساخنة",
     "title": "كوب شاي",
     "desc": "شاي فاخر مُحضّر بعناية — 5 سعرات حرارية",
@@ -704,7 +704,7 @@
     "image": ""
   },
   {
-    "id": 65, // Changed ID from 63 to 65 to be unique
+    "id": 65,
     "category": "المشروبات الساخنة",
     "title": "إبريق شاي",
     "desc": "إبريق شاي فاخر يقدم لـ3 أشخاص — 25 سعرة حرارية",
@@ -715,7 +715,7 @@
     "image": ""
   },
   {
-    "id": 66, // Changed ID from 64 to 66 to be unique
+    "id": 66,
     "category": "المشروبات الساخنة",
     "title": "الشيكولاتة الساخنة",
     "desc": "مشروب الشوكولاتة البلجيكية الكريمية — 200 سعرة حرارية",
@@ -726,7 +726,7 @@
     "image": ""
   },
   {
-    "id": 67, // Changed ID from 65 to 67 to be unique
+    "id": 67,
     "category": "العصائر",
     "title": "عصير الأفوكادو",
     "desc": "عصير كريمي غني بالأفوكادو الطازج — 260 سعرة حرارية",
@@ -737,7 +737,7 @@
     "image": ""
   },
   {
-    "id": 68, // Changed ID from 66 to 68 to be unique
+    "id": 68,
     "category": "العصائر",
     "title": "عصير المانجو",
     "desc": "عصير طبيعي بطعم المانجو الغني — 180 سعرة حرارية",
@@ -748,7 +748,7 @@
     "image": ""
   },
   {
-    "id": 69, // Changed ID from 67 to 69 to be unique
+    "id": 69,
     "category": "العصائر",
     "title": "عصير الجح",
     "desc": "عصير بارد بنكهة البطيخ الطازج — 150 سعرة حرارية",
@@ -759,7 +759,7 @@
     "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/watermelon_juice_17605254833590072.jpg"
   },
   {
-    "id": 70, // Changed ID from 68 to 70 to be unique
+    "id": 70,
     "category": "العصائر",
     "title": "عصير الجزر",
     "desc": "عصير طبيعي من الجزر الطازج — 130 سعرة حرارية",
@@ -770,7 +770,7 @@
     "image": ""
   },
   {
-    "id": 71, // Changed ID from 69 to 71 to be unique
+    "id": 71,
     "category": "العصائر",
     "title": "عصير الليمون بالنعناع",
     "desc": "عصير ليمون طازج مع لمسة النعناع — 120 سعرة حرارية",
@@ -781,7 +781,7 @@
     "image": ""
   },
   {
-    "id": 72, // Changed ID from 70 to 72 to be unique
+    "id": 72,
     "category": "العصائر",
     "title": "عصير التفاح",
     "desc": "عصير طبيعي من التفاح الأخضر — 110 سعرة حرارية",
@@ -792,7 +792,7 @@
     "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/apple_juice_17605252658894050.jpg"
   },
   {
-    "id": 73, // Changed ID from 71 to 73 to be unique
+    "id": 73,
     "category": "العصائر",
     "title": "عصير البرتقال",
     "desc": "عصير برتقال طازج — 120 سعرة حرارية",
@@ -803,7 +803,7 @@
     "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/orange_juice_17605251112574160.jpg"
   },
   {
-    "id": 74, // Changed ID from 72 to 74 to be unique
+    "id": 74,
     "category": "العصائر",
     "title": "عصير الفراولة",
     "desc": "عصير بارد من الفراولة الطازجة — 140 سعرة حرارية",
@@ -814,7 +814,7 @@
     "image": ""
   },
   {
-    "id": 75, // Changed ID from 73 to 75 to be unique
+    "id": 75,
     "category": "قائمة الأطفال",
     "title": "تندر الدجاج",
     "desc": "قطع دجاج مقلية مقرمشة — 887 سعرة حرارية",
@@ -825,7 +825,7 @@
     "image": "https://d8aaen7rph5y9.cloudfront.net/app/mediafiles/t_1710433745_u7ldgd/items/chicken_tinders_17605256756589866.jpg"
   },
   {
-    "id": 76, // Changed ID from 74 to 76 to be unique
+    "id": 76,
     "category": "قائمة الأطفال",
     "title": "ميني برجر",
     "desc": "برجر صغير من اللحم الطازج — 640 سعرة حرارية",
