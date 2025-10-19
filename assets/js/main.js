@@ -1,24 +1,174 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // ===== (NEW) Mobile Menu Toggle =====
-  const mobileMenuBtn = document.getElementById('mobile-menu-btn'); [cite: 10, 40, 73, 111]
-  const mobileMenu = document.getElementById('mobile-menu'); [cite: 11, 41, 74, 111]
+  const WHATSAPP_NUMBER = '966546480098';
+
+  // ===== (FIX) Mobile Menu Toggle =====
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
   if (mobileMenuBtn && mobileMenu) {
     mobileMenuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden'); [cite: 11]
+      mobileMenu.classList.toggle('hidden');
       const icon = mobileMenuBtn.querySelector('i');
       if (icon) {
-        icon.classList.toggle('fa-bars'); [cite: 11]
-        icon.classList.toggle('fa-xmark'); // (FontAwesome 6 icon)
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-xmark');
       }
     });
   }
 
-  // ===== Common =====
-  const yearSpan = document.getElementById('year'); [cite: 34]
+  // ===== (FIX) Stats Counter Animation =====
+  const statsSection = document.querySelector('.stats-section');
+  
+  function animateCounters() {
+    const counters = document.querySelectorAll('.stat span[data-count]');
+    if (!counters.length) return;
+
+    counters.forEach(counter => {
+      const target = +counter.getAttribute('data-count');
+      const precision = +counter.getAttribute('data-precision') || 0;
+      const duration = 1500; // 1.5 seconds
+      const stepTime = 50; // 50ms interval
+      const totalSteps = duration / stepTime;
+      const increment = target / totalSteps;
+      let current = 0;
+
+      const updateCounter = () => {
+        current += increment;
+        if (current >= target) {
+          counter.textContent = target.toFixed(precision);
+        } else {
+          counter.textContent = current.toFixed(precision);
+          setTimeout(updateCounter, stepTime);
+        }
+      };
+      updateCounter();
+    });
+  }
+
+  if (statsSection) {
+    const observer = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        animateCounters();
+        observer.unobserve(statsSection); // Animate only once
+      }
+    }, { threshold: 0.5 }); // Start when 50% visible
+
+    observer.observe(statsSection);
+  }
+  
+  // ===== (NEW) Contact Form to WhatsApp =====
+  const contactForm = document.getElementById('contactForm');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const subject = document.getElementById('subject').value;
+      const message = document.getElementById('message').value;
+
+      // Basic validation
+      if (!name || !phone || !message) {
+        alert('يرجى ملء الحقول المطلوبة (الاسم، الجوال، الرسالة).');
+        return;
+      }
+
+      let text = `*رسالة جديدة من نموذج التواصل:*\n\n`;
+      text += `*الاسم:* ${name}\n`;
+      text += `*الجوال:* ${phone}\n`;
+      text += `*الموضوع:* ${subject}\n`;
+      text += `*الرسالة:*\n${message}`;
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+      contactForm.reset();
+    });
+  }
+
+  // ===== (NEW) Reservation Form to WhatsApp =====
+  const reservationForm = document.getElementById('reservationForm');
+  if (reservationForm) {
+    reservationForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('full-name').value;
+      const phone = document.getElementById('phone').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const guests = document.getElementById('guests').value;
+      const email = document.getElementById('email').value;
+      const requests = document.getElementById('special-requests').value;
+
+      // Basic validation
+      if (!name || !phone || !date || !time) {
+        alert('يرجى ملء حقول الحجز المطلوبة (الاسم، الجوال، التاريخ، الوقت).');
+        return;
+      }
+
+      let text = `*طلب حجز جديد:*\n\n`;
+      text += `*الاسم:* ${name}\n`;
+      text += `*الجوال:* ${phone}\n`;
+      text += `*التاريخ:* ${date}\n`;
+      text += `*الوقت:* ${time}\n`;
+      text += `*عدد الضيوف:* ${guests}\n`;
+      if (email) text += `*الإيميل:* ${email}\n`;
+      if (requests) text += `*طلبات خاصة:*\n${requests}`;
+
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+      
+      // Show success modal from booking.html [cite: 105]
+      const modal = document.getElementById('customModal');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalMsg = document.getElementById('modalMessage');
+      if (modal && modalTitle && modalMsg) {
+        modalTitle.textContent = 'تم تجهيز طلب الحجز';
+        modalMsg.textContent = 'سيتم الآن فتح واتساب لإرسال تفاصيل حجزك. سنقوم بالتواصل معك للتأكيد.';
+        modal.classList.remove('hidden');
+        modal.classList.add('flex'); // Assuming it uses flex to show
+        
+        // Add close logic
+        const modalCloseBtn = document.getElementById('modalCloseBtn');
+        if (modalCloseBtn) {
+          modalCloseBtn.onclick = () => {
+              modal.classList.add('hidden');
+              modal.classList.remove('flex');
+          };
+        }
+      }
+      reservationForm.reset();
+    });
+  }
+
+  // ===== (NEW) FAQ Accordion (for booking.html) =====
+  const accordion = document.getElementById('faq-accordion');
+  if (accordion) {
+    const buttons = accordion.querySelectorAll('.acc-btn');
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const body = btn.nextElementSibling;
+        const isActive = btn.classList.contains('active');
+
+        // Close all others (optional)
+        // buttons.forEach(b => {
+        //     b.classList.remove('active');
+        //     b.nextElementSibling.style.maxHeight = null;
+        // });
+
+        if (isActive) {
+          btn.classList.remove('active');
+          body.style.maxHeight = null;
+        } else {
+          btn.classList.add('active');
+          body.style.maxHeight = body.scrollHeight + 'px';
+        }
+      });
+    });
+  }
+
+  // ===== Common (Footer Year) =====
+  const yearSpan = document.getElementById('year');
   if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-  // ===== Category normalization =====
-  const CAT_ALIASES = { [cite: 142]
+  // ===== Category normalization (Original Code) =====
+  const CAT_ALIASES = {
     'starters': 'المقبلات',
     'soups': 'الشوربات',
     'mains': 'الأطباق الرئيسية',
@@ -36,104 +186,101 @@ document.addEventListener('DOMContentLoaded', () => {
     'drinks': 'المشروبات الباردة',
     'juices': 'العصائر',
     'lascala_offers': 'عروض لاسكالا'
-  }; [cite: 142]
-  const ORDER_AR = [ [cite: 143]
+  };
+  const ORDER_AR = [
     'المقبلات','الشوربات','الأطباق الرئيسية','الباستا',
     'البيتزا','البرجر','السندويتشات','الحلويات',
     'المشروبات الباردة','المشروبات الساخنة','العصائر','قائمة الأطفال','عروض لاسكالا'
-  ]; [cite: 143]
-  const FEATURED_AR = ['الأطباق الرئيسية', 'الباستا', 'البيتزا']; [cite: 144]
+  ];
+  const FEATURED_AR = ['الأطباق الرئيسية', 'الباستا', 'البيتزا'];
 
   const normalizeCategory = (cat) => {
-    if (!cat) return ''; [cite: 144]
-    const key = String(cat).trim(); [cite: 145]
-    return CAT_ALIASES[key] || key; [cite: 145]
+    if (!cat) return '';
+    const key = String(cat).trim();
+    return CAT_ALIASES[key] || key;
   };
 
-  // ===== Robust JSON loader =====
-function buildMenuUrl() {
-  // نستخدم دومًا مسارًا نسبيًا انطلاقًا من الصفحة الحالية
-  const u = new URL('assets/data/menu.json', document.baseURI); [cite: 145]
-  // نضيف باراميتر لمنع الكاش
-  u.searchParams.set('v', Date.now().toString()); [cite: 146]
-  return u.toString();
-}
+  // ===== Robust JSON loader (Original Code) =====
+  function buildMenuUrl() {
+    const u = new URL('assets/data/menu.json', document.baseURI);
+    u.searchParams.set('v', Date.now().toString());
+    return u.toString();
+  }
 
+  async function loadMenuJson() {
+    const url = buildMenuUrl();
+    try {
+      const res = await fetch(url, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}`);
+      const text = await res.text();
+      try {
+        const data = JSON.parse(text);
+        console.log('%c[menu.json loaded]', 'color:#0f0', url, data);
+        return { data, url };
+      } catch (parseErr) {
+        const preview = text.slice(0, 120).replace(/\s+/g, ' ');
+        throw new Error(`JSON parse error @ ${url} :: ${parseErr.message} :: preview="${preview}"`);
+      }
+    } catch (e) {
+      console.error('[fetch menu.json failed]', e);
+      throw e;
+    }
+  }
 
-async function loadMenuJson() {
-  const url = buildMenuUrl();
-  try { [cite: 147]
-    const res = await fetch(url, { cache: 'no-store' }); [cite: 147]
-    if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}`); [cite: 148]
-    const text = await res.text(); [cite: 148]
-    try { [cite: 149]
-      const data = JSON.parse(text); [cite: 149]
-      console.log('%c[menu.json loaded]', 'color:#0f0', url, data);
-      return { data, url }; [cite: 150]
-    } catch (parseErr) {
-      const preview = text.slice(0, 120).replace(/\s+/g, ' '); [cite: 150]
-      throw new Error(`JSON parse error @ ${url} :: ${parseErr.message} :: preview="${preview}"`); [cite: 151]
-    } [cite: 152]
-  } catch (e) {
-    console.error('[fetch menu.json failed]', e); [cite: 152]
-    throw e; [cite: 152]
-  } [cite: 153]
-}
-
-  // ===== Menu Page =====
-  if (document.getElementById('menu-grid')) { [cite: 153]
-    initMenuPage(); [cite: 153]
-  } [cite: 154]
+  // ===== Menu Page (Original Code) =====
+  if (document.getElementById('menu-grid')) {
+    initMenuPage();
+  }
 
   async function initMenuPage() {
-    const grid = document.getElementById('menu-grid'); [cite: 154]
-    const filtersContainer = document.getElementById('menu-filters'); [cite: 154]
-    const searchInput = document.getElementById('menuSearch'); [cite: 155]
+    const grid = document.getElementById('menu-grid');
+    const filtersContainer = document.getElementById('menu-filters');
+    const searchInput = document.getElementById('menuSearch');
     let allDishes = [];
 
     try {
       const { data, url } = await loadMenuJson();
-      allDishes = data.map(it => ({ ...it, category: normalizeCategory(it.category) })); [cite: 156]
+      allDishes = data.map(it => ({ ...it, category: normalizeCategory(it.category) }));
       console.log('[menu source used]', url);
 
       renderFilters(allDishes);
-      renderMenu(allDishes); [cite: 156]
-    } catch (err) { [cite: 157]
-      console.error('Menu page load error:', err); [cite: 157]
+      renderMenu(allDishes);
+    } catch (err) {
+      console.error('Menu page load error:', err);
       grid.innerHTML = `
         <div class="col-span-full text-center">
           <p>خطأ في تحميل المنيو.</p>
           <small class="block opacity-70 mt-2" dir="ltr">${String(err.message || err)}</small>
-        </div>`; [cite: 158]
-      return; [cite: 159]
+        </div>`;
+      return;
     }
 
     function renderFilters(dishes) {
-      const present = Array.from(new Set(dishes.map(d => d.category).filter(Boolean))); [cite: 159]
-      const ordered = [ [cite: 160]
-        ...ORDER_AR.filter(cat => present.includes(cat)), [cite: 160]
-        ...present.filter(cat => !ORDER_AR.includes(cat)).sort((a, b) => a.localeCompare(b, 'ar')) [cite: 160]
+      const present = Array.from(new Set(dishes.map(d => d.category).filter(Boolean)));
+      const ordered = [
+        ...ORDER_AR.filter(cat => present.includes(cat)),
+        ...present.filter(cat => !ORDER_AR.includes(cat)).sort((a, b) => a.localeCompare(b, 'ar'))
       ];
-      const categories = ['الكل', ...ordered]; [cite: 161]
+      const categories = ['الكل', ...ordered];
 
       filtersContainer.innerHTML = categories.map(cat => `
         <button type="button" data-cat="${cat}" class="filter-chip ${cat === 'الكل' ? 'active' : ''}">
           ${cat}
         </button>
-      `).join(''); [cite: 161]
-      filtersContainer.addEventListener('click', (e) => { [cite: 162]
-        const btn = e.target.closest('.filter-chip'); [cite: 162]
-        if (!btn) return; [cite: 162]
-        filtersContainer.querySelector('.active')?.classList.remove('active'); [cite: 162]
-        btn.classList.add('active'); [cite: 162]
+      `).join('');
+      filtersContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.filter-chip');
+        if (!btn) return;
+        filtersContainer.querySelector('.active')?.classList.remove('active');
+        btn.classList.add('active');
         filterAndRender();
-      }); [cite: 163]
+      });
     }
 
     function renderMenu(dishes) {
-      if (!dishes.length) { [cite: 163]
-        grid.innerHTML = `<p class="col-span-full text-center text-muted-text">لا توجد نتائج مطابقة.</p>`; [cite: 163]
-        return; [cite: 164]
+      if (!dishes.length) {
+        grid.innerHTML = `<p class="col-span-full text-center text-muted-text">لا توجد نتائج مطابقة.</p>`;
+        return;
       }
       grid.innerHTML = dishes.map(dish => `
         <div class="menu-card-glass" data-id="${dish.id}">
@@ -141,80 +288,80 @@ async function loadMenuJson() {
           <div class="p-4 flex flex-col h-full">
             <h3 class="text-lg font-bold text-primary-gold">${dish.title || ''}</h3>
             <p class="mt-2 line-clamp-2 text-muted-text flex-grow">${dish.desc ?? ''}</p>
-            <div class="mt-3 text-light-text font-bold">${dish.price ?? ''}</div> [cite: 165]
+            <div class="mt-3 text-light-text font-bold">${dish.price ?? ''}</div>
           </div>
         </div>
-      `).join(''); [cite: 165]
-      grid.querySelectorAll('.menu-card-glass').forEach(card => { [cite: 166]
-        card.addEventListener('click', () => { [cite: 166]
-          const dish = allDishes.find(d => String(d.id) === String(card.dataset.id)); [cite: 166]
+      `).join('');
+      grid.querySelectorAll('.menu-card-glass').forEach(card => {
+        card.addEventListener('click', () => {
+          const dish = allDishes.find(d => String(d.id) === String(card.dataset.id));
           openQuickView(dish);
         });
-      }); [cite: 167]
+      });
     }
 
     function filterAndRender() {
-      const active = filtersContainer.querySelector('.active')?.dataset.cat || 'الكل'; [cite: 167]
-      const term = (searchInput?.value || '').toLowerCase(); [cite: 168]
-      const filtered = allDishes.filter(d => { [cite: 168]
-        const catOK = active === 'الكل' || d.category === active; [cite: 168]
+      const active = filtersContainer.querySelector('.active')?.dataset.cat || 'الكل';
+      const term = (searchInput?.value || '').toLowerCase();
+      const filtered = allDishes.filter(d => {
+        const catOK = active === 'الكل' || d.category === active;
         const textOK =
           (d.title || '').toLowerCase().includes(term) ||
-          (d.desc  || '').toLowerCase().includes(term); [cite: 168]
+          (d.desc  || '').toLowerCase().push(term);
         return catOK && textOK;
       });
-      renderMenu(filtered); [cite: 169]
+      renderMenu(filtered);
     }
 
-    searchInput?.addEventListener('input', filterAndRender); [cite: 169]
+    searchInput?.addEventListener('input', filterAndRender);
   }
 
-  // ===== MODAL =====
-  const modal = document.getElementById('quickViewModal'); [cite: 169]
-  if (modal) { [cite: 170]
-    const closeModalBtn = document.getElementById('closeModalBtn'); [cite: 170]
-    const modalBackdrop = modal.querySelector('.modal-backdrop'); [cite: 170]
-    const closeModal = () => { [cite: 171]
+  // ===== MODAL (Original Code - Modified for 'show' class) =====
+  const modal = document.getElementById('quickViewModal');
+  if (modal) {
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalBackdrop = modal.querySelector('.modal-backdrop');
+    const closeModal = () => {
       modal.classList.remove('show'); // Use 'show' class to toggle
-      document.documentElement.classList.remove('overflow-hidden'); [cite: 171]
+      document.documentElement.classList.remove('overflow-hidden');
     };
-    closeModalBtn?.addEventListener('click', closeModal); [cite: 171]
-    modalBackdrop?.addEventListener('click', closeModal); [cite: 171]
-  } [cite: 172]
+    closeModalBtn?.addEventListener('click', closeModal);
+    modalBackdrop?.addEventListener('click', closeModal);
+  }
 
   function openQuickView(dish) {
-    if (!dish || !modal) return; [cite: 172]
-    const imgEl   = document.getElementById('qvImg'); [cite: 172]
-    const titleEl = document.getElementById('qvTitle'); [cite: 173]
-    const descEl  = document.getElementById('qvLongDesc'); [cite: 173]
-    const priceEl = document.getElementById('qvPrice'); [cite: 173]
-    if (imgEl)   { imgEl.src = dish.image || 'assets/images/logo.png'; imgEl.alt = dish.title || ''; [cite: 174]
-    } [cite: 175]
-    if (titleEl) { titleEl.textContent = dish.title || ''; [cite: 175]
-    } [cite: 176]
-    if (descEl)  { descEl.textContent = dish.long_desc || dish.desc || ''; [cite: 176]
-    } [cite: 177]
-    if (priceEl) { priceEl.textContent = dish.price || ''; } [cite: 177]
+    if (!dish || !modal) return;
+    const imgEl   = document.getElementById('qvImg');
+    const titleEl = document.getElementById('qvTitle');
+    const descEl  = document.getElementById('qvLongDesc');
+    const priceEl = document.getElementById('qvPrice');
+    if (imgEl)   { imgEl.src = dish.image || 'assets/images/logo.png'; imgEl.alt = dish.title || '';
+    }
+    if (titleEl) { titleEl.textContent = dish.title || '';
+    }
+    if (descEl)  { descEl.textContent = dish.long_desc || dish.desc || '';
+    }
+    if (priceEl) { priceEl.textContent = dish.price || ''; }
 
-    const allergensContainer = document.getElementById('qvAllergensContainer'); [cite: 177]
-    const allergensDiv       = document.getElementById('qvAllergens'); [cite: 178]
-    if (dish.allergens && dish.allergens.length && allergensDiv && allergensContainer) { [cite: 179]
-      allergensDiv.innerHTML = dish.allergens.map(a => `<span class="allergen-tag">${a}</span>`).join(''); [cite: 179]
-      allergensContainer.classList.remove('hidden'); [cite: 180]
+    const allergensContainer = document.getElementById('qvAllergensContainer');
+    const allergensDiv       = document.getElementById('qvAllergens');
+    if (dish.allergens && dish.allergens.length && allergensDiv && allergensContainer) {
+      allergensDiv.innerHTML = dish.allergens.map(a => `<span class="allergen-tag">${a}</span>`).join('');
+      allergensContainer.classList.remove('hidden');
     } else {
-      allergensContainer?.classList.add('hidden'); [cite: 180]
+      allergensContainer?.classList.add('hidden');
     }
 
-    const chefNoteContainer = document.getElementById('qvChefNoteContainer'); [cite: 180]
-    const chefNoteP         = document.getElementById('qvChefNote'); [cite: 181]
-    if (dish.chef_note && chefNoteContainer && chefNoteP) { [cite: 182]
-      chefNoteP.textContent = dish.chef_note; [cite: 182]
-      chefNoteContainer.classList.remove('hidden'); [cite: 182]
-    } else { [cite: 183]
-      chefNoteContainer?.classList.add('hidden'); [cite: 183]
+    const chefNoteContainer = document.getElementById('qvChefNoteContainer');
+    const chefNoteP         = document.getElementById('qvChefNote');
+    if (dish.chef_note && chefNoteContainer && chefNoteP) {
+      chefNoteP.textContent = dish.chef_note;
+      chefNoteContainer.classList.remove('hidden');
+    } else {
+      chefNoteContainer?.classList.add('hidden');
     }
 
     modal.classList.add('show'); // Use 'show' class to toggle
-    document.documentElement.classList.add('overflow-hidden'); [cite: 183]
+    document.documentElement.classList.add('overflow-hidden');
   }
 });
