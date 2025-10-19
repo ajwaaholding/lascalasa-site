@@ -90,9 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
       console.error('Menu page load error:', err);
       grid.innerHTML = `
-        <div class="col-span-full text-center">
-          <p>خطأ في تحميل المنيو.</p>
-          <small class="block opacity-70 mt-2" dir="ltr">${String(err.message || err)}</small>
+        <div class="col-span-full text-center p-8">
+          <p class="text-lg">خطأ في تحميل قائمة الطعام.</p>
+          <small class="block text-muted-text mt-2" dir="ltr">${String(err.message || err)}</small>
         </div>`;
       return;
     }
@@ -121,14 +121,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderMenu(dishes) {
       if (!dishes.length) {
-        grid.innerHTML = `<p class="col-span-full text-center text-muted-text">لا توجد نتائج مطابقة.</p>`;
+        grid.innerHTML = `<p class="col-span-full text-center text-muted-text p-8">لا توجد نتائج مطابقة لبحثك.</p>`;
         return;
       }
       
-      // (تعديل) إضافة منطق الصورة البديلة
+      // (تعديل) إضافة منطق الصورة البديلة (اللوجو)
       grid.innerHTML = dishes.map(dish => {
         const imgSrc = dish.image || LOGO_PLACEHOLDER;
-        const imgStyle = dish.image ? '' : 'object-fit: contain; padding: 20px; opacity: 0.6;'; // (إضافة) تنسيق اللوجو
+        // إضافة تنسيق خاص للوجو ليظهر بشكل مصغر وواضح
+        const imgStyle = dish.image ? '' : 'object-fit: contain; padding: 20px; opacity: 0.6;'; 
 
         return `
         <div class="menu-card-glass" data-id="${dish.id}">
@@ -139,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="menu-card-price">${dish.price ?? ''}</div>
           </div>
         </div>
-      `}).join(''); // تم تعديل السعر وإضافة تنسيق الصورة
+      `}).join(''); 
 
       grid.querySelectorAll('.menu-card-glass').forEach(card => {
         card.addEventListener('click', () => {
@@ -151,12 +152,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function filterAndRender() {
       const active = filtersContainer.querySelector('.active')?.dataset.cat || 'الكل';
-      const term = (searchInput?.value || '').toLowerCase();
+      const term = (searchInput?.value || '').toLowerCase().trim();
       const filtered = allDishes.filter(d => {
         const catOK = active === 'الكل' || d.category === active;
+        if (!term) return catOK; // إذا كان البحث فارغاً، اعتمد على الفلتر فقط
+        
         const textOK =
           (d.title || '').toLowerCase().includes(term) ||
-          (d.desc  || '').toLowerCase().includes(term);
+          (d.desc  || '').toLowerCase().includes(term) ||
+          (d.long_desc  || '').toLowerCase().includes(term); // (إضافة) البحث في الوصف الطويل
         return catOK && textOK;
       });
       renderMenu(filtered);
@@ -165,13 +169,13 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput?.addEventListener('input', filterAndRender);
   }
 
-  // ===== MODAL =====
+  // ===== MODAL (النافذة المنبثقة) =====
   const modal = document.getElementById('quickViewModal');
   if (modal) {
     const closeModalBtn = document.getElementById('closeModalBtn');
     const modalBackdrop = modal.querySelector('.modal-backdrop');
     const closeModal = () => {
-      modal.classList.remove('show'); // (تعديل) استخدام 'show' بدلاً من 'hidden'
+      modal.classList.remove('show'); 
       document.documentElement.classList.remove('overflow-hidden');
     };
     closeModalBtn?.addEventListener('click', closeModal);
@@ -182,36 +186,37 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!dish || !modal) return;
     const imgEl   = document.getElementById('qvImg');
     const titleEl = document.getElementById('qvTitle');
-    const shortDescEl = document.getElementById('qvShortDesc'); // (إضافة جديدة)
-    const descEl  = document.getElementById('qvLongDesc');
+    const shortDescEl = document.getElementById('qvShortDesc'); // الوصف القصير
+    const descEl  = document.getElementById('qvLongDesc'); // الوصف الطويل
     const priceEl = document.getElementById('qvPrice');
 
-    // (تعديل) منطق الصورة البديلة للمودال
+    // منطق الصورة البديلة (اللوجو) داخل المودال
     const imgSrc = dish.image || LOGO_PLACEHOLDER;
     if (imgEl)   { 
       imgEl.src = imgSrc; 
       imgEl.alt = dish.title || '';
+      // تنسيق اللوجو داخل المودال
       imgEl.style.objectFit = dish.image ? 'cover' : 'contain';
       imgEl.style.padding = dish.image ? '0' : '2rem';
+      imgEl.style.background = dish.image ? '#0d1320' : 'var(--card)';
     }
 
     if (titleEl) { titleEl.textContent = dish.title || ''; }
-    
-    // (إضافة جديدة) إظهار الوصف القصير (للسعرات) والطويل
     if (shortDescEl) { shortDescEl.textContent = dish.desc || ''; }
-    if (descEl)  { descEl.textContent = dish.long_desc || ''; } // (تم التعديل لإظهار الوصف الطويل فقط هنا)
-
+    if (descEl)  { descEl.textContent = dish.long_desc || ''; } 
     if (priceEl) { priceEl.textContent = dish.price || ''; }
 
+    // إظهار وإخفاء قسم مسببات الحساسية
     const allergensContainer = document.getElementById('qvAllergensContainer');
     const allergensDiv       = document.getElementById('qvAllergens');
     if (dish.allergens && dish.allergens.length && allergensDiv && allergensContainer) {
-      allergensDiv.innerHTML = dish.allergens.map(a => `<span class="badge">${a}</span>`).join(''); // (تعديل) استخدام كلاس 'badge'
+      allergensDiv.innerHTML = dish.allergens.map(a => `<span class="badge">${a}</span>`).join('');
       allergensContainer.classList.remove('hidden');
     } else {
       allergensContainer?.classList.add('hidden');
     }
 
+    // إظهار وإخفاء قسم ملاحظة الشيف
     const chefNoteContainer = document.getElementById('qvChefNoteContainer');
     const chefNoteP         = document.getElementById('qvChefNote');
     if (dish.chef_note && chefNoteContainer && chefNoteP) {
@@ -221,12 +226,12 @@ document.addEventListener('DOMContentLoaded', () => {
       chefNoteContainer?.classList.add('hidden');
     }
 
-    modal.classList.add('show'); // (تعديل) استخدام 'show'
+    modal.classList.add('show');
     document.documentElement.classList.add('overflow-hidden');
   }
 
   // ===========================================
-  // ===== (إضافة جديدة) ربط النماذج بالواتساب =====
+  // ===== ربط النماذج (Forms) بالواتساب =====
   // ===========================================
 
   // 1. نموذج الحجز (Booking Form)
@@ -235,7 +240,6 @@ document.addEventListener('DOMContentLoaded', () => {
     reservationForm.addEventListener('submit', function(e) {
       e.preventDefault();
       
-      // جلب البيانات من النموذج
       const name = document.getElementById('full-name').value;
       const phone = document.getElementById('phone').value;
       const date = document.getElementById('date').value;
@@ -243,7 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const guests = document.getElementById('guests').value;
       const requests = document.getElementById('special-requests').value;
 
-      // تنسيق الرسالة
       let message = `*طلب حجز جديد من LaScala* 🍽️\n\n`;
       message += `*الاسم:* ${name}\n`;
       message += `*الجوال:* ${phone}\n`;
@@ -255,19 +258,17 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       message += `\nبرجاء تأكيد الحجز مع العميل.`;
 
-      // إرسال للواتساب
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
       
-      // (اختياري) إظهار رسالة نجاح أو تفريغ الحقول
       reservationForm.reset();
-      // يمكن إظهار المودال المخصص
-      const modal = document.getElementById('customModal');
-      if (modal) {
+      
+      // إظهار مودال النجاح الخاص بصفحة الحجز
+      const customModal = document.getElementById('customModal');
+      if (customModal) {
           document.getElementById('modalTitle').textContent = 'تم إرسال الطلب';
-          document.getElementById('modalMessage').textContent = 'تم إrsal طلب الحجز بنجاح عبر واتساب. سنتواصل معك قريباً للتأكيد.';
-          modal.classList.remove('hidden');
-          modal.querySelector('#modalCloseBtn').onclick = () => modal.classList.add('hidden');
+          document.getElementById('modalMessage').textContent = 'تم إرسال طلب الحجز بنجاح عبر واتساب. سنتواصل معك قريباً للتأكيد.';
+          customModal.classList.remove('hidden');
       }
     });
   }
@@ -281,24 +282,20 @@ document.addEventListener('DOMContentLoaded', () => {
       const statusDiv = document.getElementById('formStatus');
       statusDiv.textContent = 'جاري الإرسال...';
       
-      // جلب البيانات
       const name = document.getElementById('name').value;
       const phone = document.getElementById('phone').value;
       const subject = document.getElementById('subject').value;
       const msg = document.getElementById('message').value;
 
-      // تنسيق الرسالة
       let message = `*رسالة جديدة من (تواصل معنا)* 📬\n\n`;
       message += `*الاسم:* ${name}\n`;
       message += `*الجوال:* ${phone}\n`;
       message += `*الموضوع:* ${subject}\n\n`;
       message += `*الرسالة:*\n${msg}`;
 
-      // إرسال للواتساب
       const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, '_blank');
       
-      // إظهار رسالة نجاح
       statusDiv.textContent = 'تم فتح واتساب لإرسال رسالتك. شكراً لك!';
       statusDiv.style.color = '#D4AF37'; // (primary-gold)
       contactForm.reset();
@@ -306,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
   
-  // (إضافة) التعامل مع مودال النجاح في صفحة الحجز
+  // زر إغلاق مودال النجاح (صفحة الحجز)
   const modalCloseBtn = document.getElementById('modalCloseBtn');
   if(modalCloseBtn) {
     modalCloseBtn.addEventListener('click', () => {
@@ -314,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // (إضافة) التعامل مع القائمة المنسدلة (Accordion) في صفحة الحجز
+  // الأكورديون (الأسئلة الشائعة) في صفحة الحجز
   const faqAccordion = document.getElementById('faq-accordion');
   if (faqAccordion) {
     faqAccordion.querySelectorAll('.acc-btn').forEach(button => {
@@ -322,13 +319,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const body = button.nextElementSibling;
         const isActive = button.classList.contains('active');
         
-        // إغلاق جميع الأجسام النشطة
         faqAccordion.querySelectorAll('.acc-btn').forEach(btn => {
           btn.classList.remove('active');
           btn.nextElementSibling.style.maxHeight = null;
         });
 
-        // فتح/إغلاق الجسم الحالي
         if (!isActive) {
           button.classList.add('active');
           body.style.maxHeight = body.scrollHeight + "px";
@@ -337,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // (إضافة) التعامل مع قائمة الموبايل
+  // قائمة الموبايل (الهيدر)
   const mobileMenuBtn = document.getElementById('mobile-menu-btn');
   const mobileMenu = document.getElementById('mobile-menu');
   if (mobileMenuBtn && mobileMenu) {
