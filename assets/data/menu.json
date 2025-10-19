@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>قائمة لاسكالا</title>
   <style>
-    :root { --bg:#0f1115; --card:#151924; --text:#e8ecf3; --muted:#9aa4b2; --chip:#232a3a; --accent:#7ac6ff; }
-    *{box-sizing:border-box} body{margin:0;font-family:system-ui,Segoe UI,Roboto,Tahoma,Arial;background:var(--bg);color:var(--text)}
+    :root{--bg:#0f1115;--card:#151924;--text:#e8ecf3;--muted:#9aa4b2;--chip:#232a3a;--accent:#7ac6ff}
+    *{box-sizing:border-box}body{margin:0;font-family:system-ui,Segoe UI,Roboto,Tahoma,Arial;background:var(--bg);color:var(--text)}
     header{position:sticky;top:0;background:linear-gradient(180deg,#0f1115 70%,transparent);padding:20px 16px 10px;border-bottom:1px solid #1e2433}
     h1{margin:0;font-size:22px;letter-spacing:.2px}
     #wrap{max-width:1100px;margin:0 auto;padding:16px}
@@ -23,7 +23,6 @@
     .error,.loading{background:#2a1120;border:1px solid #5a1c3a;color:#ffb6c1;padding:12px;border-radius:10px}
     .loading{background:#13202f;border-color:#203349;color:#b9dcff}
     footer{color:#758199;font-size:12px;text-align:center;padding:24px}
-    a{color:#9fd1ff;text-decoration:none}
   </style>
 </head>
 <body>
@@ -32,73 +31,57 @@
     <div id="status" class="loading">جاري تحميل القائمة…</div>
     <div id="menu"></div>
   </div>
-  <footer>إن ظهرت لك بيانات خام، فأنت تفتح ملف <code>menu.json</code> مباشرة. افتح <strong>menu.html</strong> بدلًا منه.</footer>
+  <footer>للتشغيل الصحيح: افتح <strong>menu.html</strong> عبر خادم محلي، وتأكد من وجود <code>assets/data/menu.json</code>.</footer>
 
   <script>
-    (async function () {
-      const status = document.getElementById('status');
-      const mount  = document.getElementById('menu');
+  (async function () {
+    const status = document.getElementById('status');
+    const mount  = document.getElementById('menu');
+    const DATA_URL = 'assets/data/menu.json';
 
-      // المسار إلى ملف JSON
-      const DATA_URL = 'assets/data/menu.json';
+    const el=(t,c,txt)=>{const e=document.createElement(t); if(c)e.className=c; if(txt)e.textContent=txt; return e;}
+    const byCat = (arr)=>arr.reduce((a,it)=>((a[it.category]??=[]).push(it),a),{});
 
-      function groupByCategory(items){
-        return items.reduce((acc,it)=>{
-          (acc[it.category] ??= []).push(it);
-          return acc;
-        },{});
-      }
+    try{
+      const res = await fetch(DATA_URL,{cache:'no-cache'});
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const data = await res.json();
 
-      function el(tag, cls, text){
-        const e=document.createElement(tag);
-        if(cls) e.className = cls;
-        if(text) e.textContent = text;
-        return e;
-      }
+      status.remove();
+      const grouped = byCat(data);
+      const frag = document.createDocumentFragment();
 
-      try{
-        const res = await fetch(DATA_URL, {cache:'no-cache'});
-        if(!res.ok) throw new Error('تعذّر تحميل الملف: ' + res.status);
-        const data = await res.json();
+      Object.keys(grouped).forEach(cat=>{
+        const section = el('section','section');
+        section.appendChild(el('h2',null,cat));
+        const grid = el('div','grid');
 
-        status.remove();
+        grouped[cat].forEach(item=>{
+          const card = el('div','card');
+          card.appendChild(el('div','title', item.title||''));
+          card.appendChild(el('div','desc',  item.desc||''));
 
-        const byCat = groupByCategory(data);
-        const frag = document.createDocumentFragment();
+          const meta = el('div','meta');
+          const allergens = el('div','allergens');
+          (item.allergens||[]).forEach(a=>allergens.appendChild(el('span','tag',a)));
+          meta.appendChild(allergens);
+          meta.appendChild(el('div','price', item.price||''));
+          card.appendChild(meta);
 
-        Object.keys(byCat).forEach(cat=>{
-          const section = el('section','section');
-          section.appendChild(el('h2',null,cat));
-
-          const grid = el('div','grid');
-          byCat[cat].forEach(item=>{
-            const card = el('div','card');
-            card.appendChild(el('div','title', item.title));
-            card.appendChild(el('div','desc', item.desc));
-
-            const meta = el('div','meta');
-            const allergens = el('div','allergens');
-            (item.allergens||[]).forEach(a=>allergens.appendChild(el('span','tag',a)));
-            const price = el('div','price', item.price);
-            meta.appendChild(allergens);
-            meta.appendChild(price);
-
-            card.appendChild(meta);
-            grid.appendChild(card);
-          });
-
-          section.appendChild(grid);
-          frag.appendChild(section);
+          grid.appendChild(card);
         });
 
-        mount.appendChild(frag);
+        section.appendChild(grid);
+        frag.appendChild(section);
+      });
 
-      }catch(err){
-        console.error(err);
-        status.className = 'error';
-        status.textContent = 'خطأ في تحميل المنيو. تأكد من وجود الملف على المسار assets/data/menu.json وأنك تفتح menu.html عبر خادم محلي.';
-      }
-    })();
+      mount.appendChild(frag);
+    }catch(e){
+      console.error(e);
+      status.className='error';
+      status.textContent='خطأ في تحميل المنيو. تأكد من المسار وتشغيل خادم محلي.';
+    }
+  })();
   </script>
 </body>
 </html>
