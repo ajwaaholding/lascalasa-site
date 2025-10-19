@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ===== Robust JSON loader =====
   function buildMenuUrl() {
+    // نستخدم مسار نسبي لضمان عمله على GitHub Pages
     const u = new URL('assets/data/menu.json', document.baseURI);
     u.searchParams.set('v', Date.now().toString());
     return u.toString();
@@ -60,7 +61,8 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('%c[menu.json loaded]', 'color:#0f0', url, data);
         return { data, url };
       } catch (parseErr) {
-        const preview = text.slice(0, 120).replace(/\s+/g, ' ');
+        // رسالة الخطأ التي ظهرت لك سابقاً ستظهر هنا إذا كان الملف ما زال معطوباً
+        const preview = text.slice(Math.max(0, parseErr.position - 10), parseErr.position + 90).replace(/\s+/g, ' ');
         throw new Error(`JSON parse error @ ${url} :: ${parseErr.message} :: preview="${preview}"`);
       }
     } catch (e) {
@@ -74,6 +76,17 @@ document.addEventListener('DOMContentLoaded', () => {
     initMenuPage();
   }
 
+  // ===== (إضافة جديدة) Home Page =====
+  // هذا الكود سيعمل فقط إذا وجد قسم "الأكثر طلباً"
+  if (document.getElementById('signature-dishes-container')) {
+    initHomePage();
+  }
+  // هذا الكود سيشغل العدادات في أي صفحة توجد بها (حتى لو لم تكن الرئيسية)
+  else if (document.querySelector('.stats-section')) {
+    initStatsCounters(null); // تشغيل العدادات بدون بيانات المنيو
+  }
+
+  
   async function initMenuPage() {
     const grid = document.getElementById('menu-grid');
     const filtersContainer = document.getElementById('menu-filters');
@@ -169,6 +182,130 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput?.addEventListener('input', filterAndRender);
   }
 
+
+  // ===== (إضافة جديدة) Home Page Logic =====
+  async function initHomePage() {
+    const container = document.getElementById('signature-dishes-container');
+    if (!container) return;
+
+    let allDishes = [];
+    try {
+      // 1. تحميل المنيو
+      const { data } = await loadMenuJson();
+      allDishes = data.map(it => ({ ...it, category: normalizeCategory(it.category) }));
+
+      // 2. فلترة الأطباق "الأكثر طلباً" (استخدمنا الثابت الموجود بالأعلى)
+      const featuredDishes = allDishes
+        .filter(d => FEATURED_AR.includes(d.category))
+        .slice(0, 4); // عرض 4 أطباق فقط
+
+      // 3. عرض الأطباق في الصفحة
+      if (!featuredDishes.length) {
+          container.innerHTML = `<p class="col-span-full text-center text-muted-text p-8">لا توجد أطباق مميزة حالياً.</p>`;
+      } else {
+          container.innerHTML = featuredDishes.map(dish => {
+            const imgSrc = dish.image || LOGO_PLACEHOLDER;
+            const imgStyle = dish.image ? '' : 'object-fit: contain; padding: 20px; opacity: 0.6;';
+            // نستخدم نفس تصميم كرت المنيو لتوحيد الشكل
+            return `
+            <div class="menu-card-glass cursor-pointer" data-id="${dish.id}">
+              <div class="h-48 w-full overflow-hidden">
+                 <img src="${imgSrc}" alt="${dish.title || ''}" style="${imgStyle}" class="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300">
+              </div>
+              <div class="p-4">
+                <h3 class="text-lg font-bold text-primary-gold">${dish.title || ''}</h3>
+                <p class="mt-2 text-sm line-clamp-2 text-muted-text">${dish.desc ?? ''}</p>
+                <div class="mt-4 font-bold text-lg">${dish.price ?? ''}</div>
+              </div>
+            </div>
+            `;
+          }).join('');
+
+          // إضافة إمكانية الضغط على الكرت لفتح النافذة المنبثقة
+          container.querySelectorAll('.menu-card-glass').forEach(card => {
+             card.addEventListener('click', () => {
+                const dish = featuredDishes.find(d => String(d.id) === String(card.dataset.id));
+                if (dish) openQuickView(dish);
+             });
+          });
+      }
+      
+      // 4. تشغيل العدادات وتمرير بيانات المنيو لها
+      initStatsCounters(allDishes);
+
+    } catch (err) {
+      // إذا فشل تحميل المنيو (بسبب خطأ JSON مثلاً)
+      console.error('Homepage load error:', err);
+      container.innerHTML = `<p class="col-span-full text-center text-muted-text p-8">خطأ في تحميل الأطباق المميزة.</p>`;
+      // نشغل العدادات بالبيانات الافتراضية
+      initStatsCounters(null);
+    }
+  }
+
+  // ===== (إضافة جديدة) Stats Counter Logic =====
+  function initStatsCounters(dishes) {
+    const statsSection = document.querySelector('.stats-section');
+    if (!statsSection) return;
+
+    // (جديد) تحديث عدد الأطباق بناءً على ملف المنيو
+    if (dishes && dishes.length > 0) {
+      // نبحث عن كل العدادات
+      statsSection.querySelectorAll('.stat').forEach(stat => {
+          const label = stat.querySelector('small');
+          // إذا كان العداد هو "طبق في قائمتنا"
+          if (label && label.textContent.includes('طبق في قائمتنا')) {
+              const counterSpan = stat.querySelector('span[data-count]');
+              if (counterSpan) {
+                  // نقوم بتحديث الرقم المستهدف إلى العدد الفعلي للأطباق
+                  counterSpan.dataset.count = dishes.length; 
+              }
+          }
+      });
+    }
+
+    const counters = statsSection.querySelectorAll('span[data-count]');
+    if (!counters.length) return;
+
+    // وظيفة الـ "أنيميشن" للعداد
+    const animateCounter = (el, target, precision) => {
+        let current = 0;
+        const duration = 1500; // 1.5 ثانية
+        const steps = 50;
+        const increment = target / steps;
+        const stepTime = duration / steps;
+
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                clearInterval(timer);
+                el.textContent = target.toFixed(precision);
+            } else {
+                el.textContent = current.toFixed(precision);
+            }
+        }, stepTime);
+    };
+
+    // نستخدم IntersectionObserver لجعل العداد يبدأ فقط عندما يراه المستخدم
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target;
+          const target = parseFloat(el.dataset.count); // نقرأ الرقم المستهدف
+          const precision = parseInt(el.dataset.precision) || 0; // نقرأ عدد الخانات العشرية
+          
+          animateCounter(el, target, precision); // نبدأ الأنيميشن
+          observer.unobserve(el); // نوقف المراقبة عن هذا العنصر
+        }
+      });
+    }, { threshold: 0.1 }); // يبدأ عندما يظهر 10% من العنصر
+
+    // نطلب من المراقب أن يراقب كل العدادات
+    counters.forEach(counter => {
+      observer.observe(counter);
+    });
+  }
+
+
   // ===== MODAL (النافذة المنبثقة) =====
   const modal = document.getElementById('quickViewModal');
   if (modal) {
@@ -184,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function openQuickView(dish) {
     if (!dish || !modal) return;
-    const imgEl   = document.getElementById('qvImg');
+    const imgEl    = document.getElementById('qvImg');
     const titleEl = document.getElementById('qvTitle');
     const shortDescEl = document.getElementById('qvShortDesc'); // الوصف القصير
     const descEl  = document.getElementById('qvLongDesc'); // الوصف الطويل
@@ -192,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // منطق الصورة البديلة (اللوجو) داخل المودال
     const imgSrc = dish.image || LOGO_PLACEHOLDER;
-    if (imgEl)   { 
+    if (imgEl)    { 
       imgEl.src = imgSrc; 
       imgEl.alt = dish.title || '';
       // تنسيق اللوجو داخل المودال
