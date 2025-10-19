@@ -1,4 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // ===== (NEW) Mobile Menu Toggle =====
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (mobileMenuBtn && mobileMenu) {
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      const icon = mobileMenuBtn.querySelector('i');
+      if (icon) {
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-xmark'); // (FontAwesome 6 icon)
+      }
+    });
+  }
+
   // ===== Common =====
   const yearSpan = document.getElementById('year');
   if (yearSpan) yearSpan.textContent = new Date().getFullYear();
@@ -23,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
     'juices': 'العصائر',
     'lascala_offers': 'عروض لاسكالا'
   };
-
   const ORDER_AR = [
     'المقبلات','الشوربات','الأطباق الرئيسية','الباستا',
     'البيتزا','البرجر','السندويتشات','الحلويات',
@@ -108,7 +121,6 @@ async function loadMenuJson() {
           ${cat}
         </button>
       `).join('');
-
       filtersContainer.addEventListener('click', (e) => {
         const btn = e.target.closest('.filter-chip');
         if (!btn) return;
@@ -125,15 +137,14 @@ async function loadMenuJson() {
       }
       grid.innerHTML = dishes.map(dish => `
         <div class="menu-card-glass" data-id="${dish.id}">
-          <img src="${dish.image || ''}" alt="${dish.title || ''}" class="w-full h-48 object-cover">
-          <div class="p-4">
+          <img src="${dish.image || 'assets/images/logo.png'}" alt="${dish.title || ''}" class="w-full h-48 object-cover">
+          <div class="p-4 flex flex-col h-full">
             <h3 class="text-lg font-bold text-primary-gold">${dish.title || ''}</h3>
-            <p class="mt-2 line-clamp-2 text-muted-text">${dish.desc ?? ''}</p>
+            <p class="mt-2 line-clamp-2 text-muted-text flex-grow">${dish.desc ?? ''}</p>
             <div class="mt-3 text-light-text font-bold">${dish.price ?? ''}</div>
           </div>
         </div>
       `).join('');
-
       grid.querySelectorAll('.menu-card-glass').forEach(card => {
         card.addEventListener('click', () => {
           const dish = allDishes.find(d => String(d.id) === String(card.dataset.id));
@@ -164,7 +175,7 @@ async function loadMenuJson() {
     const closeModalBtn = document.getElementById('closeModalBtn');
     const modalBackdrop = modal.querySelector('.modal-backdrop');
     const closeModal = () => {
-      modal.classList.add('hidden');
+      modal.classList.remove('show'); // Use 'show' class to toggle
       document.documentElement.classList.remove('overflow-hidden');
     };
     closeModalBtn?.addEventListener('click', closeModal);
@@ -177,10 +188,12 @@ async function loadMenuJson() {
     const titleEl = document.getElementById('qvTitle');
     const descEl  = document.getElementById('qvLongDesc');
     const priceEl = document.getElementById('qvPrice');
-
-    if (imgEl)   { imgEl.src = dish.image || ''; imgEl.alt = dish.title || ''; }
-    if (titleEl) { titleEl.textContent = dish.title || ''; }
-    if (descEl)  { descEl.textContent = dish.long_desc || dish.desc || ''; }
+    if (imgEl)   { imgEl.src = dish.image || 'assets/images/logo.png'; imgEl.alt = dish.title || '';
+    }
+    if (titleEl) { titleEl.textContent = dish.title || '';
+    }
+    if (descEl)  { descEl.textContent = dish.long_desc || dish.desc || '';
+    }
     if (priceEl) { priceEl.textContent = dish.price || ''; }
 
     const allergensContainer = document.getElementById('qvAllergensContainer');
@@ -201,7 +214,7 @@ async function loadMenuJson() {
       chefNoteContainer?.classList.add('hidden');
     }
 
-    modal.classList.remove('hidden');
+    modal.classList.add('show'); // Use 'show' class to toggle
     document.documentElement.classList.add('overflow-hidden');
   }
 });
