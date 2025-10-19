@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.documentElement.classList.toggle('overflow-hidden');
     });
 
+    // اغلق القائمة عند الضغط على أي رابط داخلها
     mobileMenu.addEventListener('click', (e) => {
       if (e.target.matches('a')) {
         mobileMenu.classList.add('hidden');
@@ -23,7 +24,52 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ===== Newsletter (Optional) =====
+  // ===== Helper: تصفية/توحيد الفئات =====
+  // نحول أي مفاتيح قديمة بالإنجليزي إلى مسمياتها العربية
+  const CAT_ALIASES = {
+    'starters': 'المقبلات',
+    'soups': 'الشوربات',
+    'mains': 'الأطباق الرئيسية',
+    'pasta': 'الباستا',
+    'pasta_risotto': 'الباستا',   // لو كانت قديمة باسم pasta_risotto
+    'risotto': 'الباستا',
+    'pizza': 'البيتزا',
+    'sandwiches': 'السندويتشات',
+    'kids_menu': 'قائمة الأطفال',
+    'desserts': 'الحلويات',
+    'hot_drinks': 'المشروبات الساخنة',
+    'cold_drinks': 'المشروبات الباردة',
+    'drinks': 'المشروبات الباردة',
+    'lascala_offers': 'عروض لاسكالا',
+    'burger': 'البرجر',
+    'burgers': 'البرجر'
+  };
+
+  const ORDER_AR = [
+    'المقبلات',
+    'الشوربات',
+    'الأطباق الرئيسية',
+    'الباستا',
+    'البيتزا',
+    'البرجر',
+    'السندويتشات',
+    'الحلويات',
+    'المشروبات الباردة',
+    'المشروبات الساخنة',
+    'العصائر',
+    'قائمة الأطفال',
+    'عروض لاسكالا'
+  ];
+
+  const FEATURED_AR = ['الأطباق الرئيسية', 'الباستا', 'البيتزا']; // للأكثر طلباً في الهوم
+
+  const normalizeCategory = (cat) => {
+    if (!cat) return '';
+    const key = String(cat).trim();
+    return CAT_ALIASES[key] || key; // لو كانت بالعربي أصلاً يتركها كما هي
+  };
+
+  // ===== Newsletter (اختياري) =====
   const newsletterForm = document.getElementById('newsletter-form');
   if (newsletterForm) {
     newsletterForm.addEventListener('submit', (e) => {
@@ -67,23 +113,34 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadSignatureDishes() {
     const container = document.getElementById('signature-dishes-container');
     try {
-      const res = await fetch('assets/data/menu.json');
-      const menu = await res.json();
+      const res = await fetch('assets/data/menu.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const raw = await res.json();
+
+      // طبّق التطبيع على الفئات
+      const menu = raw.map(item => ({
+        ...item,
+        category: normalizeCategory(item.category)
+      }));
+
       const items = menu
-        .filter(i => ['mains', 'pasta_risotto', 'pizza'].includes(i.category))
+        .filter(i => FEATURED_AR.includes(i.category))
         .slice(0, 4);
 
       container.innerHTML = items.map(item => `
         <div class="bg-dark-card rounded-lg overflow-hidden shadow-lg transform transition-transform hover:scale-105">
-          <img src="${item.image}" alt="${item.title}" class="w-full h-48 object-cover">
+          <img src="${item.image || ''}" alt="${item.title || ''}" class="w-full h-48 object-cover">
           <div class="p-4">
-            <h3 class="text-lg font-bold text-primary-gold">${item.title}</h3>
+            <h3 class="text-lg font-bold text-primary-gold">${item.title || ''}</h3>
             <p class="text-sm text-muted-text mt-2 h-10 overflow-hidden">${item.desc ?? ''}</p>
           </div>
         </div>
-      `).join('');
-    } catch {
-      container.innerHTML = `<p class="text-center col-span-full">لا يمكن تحميل الأطباق المميزة.</p>`;
+      ).join('');
+    } catch (err) {
+      console.error('Menu load error (home):', err);
+      if (container) {
+        container.innerHTML = `<p class="text-center col-span-full">لا يمكن تحميل الأطباق المميزة.</p>`;
+      }
     }
   }
 
@@ -119,51 +176,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('menuSearch');
     let allDishes = [];
 
-    // UPDATE: New category map
-    const categoryMap = {
-      starters: 'المقبلات',
-      soups: 'الشوربات',
-      mains: 'الأطباق الرئيسية',
-      pasta_risotto: 'باستا وروزيتو',
-      pizza: 'البيتزا',
-      sandwiches: 'السندويتشات',
-      kids_menu: 'مينيو الأطفال',
-      desserts: 'الحلويات',
-      hot_drinks: 'المشروبات الساخنة',
-      cold_drinks: 'المشروبات الباردة',
-      lascala_offers: 'عروض لاسكالا'
-    };
-    
-    // UPDATE: Define the exact order for filters
-    const categoryOrder = [ 'الكل', 'المقبلات', 'الشوربات', 'الأطباق الرئيسية', 'pasta_risotto', 'البيتزا', 'السندويتشات', 'kids_menu', 'desserts', 'hot_drinks', 'cold_drinks', 'lascala_offers'];
-
-
     try {
-      const res = await fetch('assets/data/menu.json');
-      allDishes = await res.json();
+      const res = await fetch('assets/data/menu.json', { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const raw = await res.json();
+
+      // طبّق التطبيع على الفئات
+      allDishes = raw.map(item => ({
+        ...item,
+        category: normalizeCategory(item.category)
+      }));
+
       renderFilters(allDishes);
       renderMenu(allDishes);
-    } catch {
+    } catch (err) {
+      console.error('Menu page load error:', err);
       grid.innerHTML = `<p class="col-span-full text-center">خطأ في تحميل المنيو.</p>`;
     }
 
     function renderFilters(dishes) {
-        // UPDATE: Use the predefined order and filter out empty categories
-        const availableCats = new Set(dishes.map(d => d.category));
-        const categories = categoryOrder.filter(cat => cat === 'all' || availableCats.has(cat));
+      const present = Array.from(new Set(dishes.map(d => d.category).filter(Boolean)));
 
-        filtersContainer.innerHTML = categories.map(cat => `
-            <button data-cat="${cat}" class="filter-chip ${cat === 'all' ? 'active' : ''}">
-            ${cat === 'all' ? 'الكل' : (categoryMap[cat] || cat)}
-            </button>
-        `).join('');
+      // رتب الفئات الموجودة وفق ORDER_AR، والباقي (إن وجد) ضعها بعده أبجديًا
+      const ordered = [
+        ...ORDER_AR.filter(cat => present.includes(cat)),
+        ...present.filter(cat => !ORDER_AR.includes(cat)).sort((a, b) => a.localeCompare(b, 'ar'))
+      ];
 
-        filtersContainer.addEventListener('click', (e) => {
-            if (!e.target.matches('.filter-chip')) return;
-            filtersContainer.querySelector('.active')?.classList.remove('active');
-            e.target.classList.add('active');
-            filterAndRender();
-        });
+      const categories = ['الكل', ...ordered];
+
+      filtersContainer.innerHTML = categories.map(cat => `
+        <button data-cat="${cat}" class="filter-chip ${cat === 'الكل' ? 'active' : ''}">
+          ${cat}
+        </button>
+      ).join('');
+
+      filtersContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.filter-chip');
+        if (!btn) return;
+        filtersContainer.querySelector('.active')?.classList.remove('active');
+        btn.classList.add('active');
+        filterAndRender();
+      });
     }
 
     function renderMenu(dishes) {
@@ -173,99 +227,108 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       grid.innerHTML = dishes.map(dish => `
         <div class="menu-card-glass" data-id="${dish.id}">
-          <img src="${dish.image}" alt="${dish.title}" class="w-full h-48 object-cover">
+          <img src="${dish.image || ''}" alt="${dish.title || ''}" class="w-full h-48 object-cover">
           <div class="p-4">
-            <h3 class="text-lg font-bold text-primary-gold">${dish.title}</h3>
+            <h3 class="text-lg font-bold text-primary-gold">${dish.title || ''}</h3>
             <div class="mt-4 text-light-text font-medium">${dish.price ?? ''}</div>
           </div>
         </div>
-      `).join('');
+      ).join('');
 
+      // فتح العرض السريع
       grid.querySelectorAll('.menu-card-glass').forEach(card => {
         card.addEventListener('click', () => {
-          const dish = allDishes.find(d => d.id == card.dataset.id);
+          const dish = allDishes.find(d => String(d.id) === String(card.dataset.id));
           openQuickView(dish);
         });
       });
     }
 
     function filterAndRender() {
-      const active = filtersContainer.querySelector('.active')?.dataset.cat || 'all';
-      const term = (searchInput.value || '').toLowerCase();
+      const active = filtersContainer.querySelector('.active')?.dataset.cat || 'الكل';
+      const term = (searchInput?.value || '').toLowerCase();
+
       const filtered = allDishes.filter(d => {
-        const inCat = active === 'all' || d.category === active;
-        const inText = (d.title || '').toLowerCase().includes(term) ||
-                       (d.desc || '').toLowerCase().includes(term);
-        return inCat && inText;
+        const catOK = active === 'الكل' || d.category === active;
+        const textOK =
+          (d.title || '').toLowerCase().includes(term) ||
+          (d.desc  || '').toLowerCase().includes(term);
+        return catOK && textOK;
       });
+
       renderMenu(filtered);
     }
 
     searchInput?.addEventListener('input', filterAndRender);
   }
-  
-  // MODAL LOGIC (Applies to menu page)
+
+  // ===== MODAL (Menu Page) =====
   const modal = document.getElementById('quickViewModal');
   if (modal) {
     const closeModalBtn = document.getElementById('closeModalBtn');
     const modalBackdrop = modal.querySelector('.modal-backdrop');
 
     const closeModal = () => {
-        modal.classList.add('hidden');
-        // FIX: Re-enable scrolling on the body
-        document.documentElement.classList.remove('overflow-hidden');
+      modal.classList.add('hidden');
+      document.documentElement.classList.remove('overflow-hidden'); // re-enable scroll
     };
 
-    closeModalBtn.addEventListener('click', closeModal);
-    modalBackdrop.addEventListener('click', closeModal);
+    closeModalBtn?.addEventListener('click', closeModal);
+    modalBackdrop?.addEventListener('click', closeModal);
   }
 
   function openQuickView(dish) {
     if (!dish || !modal) return;
-    document.getElementById('qvImg').src = dish.image;
-    document.getElementById('qvImg').alt = dish.title;
-    document.getElementById('qvTitle').textContent = dish.title;
-    document.getElementById('qvLongDesc').textContent = dish.long_desc || dish.desc || '';
-    document.getElementById('qvPrice').textContent = dish.price || '';
+
+    const imgEl   = document.getElementById('qvImg');
+    const titleEl = document.getElementById('qvTitle');
+    const descEl  = document.getElementById('qvLongDesc');
+    const priceEl = document.getElementById('qvPrice');
+
+    if (imgEl)   { imgEl.src = dish.image || ''; imgEl.alt = dish.title || ''; }
+    if (titleEl) { titleEl.textContent = dish.title || ''; }
+    if (descEl)  { descEl.textContent = dish.long_desc || dish.desc || ''; }
+    if (priceEl) { priceEl.textContent = dish.price || ''; }
 
     const allergensContainer = document.getElementById('qvAllergensContainer');
-    const allergensDiv = document.getElementById('qvAllergens');
-    if (dish.allergens?.length) {
+    const allergensDiv       = document.getElementById('qvAllergens');
+    if (dish.allergens && dish.allergens.length && allergensDiv && allergensContainer) {
       allergensDiv.innerHTML = dish.allergens.map(a => `<span class="allergen-tag">${a}</span>`).join('');
       allergensContainer.classList.remove('hidden');
     } else {
-      allergensContainer.classList.add('hidden');
+      allergensContainer?.classList.add('hidden');
     }
 
     const chefNoteContainer = document.getElementById('qvChefNoteContainer');
-    const chefNoteP = document.getElementById('qvChefNote');
-    if (dish.chef_note) {
+    const chefNoteP         = document.getElementById('qvChefNote');
+    if (dish.chef_note && chefNoteContainer && chefNoteP) {
       chefNoteP.textContent = dish.chef_note;
       chefNoteContainer.classList.remove('hidden');
     } else {
-      chefNoteContainer.classList.add('hidden');
+      chefNoteContainer?.classList.add('hidden');
     }
 
     modal.classList.remove('hidden');
-    // FIX: Disable scrolling on the body
-    document.documentElement.classList.add('overflow-hidden');
+    document.documentElement.classList.add('overflow-hidden'); // prevent bg scroll
   }
 
+  // ===== Booking Page =====
   function setupBookingPage() {
-    const customModal = document.getElementById('customModal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalMessage = document.getElementById('modalMessage');
+    const customModal   = document.getElementById('customModal');
+    const modalTitle    = document.getElementById('modalTitle');
+    const modalMessage  = document.getElementById('modalMessage');
     const modalCloseBtn = document.getElementById('modalCloseBtn');
 
     const showModal = (title, message) => {
-      modalTitle.textContent = title;
-      modalMessage.textContent = message;
+      if (!customModal) return;
+      if (modalTitle)   modalTitle.textContent = title;
+      if (modalMessage) modalMessage.textContent = message;
       customModal.classList.remove('hidden');
       customModal.classList.add('flex');
     };
-    const closeModal = () => customModal.classList.add('hidden');
-    modalCloseBtn.addEventListener('click', closeModal);
-    customModal.addEventListener('click', e => { if (e.target === customModal) closeModal(); });
+    const closeModal = () => customModal?.classList.add('hidden');
+    modalCloseBtn?.addEventListener('click', closeModal);
+    customModal?.addEventListener('click', e => { if (e.target === customModal) closeModal(); });
 
     const accContainer = document.getElementById('faq-accordion');
     if (accContainer) {
@@ -278,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
           b.classList.remove('active');
           b.nextElementSibling.style.maxHeight = null;
         });
-        if (!wasActive) {
+        if (!wasActive && body) {
           btn.classList.add('active');
           body.style.maxHeight = body.scrollHeight + 'px';
         }
@@ -286,11 +349,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const form = document.getElementById('reservationForm');
-    form.addEventListener('submit', (e) => {
+    form?.addEventListener('submit', (e) => {
       e.preventDefault();
-      const date = document.getElementById('date').value;
-      const today = new Date().toISOString().split('T')[0];
-      if (date < today) {
+      const dateEl = document.getElementById('date');
+      const date   = dateEl?.value || '';
+      const today  = new Date().toISOString().split('T')[0];
+      if (date && date < today) {
         showModal('خطأ في التاريخ', 'لا يمكن الحجز في تاريخ ماضٍ.');
         return;
       }
@@ -299,21 +363,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ===== Contact Page =====
   function setupContactForm() {
-    const form = document.getElementById('contactForm');
-    const submitBtn = document.getElementById('submitBtn');
+    const form       = document.getElementById('contactForm');
+    const submitBtn  = document.getElementById('submitBtn');
     const formStatus = document.getElementById('formStatus');
-    form.addEventListener('submit', (e) => {
+    form?.addEventListener('submit', (e) => {
       e.preventDefault();
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'جارٍ الإرسال...';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'جارٍ الإرسال...';
+      }
       setTimeout(() => {
-        formStatus.textContent = '✅ شكرًا لك! تم استلام رسالتك بنجاح.';
-        formStatus.className = 'text-green-400 text-center pt-2';
-        form.reset();
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'إرسال الرسالة';
-        setTimeout(() => { formStatus.textContent = ''; }, 5000);
+        if (formStatus) {
+          formStatus.textContent = '✅ شكرًا لك! تم استلام رسالتك بنجاح.';
+          formStatus.className = 'text-green-400 text-center pt-2';
+        }
+        form?.reset();
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'إرسال الرسالة';
+        }
+        setTimeout(() => { if (formStatus) formStatus.textContent = ''; }, 5000);
       }, 1000);
     });
   }
