@@ -3,155 +3,327 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>المنيو | LaScala</title>
+  <title>قائمة الطعام | LaScala</title>
 
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> [cite: 5]
-  <meta http-equiv="Pragma" content="no-cache" /> [cite: 6]
-  <meta http-equiv="Expires" content="0" /> [cite: 6]
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
 
-  <script src="https://cdn.tailwindcss.com"></script> [cite: 6]
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/> [cite: 6]
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;500;700&display=swap" rel="stylesheet"> [cite: 6]
-  <link rel="stylesheet" href="assets/css/style.css"> [cite: 6]
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
 
   <script>
-      tailwind.config = {
-          theme: {
-              extend: {
-                  colors: { [cite: 7]
-                      'primary-gold': '#D4AF37', [cite: 7]
-                      'dark-bg': '#1a1a1a', [cite: 7]
-                      'dark-card': '#272727', [cite: 7]
-                      'light-text': '#f0f0f0', [cite: 8]
-                      'muted-text': '#a0a0a0', [cite: 8]
-                  }
-              }
-          }
-      } [cite: 9]
+    // Tailwind Config (مطابقة لباقي الموقع)
+    tailwind.config = {
+        theme: {
+            extend: {
+                colors: {
+                    'primary-gold': '#D4AF37', [cite: 7]
+                    'dark-bg': '#1a1a1a', [cite: 7]
+                    'dark-card': '#272727', [cite: 7]
+                    'light-text': '#f0f0f0', [cite: 8]
+                    'muted-text': '#a0a0a0', [cite: 8]
+                }
+            }
+        }
+    }
   </script>
-</head>
-<body class="bg-dark-bg text-light-text"> [cite: 9]
 
-  <header class="site-header"> [cite: 9]
-    <div class="container mx-auto px-4 flex justify-between items-center h-20">
-        <a class="logo" href="index.html">
-            <img src="assets/images/logo.png" alt="LaScala Logo" class="h-16"> [cite: 9]
-        </a>
-        <nav class="main-nav hidden md:flex space-x-6 space-x-reverse">
-            <a href="index.html">الرئيسية</a> [cite: 10]
-            <a href="about.html">عن المطعم</a> [cite: 10]
-            <a href="menu.html" class="active">المنيو</a> [cite: 10]
-            <a href="booking.html">الحجز</a> [cite: 10]
-            <a href="contact.html">تواصل</a> [cite: 10]
-        </nav>
-        <button id="mobile-menu-btn" class="md:hidden text-2xl"> [cite: 10]
-            <i class="fa-solid fa-bars"></i> [cite: 11]
-        </button>
-    </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-dark-card"> [cite: 11]
-        <a href="index.html" class="block py-2 px-4 text-center border-b border-gray-700">الرئيسية</a> [cite: 11]
-        <a href="about.html" class="block py-2 px-4 text-center border-b border-gray-700">عن المطعم</a> [cite: 11]
-        <a href="menu.html" class="block py-2 px-4 text-center border-b border-gray-700">المنيو</a> [cite: 12]
-        <a href="booking.html" class="block py-2 px-4 text-center border-b border-gray-700">الحجز</a> [cite: 12]
-        <a href="contact.html" class="block py-2 px-4 text-center">تواصل</a> [cite: 12]
-    </div>
+  <style>
+    :root {
+      /* تعديل الألوان لتطابق الثيم */
+      --bg: #1a1a1a;       /* (dark-bg)  */
+      --card: #272727;      /* (dark-card)  */
+      --text: #f0f0f0;      /* (light-text) [cite: 8] */
+      --muted: #a0a0a0;     /* (muted-text) [cite: 8] */
+      --chip: #272727;      /* (dark-card)  */
+      --accent: #D4AF37;    /* (primary-gold)  */
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Rubik', sans-serif; /* توحيد الخط */
+      margin: 0;
+    }
+    /* تعديل الهيدر ليصبح شريط الفلترة اللاصق */
+    .toolbar-sticky-wrapper {
+      position: sticky;
+      top: 80px; /* ارتفاع الهيدر الرئيسي */
+      z-index: 40;
+      background: linear-gradient(180deg, rgba(26,26,26,1) 80%, transparent); /* (dark-bg)  */
+      padding: 16px 0;
+      margin-bottom: 16px;
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+    #menuSearch {
+      background: var(--card);
+      border: 1px solid var(--accent); /* (primary-gold)  */
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      min-width: 260px;
+      transition: box-shadow 0.3s;
+    }
+    #menuSearch:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3); /* (primary-gold)  */
+    }
+    #menu-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+    .filter-chip {
+      background: var(--chip);
+      color: var(--muted);
+      border: 1px solid #4a5568; /* لون حدودي محايد */
+      border-radius: 999px;
+      padding: 6px 14px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    .filter-chip:hover {
+      color: var(--text);
+      border-color: var(--muted);
+    }
+    .filter-chip.active {
+      background: var(--accent); /* (primary-gold)  */
+      color: var(--bg); /* (dark-bg)  */
+      border-color: var(--accent);
+      transform: scale(1.05);
+    }
+    #menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem; /* (24px) */
+    }
+    .menu-card-glass {
+      background: var(--card);
+      border: 1px solid rgba(240, 240, 240, 0.1);
+      border-radius: 1rem; /* (16px) */
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+    }
+    .menu-card-glass:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(212, 175, 55, 0.15); /* (primary-gold)  */
+      border-color: rgba(212, 175, 55, 0.4);
+    }
+    .menu-card-glass img {
+      width: 100%;
+      height: 200px; /* زيادة ارتفاع الصورة */
+      object-fit: cover;
+      background: var(--bg);
+    }
+    .menu-card-glass .p-4 {
+      padding: 1.25rem; /* (20px) */
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .text-primary-gold { color: var(--accent); } /* (primary-gold)  */
+    .text-light-text { color: var(--text); }
+    .text-muted-text { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+    .menu-card-price {
+      margin-top: auto; /* يدفع السعر للأسفل */
+      padding-top: 1rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent); /* (primary-gold)  */
+    }
+
+    /* مودال - تنسيقات محدثة للثيم */
+    .modal { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 100; }
+    .modal.show { display: flex; }
+    .modal-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, .7); backdrop-filter: blur(5px); }
+    .modal-card {
+      position: relative;
+      background: var(--bg); /* (dark-bg)  */
+      border: 1px solid var(--accent); /* (primary-gold)  */
+      border-radius: 16px;
+      max-width: 720px;
+      width: 92%;
+      display: grid;
+      grid-template-columns: 1fr;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    @media(min-width: 720px) { .modal-card { grid-template-columns: 280px 1fr; } }
+    .modal-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #0d1320;
+    }
+    .modal-body { padding: 24px; max-height: 80vh; overflow-y: auto; }
+    .badge {
+      display: inline-block;
+      background: var(--chip);
+      color: var(--muted);
+      border: 1px solid #4a5568;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      margin: 0 4px 4px 0;
+    }
+    .qv-price {
+      background: var(--accent); /* (primary-gold)  */
+      color: var(--bg); /* (dark-bg)  */
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-weight: 700;
+      display: inline-block;
+      font-size: 1.1rem;
+    }
+    .close-btn {
+      position: absolute;
+      top: 12px;
+      left: 12px; /* تم تعديله لـ RTL */
+      background: rgba(26,26,26,0.8); /* (dark-bg)  */
+      border: 1px solid #4a5568;
+      border-radius: 10px;
+      padding: 6px 10px;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .close-btn:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+  </style>
+</head>
+<body class="bg-dark-bg text-light-text">
+
+  <header class="site-header">
+      <div class="container mx-auto px-4 flex justify-between items-center h-20">
+          <a class="logo" href="index.html">
+              <img src="assets/images/logo.png" alt="LaScala Logo" class="h-16"> 
+          </a>
+          <nav class="main-nav hidden md:flex space-x-6 space-x-reverse">
+              <a href="index.html">الرئيسية</a> [cite: 10]
+              <a href="about.html">عن المطعم</a> [cite: 10]
+              <a href="menu.html" class="active">المنيو</a> [cite: 10]
+              <a href="booking.html">الحجز</a> [cite: 10]
+              <a href="contact.html">تواصل</a> [cite: 10]
+          </nav>
+          <button id="mobile-menu-btn" class="md:hidden text-2xl">
+              <i class="fa-solid fa-bars"></i> [cite: 11]
+          </button>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden bg-dark-card">
+          <a href="index.html" class="block py-2 px-4 text-center border-b border-gray-700">الرئيسية</a>
+          <a href="about.html" class="block py-2 px-4 text-center border-b border-gray-700">عن المطعم</a>
+          <a href="menu.html" class="block py-2 px-4 text-center border-b border-gray-700">المنيو</a> [cite: 12]
+          <a href="booking.html" class="block py-2 px-4 text-center border-b border-gray-700">الحجز</a>
+          <a href="contact.html" class="block py-2 px-4 text-center">تواصل</a>
+      </div>
   </header>
 
-  <main class="container mx-auto px-4 py-16">
-    <div class="text-center mb-12">
-        <h1 class="section-title">قائمة الطعام</h1> [cite: 257]
-        <p class="section-subtitle">تصفح أطباقنا الفاخرة واختر ما يلامس ذائقتك</p> [cite: 260]
+  <main>
+    <div class="toolbar-sticky-wrapper">
+      <div class="container">
+        <div class="toolbar">
+          <input id="menuSearch" type="search" placeholder="ابحث باسم الطبق..." aria-label="بحث" /> [cite: 3]
+          <div id="menu-filters" aria-label="فلاتر الأصناف"></div> [cite: 3]
+        </div>
+      </div>
     </div>
 
-    <div class="toolbar menu-toolbar top-[80px] z-40 bg-dark-bg/80 backdrop-blur-lg -mx-4 px-4 py-4 mb-8 sticky">
-        <div class="search-container max-w-lg mx-auto mb-4">
-            <i class="fa-solid fa-search search-icon !right-4 !left-auto"></i>
-            <input id="menuSearch" type="search" placeholder="ابحث باسم الطبق..." aria-label="بحث" class="form-input search-input !rounded-lg !pl-4 !pr-12">
-        </div>
-        <div id="menu-filters" class="filter-chips" aria-label="فلاتر الأصناف">
-            </div>
+    <div class="container">
+      <div id="menu-grid" aria-live="polite"></div> [cite: 3]
     </div>
-
-    <div id="menu-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" aria-live="polite"> [cite: 2]
-        </div>
   </main>
 
   <div id="quickViewModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="qvTitle"> [cite: 3]
     <div class="modal-backdrop" id="modalBackdrop"></div> [cite: 3]
     <div class="modal-card"> [cite: 4]
       <img id="qvImg" alt=""> [cite: 4]
-      <div class="modal-body"> [cite: 4]
+      <div class="modal-body">
         <button id="closeModalBtn" class="close-btn">إغلاق ✕</button> [cite: 4]
-        <h2 id="qvTitle" class="text-primary-gold" style="margin:0 0 8px;font-size:20px"></h2> [cite: 4]
-        <p id="qvLongDesc" class="text-muted-text" style="margin:0 0 12px;line-height:1.7"></p> [cite: 4]
+        
+        <h2 id="qvTitle" class="text-primary-gold" style="margin:0 0 8px;font-size:22px"></h2> [cite: 4]
+        
+        <p id="qvShortDesc" class="text-light-text" style="margin:0 0 12px; font-weight: 500; font-size: 0.9rem;"></p>
+        
+        <p id="qvLongDesc" class="text-muted-text" style="margin:0 0 16px;line-height:1.7"></p> [cite: 4]
 
-        <div id="qvAllergensContainer" style="margin:10px 0" class=""> [cite: 4]
-          <h4 class="font-bold text-light-text mb-2">مسببات الحساسية:</h4>
+        <div id="qvAllergensContainer" style="margin:16px 0" class=""> [cite: 4]
+          <strong style="display:block; margin-bottom: 8px; color: var(--text);">مسببات الحساسية:</strong>
           <div id="qvAllergens"></div> [cite: 4]
         </div>
 
-        <div id="qvChefNoteContainer" style="margin:10px 0" class=""> [cite: 4]
-          <strong class="font-bold text-light-text">ملاحظة الشيف:</strong> [cite: 5]
+        <div id="qvChefNoteContainer" style="margin:16px 0" class=""> [cite: 4]
+          <strong style="color: var(--text);">ملاحظة الشيف:</strong> [cite: 5]
           <p id="qvChefNote" class="text-muted-text" style="margin:6px 0 0"></p> [cite: 5]
         </div>
 
-        <div class="qv-price mt-4" id="qvPrice"></div> [cite: 5]
+        <div class="qv-price" id="qvPrice" style="margin-top: 24px;"></div> [cite: 5]
       </div>
     </div>
   </div>
 
-  <footer class="site-footer"> [cite: 29]
+  <a href="https://wa.me/966546480098" class="whatsapp-fab" target="_blank" aria-label="Contact us on WhatsApp"> [cite: 54]
+    <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+  <footer class="site-footer">
     <div class="container mx-auto px-4">
       <div class="footer-glass-card">
         <div class="footer-grid">
           <div class="footer-brand">
-            <h4>LaScala</h4> [cite: 29]
-            <p>تجربة طعام فاخرة تجمع بين الأصالة الإيطالية واللمسات العصرية في قلب الخبر.</p> [cite: 29]
-            <div class="footer-social-icons"> [cite: 30]
-              <a href="https://www.instagram.com/lascalasa" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a> [cite: 30]
-              <a href="#" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a> [cite: 30]
-              <a href="https://www.tiktok.com/@lascalasa" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a> [cite: 30]
-              <a href="#" target="_blank" aria-label="Snapchat"><i class="fa-brands fa-snapchat"></i></a> [cite: 30]
-              <a href="#" target="_blank" aria-label="Threads"><i class="fa-brands fa-threads"></i></a> [cite: 30]
-              <a href="https://x.com/lascalasa" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a> [cite: 31]
-              <a href="https://www.youtube.com/@lascalasa" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a> [cite: 31]
-              <a href="#" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a> [cite: 31]
+            <h4>LaScala</h4> [cite: 131]
+            <p>تجربة طعام فاخرة تجمع بين الأصالة الإيطالية واللمسات العصرية في قلب الخبر.</p> [cite: 131]
+            <div class="footer-social-icons">
+              <a href="https://www.instagram.com/lascalasa" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a> [cite: 132]
+              <a href="#" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a> [cite: 132]
+              <a href="https://www.tiktok.com/@lascalasa" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a> [cite: 132]
+              <a href="#" target="_blank" aria-label="Snapchat"><i class="fa-brands fa-snapchat"></i></a> [cite: 133]
+              <a href="#" target="_blank" aria-label="Threads"><i class="fa-brands fa-threads"></i></a> [cite: 133]
+              <a href="https://x.com/lascalasa" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a> [cite: 133]
+              <a href="https://www.youtube.com/@lascalasa" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a> [cite: 134]
+              <a href="#" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a> [cite: 134]
             </div>
           </div>
           <div class="footer-links-grid">
             <div class="footer-links-col">
-              <h4>المطعم</h4>
-              <a href="about.html">عن LaScala</a> [cite: 32]
-              <a href="menu.html">قائمة الطعام</a> [cite: 32]
-              <a href="booking.html">الحجز</a> [cite: 32]
-              <a href="contact.html">تواصل معنا</a> [cite: 32]
+              <h4>المطعم</h4> [cite: 135]
+              <a href="about.html">عن LaScala</a>
+              <a href="menu.html">قائمة الطعام</a> [cite: 136]
+              <a href="booking.html">الحجز</a>
+              <a href="contact.html">تواصل معنا</a>
             </div>
             <div class="footer-links-col">
-              <h4>خدمات</h4>
-              <a href="#">الطلبات الخارجية</a> [cite: 32]
-              <a href="#">الفعاليات الخاصة</a> [cite: 33]
-              <a href="#">الوظائف</a> [cite: 33]
+              <h4>خدمات</h4> [cite: 137]
+              <a href="#">الطلبات الخارجية</a>
+              <a href="#">الفعاليات الخاصة</a> [cite: 138]
+              <a href="#">الوظائف</a>
             </div>
             <div class="footer-links-col">
-              <h4>قانوني</h4>
-              <a href="#">سياسة الخصوصية</a> [cite: 33]
-              <a href="#">الشروط والأحكام</a> [cite: 33]
+              <h4>قانوني</h4> [cite: 139]
+              <a href="#">سياسة الخصوصية</a>
+              <a href="#">الشروط والأحكام</a>
             </div>
           </div>
-        </div> [cite: 34]
+        </div>
         <div class="footer-bottom">
-          © <span id="year"></span> LaScala Restaurant. [cite: 34]
-          جميع الحقوق محفوظة. [cite: 35]
+          © <span id="year"></span> LaScala Restaurant.
+          جميع الحقوق محفوظة. [cite: 141]
         </div>
       </div>
     </div>
   </footer>
 
-  <div id="success-message"> [cite: 35]
-    <i class="fa-solid fa-check-circle"></i>
-    <span>تم الاشتراك بنجاح!</span>
-  </div>
-
-  <script src="assets/js/main.js"></script> [cite: 35]
+  <script defer src="assets/js/main.js"></script>
 </body>
 </html>
