@@ -38,37 +38,34 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // ===== Robust JSON loader =====
-  function buildMenuUrls() {
-    const u1 = new URL('../data/menu.json', import.meta?.url || document.baseURI); // relative to assets/js/
-    const u2 = new URL('/assets/data/menu.json', window.location.origin);          // site-root fallback
-    const v = Date.now().toString();
-    u1.searchParams.set('v', v); u2.searchParams.set('v', v);
-    return [u1.toString(), u2.toString()];
-  }
+function buildMenuUrl() {
+  // نستخدم دومًا مسارًا نسبيًا انطلاقًا من الصفحة الحالية
+  const u = new URL('assets/data/menu.json', document.baseURI);
+  // نضيف باراميتر لمنع الكاش
+  u.searchParams.set('v', Date.now().toString());
+  return u.toString();
+}
 
-  async function loadMenuJson() {
-    const urls = buildMenuUrls();
-    let lastErr = null;
-    for (const url of urls) {
-      try {
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}`);
-        const text = await res.text();
-        try {
-          const data = JSON.parse(text);
-          console.log('%c[menu.json loaded]', 'color:#0f0', url, data.length, 'items');
-          return { data, url };
-        } catch (parseErr) {
-          const preview = text.slice(0, 120).replace(/\s+/g, ' ');
-          throw new Error(`JSON parse error @ ${url} :: ${parseErr.message} :: preview="${preview}"`);
-        }
-      } catch (e) {
-        console.error('[fetch menu.json failed]', e);
-        lastErr = e;
-      }
+
+async function loadMenuJson() {
+  const url = buildMenuUrl();
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}`);
+    const text = await res.text();
+    try {
+      const data = JSON.parse(text);
+      console.log('%c[menu.json loaded]', 'color:#0f0', url, data);
+      return { data, url };
+    } catch (parseErr) {
+      const preview = text.slice(0, 120).replace(/\s+/g, ' ');
+      throw new Error(`JSON parse error @ ${url} :: ${parseErr.message} :: preview="${preview}"`);
     }
-    throw lastErr || new Error('menu.json fetch failed (unknown)');
+  } catch (e) {
+    console.error('[fetch menu.json failed]', e);
+    throw e;
   }
+}
 
   // ===== Menu Page =====
   if (document.getElementById('menu-grid')) {
