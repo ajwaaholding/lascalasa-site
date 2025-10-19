@@ -207,25 +207,28 @@ document.addEventListener('DOMContentLoaded', () => {
     return u.toString();
   }
 
-  async function loadMenuJson() {
-    const url = buildMenuUrl();
-    try {
-      const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}`);
-      const text = await res.text();
-      try {
-        const data = JSON.parse(text);
-        console.log('%c[menu.json loaded]', 'color:#0f0', url, data);
-        return { data, url };
-      } catch (parseErr) {
-        const preview = text.slice(0, 120).replace(/\s+/g, ' ');
-        throw new Error(`JSON parse error @ ${url} :: ${parseErr.message} :: preview="${preview}"`);
-      }
-    } catch (e) {
-      console.error('[fetch menu.json failed]', e);
-      throw e;
-    }
+async function loadMenu() {
+  const cleanupOverlays = () => {
+    document.body.classList.remove('overlay-open','search-open','modal-open','loading');
+    document.querySelectorAll('.overlay, .search-overlay, .modal-backdrop, .backdrop')
+      .forEach(el => el.remove());
+    document.querySelectorAll('.is-blurred, .blurred')
+      .forEach(el => el.classList.remove('is-blurred','blurred'));
+  };
+
+  try {
+    const res = await fetch('/data/menu.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    renderMenu(data);
+    cleanupOverlays();
+  } catch (err) {
+    console.error('Menu load failed:', err);
+    cleanupOverlays();
+    // showToast('تعذّر تحميل القائمة. حدّث الصفحة.');
   }
+}
+
 
   // ===== Menu Page (Original Code) =====
   if (document.getElementById('menu-grid')) {
