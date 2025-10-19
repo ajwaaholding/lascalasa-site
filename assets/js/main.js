@@ -24,14 +24,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ===== Helper: تصفية/توحيد الفئات =====
-  // نحول أي مفاتيح قديمة بالإنجليزي إلى مسمياتها العربية
+  // ===== Helper: توحيد أسماء الفئات =====
   const CAT_ALIASES = {
     'starters': 'المقبلات',
     'soups': 'الشوربات',
     'mains': 'الأطباق الرئيسية',
     'pasta': 'الباستا',
-    'pasta_risotto': 'الباستا',   // لو كانت قديمة باسم pasta_risotto
+    'pasta_risotto': 'الباستا',
     'risotto': 'الباستا',
     'pizza': 'البيتزا',
     'sandwiches': 'السندويتشات',
@@ -61,13 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
     'عروض لاسكالا'
   ];
 
-  const FEATURED_AR = ['الأطباق الرئيسية', 'الباستا', 'البيتزا']; // للأكثر طلباً في الهوم
-
+  const FEATURED_AR = ['الأطباق الرئيسية', 'الباستا', 'البيتزا']; // للأكثر طلباً بالصفحة الرئيسية
   const normalizeCategory = (cat) => {
     if (!cat) return '';
     const key = String(cat).trim();
-    return CAT_ALIASES[key] || key; // لو كانت بالعربي أصلاً يتركها كما هي
+    return CAT_ALIASES[key] || key;
   };
+
+  // احسب مسار menu.json بشكل آمن مهما كان المسار
+  const MENU_URL = new URL('assets/data/menu.json', document.baseURI).toString();
 
   // ===== Newsletter (اختياري) =====
   const newsletterForm = document.getElementById('newsletter-form');
@@ -88,23 +89,23 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => el.classList.remove('show'), 3000);
   }
 
-  // ===== Home Page Specific =====
+  // ===== Home Page =====
   if (document.getElementById('signature-dishes-container')) {
     loadSignatureDishes();
     setupStatsCounter();
   }
 
-  // ===== Menu Page Specific =====
+  // ===== Menu Page =====
   if (document.getElementById('menu-grid')) {
     initMenuPage();
   }
 
-  // ===== Booking Page Specific =====
+  // ===== Booking Page =====
   if (document.getElementById('reservationForm')) {
     setupBookingPage();
   }
 
-  // ===== Contact Page Specific =====
+  // ===== Contact Page =====
   if (document.getElementById('contactForm')) {
     setupContactForm();
   }
@@ -113,11 +114,10 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadSignatureDishes() {
     const container = document.getElementById('signature-dishes-container');
     try {
-      const res = await fetch('assets/data/menu.json', { cache: 'no-store' });
+      const res = await fetch(MENU_URL, { cache: 'no-store' });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const raw = await res.json();
 
-      // طبّق التطبيع على الفئات
       const menu = raw.map(item => ({
         ...item,
         category: normalizeCategory(item.category)
@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <p class="text-sm text-muted-text mt-2 h-10 overflow-hidden">${item.desc ?? ''}</p>
           </div>
         </div>
-      ).join('');
+      `).join(''); // << كان ينقصها الـ backtick هنا
     } catch (err) {
       console.error('Menu load error (home):', err);
       if (container) {
@@ -177,11 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let allDishes = [];
 
     try {
-      const res = await fetch('assets/data/menu.json', { cache: 'no-store' });
+      const res = await fetch(MENU_URL, { cache: 'no-store' });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const raw = await res.json();
 
-      // طبّق التطبيع على الفئات
       allDishes = raw.map(item => ({
         ...item,
         category: normalizeCategory(item.category)
@@ -197,7 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderFilters(dishes) {
       const present = Array.from(new Set(dishes.map(d => d.category).filter(Boolean)));
 
-      // رتب الفئات الموجودة وفق ORDER_AR، والباقي (إن وجد) ضعها بعده أبجديًا
       const ordered = [
         ...ORDER_AR.filter(cat => present.includes(cat)),
         ...present.filter(cat => !ORDER_AR.includes(cat)).sort((a, b) => a.localeCompare(b, 'ar'))
@@ -209,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <button data-cat="${cat}" class="filter-chip ${cat === 'الكل' ? 'active' : ''}">
           ${cat}
         </button>
-      ).join('');
+      `).join('');
 
       filtersContainer.addEventListener('click', (e) => {
         const btn = e.target.closest('.filter-chip');
@@ -233,9 +231,8 @@ document.addEventListener('DOMContentLoaded', () => {
             <div class="mt-4 text-light-text font-medium">${dish.price ?? ''}</div>
           </div>
         </div>
-      ).join('');
+      `).join('');
 
-      // فتح العرض السريع
       grid.querySelectorAll('.menu-card-glass').forEach(card => {
         card.addEventListener('click', () => {
           const dish = allDishes.find(d => String(d.id) === String(card.dataset.id));
@@ -270,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closeModal = () => {
       modal.classList.add('hidden');
-      document.documentElement.classList.remove('overflow-hidden'); // re-enable scroll
+      document.documentElement.classList.remove('overflow-hidden');
     };
 
     closeModalBtn?.addEventListener('click', closeModal);
@@ -309,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     modal.classList.remove('hidden');
-    document.documentElement.classList.add('overflow-hidden'); // prevent bg scroll
+    document.documentElement.classList.add('overflow-hidden');
   }
 
   // ===== Booking Page =====
