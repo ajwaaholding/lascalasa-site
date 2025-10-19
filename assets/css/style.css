@@ -87,24 +87,44 @@ h1, h2, h3, h4, .font-medium, .main-nav a, .btn {
 
 /* ===== Menu Page Styles ===== */
 .menu-toolbar {
-    position: sticky; top: 80px; z-index: 40;
-    padding: 1rem 0; background-color: rgba(26, 26, 26, 0.8);
-    backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 1rem;
+    /* (Styles from original file are fine) */
+    position: sticky;
+    /* top: 80px; */ /* Handled by Tailwind */
+    z-index: 40;
+    padding: 1rem 0; 
+    /* background-color: rgba(26, 26, 26, 0.8); */ /* Handled by Tailwind */
+    /* backdrop-filter: blur(10px); */ /* Handled by Tailwind */
+    display: flex; flex-direction: column; gap: 1rem;
 }
 .filter-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
 .filter-chip {
-    padding: 0.5rem 1rem; border-radius: 999px; background-color: #272727;
+    padding: 0.5rem 1rem; border-radius: 999px;
+    background-color: #272727;
     color: #a0a0a0; border: 1px solid #4a5568; cursor: pointer;
     transition: all 0.2s; font-weight: 500;
 }
-.filter-chip:hover { background-color: #4a5568; color: #f0f0f0; }
-.filter-chip.active { background-color: #D4AF37; color: #1a1a1a; border-color: #D4AF37; }
-.search-container { position: relative; width: 100%; max-width: 400px; margin: 0 auto; }
+.filter-chip:hover { 
+    background-color: #4a5568;
+    color: #f0f0f0; }
+.filter-chip.active { 
+    background-color: #D4AF37; color: #1a1a1a; border-color: #D4AF37; }
+.search-container { 
+    position: relative; width: 100%; 
+    /* max-width: 400px; */ /* Handled by Tailwind */
+    margin: 0 auto; }
 .search-input {
-    width: 100%; padding: 0.6rem 2.5rem 0.6rem 1rem; background-color: #272727;
-    border: 1px solid #4a5568; border-radius: 999px; color: #f0f0f0;
+    width: 100%; 
+    /* padding: 0.6rem 2.5rem 0.6rem 1rem; */ /* Handled by Tailwind */
+    background-color: #272727;
+    border: 1px solid #4a5568; 
+    /* border-radius: 999px; */ /* Handled by Tailwind */
+    color: #f0f0f0;
 }
-.search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #a0a0a0; }
+.search-icon { 
+    position: absolute; 
+    /* left: 1rem; */ /* Handled by Tailwind */
+    top: 50%; transform: translateY(-50%); color: #a0a0a0;
+}
 
 /* Glass Menu Card */
 .menu-card-glass {
@@ -112,28 +132,97 @@ h1, h2, h3, h4, .font-medium, .main-nav a, .btn {
     border: 1px solid rgba(240, 240, 240, 0.1); border-radius: 1rem; overflow: hidden;
     transition: transform 0.3s, box-shadow 0.3s; cursor: pointer;
 }
-.menu-card-glass:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1); }
-.menu-card-glass img { width: 100%; height: 12rem; object-fit: cover; }
+.menu-card-glass:hover { 
+    transform: translateY(-5px); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1); }
+.menu-card-glass img { 
+    width: 100%; height: 12rem;
+    object-fit: cover; }
 
-/* New Modal Styles */
-.modal-backdrop { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.7); z-index: 60; }
-.modal-content-grid {
-    position: relative; z-index: 70; width: 90%; max-width: 900px; max-height: 90vh;
-    display: grid; grid-template-columns: 1fr; background: #1a1a1a; border-radius: 1rem;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5); overflow: hidden;
+/* ===== NEW MODAL STYLES (Theme-Applied) ===== */
+/* (This block replaces the old .modal-backdrop, .modal-content-grid, etc. styles) */
+.modal {
+  position: fixed; inset: 0;
+  display: none; /* Changed to 'hidden' in HTML, but JS uses this */
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
 }
-@media (min-width: 768px) { .modal-content-grid { grid-template-columns: 4fr 5fr; } }
-.modal-image-container { height: 300px; }
-@media (min-width: 768px) { .modal-image-container { height: auto; } }
-.modal-image { width: 100%; height: 100%; object-fit: cover; }
-.modal-details { padding: 2rem; overflow-y: auto; }
-.modal-close-btn { position: absolute; top: 1rem; left: 1rem; font-size: 1.5rem; color: #a0a0a0; background: none; border: none; cursor: pointer; }
-.detail-heading { font-weight: 500; color: #f0f0f0; margin-bottom: 0.5rem; }
-.detail-text { color: #a0a0a0; font-size: 0.9rem; }
-.allergen-tag {
-    background-color: #272727; color: #a0a0a0; padding: 0.25rem 0.75rem;
-    border-radius: 999px; font-size: 0.8rem; border: 1px solid #4a5568;
+.modal.show {
+  display: flex;
 }
+.modal-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(5px);
+}
+.modal-card {
+  position: relative;
+  background: #272727; /* dark-card */
+  border: 1px solid #4a5568;
+  border-radius: 1rem;
+  max-width: 720px;
+  width: 92%;
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+@media(min-width: 720px) {
+  .modal-card { grid-template-columns: 280px 1fr; }
+}
+.modal-card img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  background: #1a1a1a; /* dark-bg */
+}
+.modal-body { 
+  padding: 1.5rem; /* 24px */
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+/* Style for Allergens (from JS and original CSS) */
+.badge, .allergen-tag {
+  display: inline-block;
+  background: #1a1a1a; /* dark-bg */
+  color: #a0a0a0; /* muted-text */
+  border: 1px solid #4a5568;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  margin: 0 4px 4px 0;
+}
+.qv-price {
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid #D4AF37;
+  color: #D4AF37; /* primary-gold */
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 700;
+  display: inline-block;
+  font-size: 1.1rem;
+  margin-top: auto; /* Pushes price to bottom */
+}
+.close-btn {
+  position: absolute;
+  top: 12px;
+  left: 12px; /* RTL friendly */
+  background: rgba(26, 26, 26, 0.8);
+  border: 1px solid #4a5568;
+  border-radius: 0.5rem;
+  padding: 6px 10px;
+  color: #a0a0a0; /* muted-text */
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+.close-btn:hover {
+  background: #1a1a1a;
+  color: #f0f0f0; /* light-text */
+}
+/* ===== END NEW MODAL STYLES ===== */
+
 
 /* ===== NEW INTERACTIVE GLASS FOOTER ===== */
 .site-footer {
@@ -159,7 +248,8 @@ h1, h2, h3, h4, .font-medium, .main-nav a, .btn {
 @keyframes pulse-light {
     0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
     50% { transform: translateX(-50%) scale(1.2); opacity: 1; }
-    100% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+    100% { transform: translateX(-50%) scale(1);
+    opacity: 0.8; }
 }
 
 .footer-glass-card {
@@ -210,13 +300,13 @@ h1, h2, h3, h4, .font-medium, .main-nav a, .btn {
 .footer-social-icons {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start; /* Aligns to the right in RTL */
+    justify-content: flex-start;
     gap: 1rem;
     margin-top: 1.5rem;
 }
 @media (max-width: 400px) {
     .footer-social-icons {
-        justify-content: center; /* Center icons on very small screens */
+        justify-content: center;
     }
 }
 .footer-social-icons a {
@@ -333,23 +423,29 @@ textarea.form-input {
 /* ===== Common Components ===== */
 #success-message {
     position: fixed; top: 1.25rem; right: 1.25rem; z-index: 1000;
-    background-color: #D4AF37; color: #1a1a1a; padding: 0.75rem 1.5rem;
+    background-color: #D4AF37;
+    color: #1a1a1a; padding: 0.75rem 1.5rem;
     border-radius: 0.5rem; font-weight: 500; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
     display: flex; align-items: center; gap: 0.75rem; transition: all 0.5s;
     opacity: 0; transform: translateX(100%);
 }
-#success-message.show { opacity: 1; transform: translateX(0); }
+#success-message.show { opacity: 1; transform: translateX(0);
+}
 .acc-btn {
     width: 100%; text-align: right; font-weight: 500; padding: 1rem;
-    background-color: rgba(45, 55, 72, 0.5); border-radius: 0.5rem; display: flex;
+    background-color: rgba(45, 55, 72, 0.5); border-radius: 0.5rem;
+    display: flex;
     justify-content: space-between; align-items: center; cursor: pointer;
     transition: background-color 0.2s;
 }
-.acc-btn:hover { background-color: rgba(74, 85, 104, 0.5); }
+.acc-btn:hover { background-color: rgba(74, 85, 104, 0.5);
+}
 .acc-btn .chevron { transition: transform 0.3s; }
 .acc-btn.active .chevron { transform: rotate(180deg); }
-.acc-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
-.acc-body p { padding: 0.5rem 1rem 1rem 1rem; color: #a0a0a0; }
+.acc-body { max-height: 0; overflow: hidden;
+    transition: max-height 0.3s ease-out; }
+.acc-body p { padding: 0.5rem 1rem 1rem 1rem; color: #a0a0a0;
+}
 
 /* Mobile Menu Transition */
 #mobile-menu {
