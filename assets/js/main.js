@@ -1,367 +1,201 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const WHATSAPP_NUMBER = '966546480098';
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> [cite: 5]
+    <meta http-equiv="Pragma" content="no-cache" /> [cite: 6]
+    <meta http-equiv="Expires" content="0" /> [cite: 6]
+    
+    <title>LaScala — مطعم إيطالي فاخر في الخبر</title> [cite: 6]
 
-  // ===== (FIX) Mobile Menu Toggle =====
-  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  if (mobileMenuBtn && mobileMenu) {
-    mobileMenuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-      const icon = mobileMenuBtn.querySelector('i');
-      if (icon) {
-        icon.classList.toggle('fa-bars');
-        icon.classList.toggle('fa-xmark');
-      }
-    });
-  }
+    <script src="https://cdn.tailwindcss.com"></script> [cite: 6]
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/> [cite: 6]
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;500;700&display=swap" rel="stylesheet"> [cite: 6]
+    <link rel="stylesheet" href="assets/css/style.css"> [cite: 6]
 
-  // ===== (FIX) Stats Counter Animation =====
-  const statsSection = document.querySelector('.stats-section');
-  
-  function animateCounters() {
-    const counters = document.querySelectorAll('.stat span[data-count]');
-    if (!counters.length) return;
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { [cite: 7]
+                        'primary-gold': '#D4AF37', [cite: 7]
+                        'dark-bg': '#1a1a1a', [cite: 7]
+                        'dark-card': '#272727', [cite: 7]
+                        'light-text': '#f0f0f0', [cite: 8]
+                        'muted-text': '#a0a0a0', [cite: 8]
+                    }
+                }
+            }
+        } [cite: 9]
+    </script>
+</head>
+<body class="bg-dark-bg text-light-text"> [cite: 9]
 
-    counters.forEach(counter => {
-      const target = +counter.getAttribute('data-count');
-      const precision = +counter.getAttribute('data-precision') || 0;
-      const duration = 1500; // 1.5 seconds
-      const stepTime = 50; // 50ms interval
-      const totalSteps = duration / stepTime;
-      const increment = target / totalSteps;
-      let current = 0;
+    <header class="site-header"> [cite: 9]
+        <div class="container mx-auto px-4 flex justify-between items-center h-20">
+            <a class="logo" href="index.html">
+                <img src="assets/images/logo.png" alt="LaScala Logo" class="h-16"> [cite: 9]
+            </a>
+            <nav class="main-nav hidden md:flex space-x-6 space-x-reverse">
+                <a href="index.html" class="active">الرئيسية</a> [cite: 10]
+                <a href="about.html">عن المطعم</a> [cite: 10]
+                <a href="menu.html">المنيو</a> [cite: 10]
+                <a href="booking.html">الحجز</a> [cite: 10]
+                <a href="contact.html">تواصل</a> [cite: 10]
+            </nav>
+            <button id="mobile-menu-btn" class="md:hidden text-2xl"> [cite: 10]
+                <i class="fa-solid fa-bars"></i> [cite: 11]
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-dark-card"> [cite: 11]
+            <a href="index.html" class="block py-2 px-4 text-center border-b border-gray-700">الرئيسية</a> [cite: 11]
+            <a href="about.html" class="block py-2 px-4 text-center border-b border-gray-700">عن المطعم</a> [cite: 11]
+            <a href="menu.html" class="block py-2 px-4 text-center border-b border-gray-700">المنيو</a> [cite: 12]
+            <a href="booking.html" class="block py-2 px-4 text-center border-b border-gray-700">الحجز</a> [cite: 12]
+            <a href="contact.html" class="block py-2 px-4 text-center">تواصل</a> [cite: 12]
+        </div>
+    </header>
 
-      const updateCounter = () => {
-        current += increment;
-        if (current >= target) {
-          counter.textContent = target.toFixed(precision);
-        } else {
-          counter.textContent = current.toFixed(precision);
-          setTimeout(updateCounter, stepTime);
-        }
-      };
-      updateCounter();
-    });
-  }
+    <main>
+        <section class="relative h-screen min-h-[600px] flex items-center justify-center text-center text-white overflow-hidden">
+            <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0 brightness-[0.4]"> [cite: 12]
+                <source src="assets/video/hero.mp4" type="video/mp4"> [cite: 13]
+                Your browser does not support the video tag. [cite: 13]
+            </video> [cite: 14]
+            <div class="hero-overlay absolute inset-0 z-10"></div> [cite: 14]
+            <div class="container mx-auto px-4 relative z-20">
+                <h1 class="text-4xl md:text-6xl font-bold text-primary-gold drop-shadow-lg animate-fade-in-down">مرحبًا بكم في LaScala</h1> [cite: 14]
+                <p class="mt-4 text-lg md:text-xl max-w-2xl mx-auto drop-shadow-md animate-fade-in-up">نكهات إيطالية وعالمية في قلب الخبر — مكونات طازجة وتجربة لا تُنسى.</p> [cite: 14]
+                <div class="mt-8 flex gap-4 justify-center animate-fade-in-up"> [cite: 15]
+                    <a class="btn primary" href="menu.html"><i class="fa-solid fa-utensils mr-2"></i>المنيو</a> [cite: 15]
+                    <a class="btn ghost" href="booking.html"><i class="fa-regular fa-calendar-check mr-2"></i> احجز الآن</a> [cite: 15]
+                </div>
+            </div>
+        </section> [cite: 16]
 
-  if (statsSection) {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        animateCounters();
-        observer.unobserve(statsSection); // Animate only once
-      }
-    }, { threshold: 0.5 }); // Start when 50% visible
+        <section class="py-16 md:py-24 bg-dark-card"> [cite: 16]
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="section-title">تجربة فريدة من نوعها</h2> [cite: 16]
+                <p class="section-subtitle">نقدم أجواءً عالمية ونكهات مميزة تجمع بين المطبخ الإيطالي الأصيل والمأكولات العالمية المبتكرة.</p> [cite: 16]
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8"> [cite: 16, 17]
+                    <div class="feature-card">
+                        <i class="fa-solid fa-seedling text-primary-gold text-4xl mb-4"></i> [cite: 17]
+                        <h3 class="text-xl font-bold mb-2">مكونات طازجة</h3> [cite: 17]
+                        <p class="text-muted-text">نختار أفضل المكونات الموسمية والمحلية لضمان نكهة لا تضاهى.</p> [cite: 18]
+                    </div>
+                    <div class="feature-card">
+                        <i class="fa-solid fa-champagne-glasses text-primary-gold text-4xl mb-4"></i> [cite: 18]
+                        <h3 class="text-xl font-bold mb-2">أجواء فاخرة</h3> [cite: 19]
+                        <p class="text-muted-text">تصميم داخلي أنيق وخدمة راقية تجعل من زيارتكم ذكرى مميزة.</p> [cite: 19]
+                    </div>
+                    <div class="feature-card">
+                        <i class="fa-solid fa-award text-primary-gold text-4xl mb-4"></i> [cite: 20]
+                        <h3 class="text-xl font-bold mb-2">طهاتنا المبدعون</h3> [cite: 20]
+                        <p class="text-muted-text">فريق من الطهاة بخبرة عالمية يبتكرون أطباقًا تلامس الحواس.</p> [cite: 20]
+                    </div>
+                </div> [cite: 21]
+            </div>
+        </section>
 
-    observer.observe(statsSection);
-  }
-  
-  // ===== (NEW) Contact Form to WhatsApp =====
-  const contactForm = document.getElementById('contactForm');
-  if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const subject = document.getElementById('subject').value;
-      const message = document.getElementById('message').value;
+        <section class="py-16 md:py-24"> [cite: 21]
+             <div class="container mx-auto px-4">
+                <h2 class="section-title">الأكثر طلباََ</h2> [cite: 21]
+                <p class="section-subtitle">مختارات من قائمتنا تمثل روح مطبخ LaScala.</p> [cite: 21]
+                <div id="signature-dishes-container" class="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8"> [cite: 22]
+                </div>
+            </div>
+        </section>
 
-      // Basic validation
-      if (!name || !phone || !message) {
-        alert('يرجى ملء الحقول المطلوبة (الاسم، الجوال، الرسالة).');
-        return;
-      }
+        <section class="stats-section bg-dark-card py-16"> [cite: 22]
+            <div class="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="stat"> [cite: 23]
+                    <span data-count="8" class="text-4xl font-bold text-primary-gold">0</span> [cite: 23]
+                    <small class="block mt-2 text-muted-text">سنوات خبرة</small> [cite: 23]
+                </div>
+                <div class="stat">
+                    <span data-count="75" class="text-4xl font-bold text-primary-gold">0</span> [cite: 24]
+                    <small class="block mt-2 text-muted-text">طبق في قائمتنا</small> [cite: 24]
+                </div>
+                <div class="stat">
+                    <span data-count="35" class="text-4xl font-bold text-primary-gold">0</span> [cite: 24]
+                    <small class="block mt-2 text-muted-text">مكوّن محلي معتمد</small> [cite: 25]
+                </div>
+                <div class="stat">
+                    <span data-count="4.8" data-precision="1" class="text-4xl font-bold text-primary-gold">0</span> [cite: 25]
+                    <small class="block mt-2 text-muted-text">متوسط تقييم الضيوف</small> [cite: 25, 26]
+                </div>
+            </div>
+        </section>
 
-      let text = `*رسالة جديدة من نموذج التواصل:*\n\n`;
-      text += `*الاسم:* ${name}\n`;
-      text += `*الجوال:* ${phone}\n`;
-      text += `*الموضوع:* ${subject}\n`;
-      text += `*الرسالة:*\n${message}`;
+        <section class="py-16 md:py-24"> [cite: 26]
+            <div class="container mx-auto px-4">
+                <div class="cta-card">
+                    <h3 class="text-3xl font-bold">جاهز لتجربة لا تُنسى؟</h3> [cite: 26, 27]
+                    <p class="mt-2 text-muted-text">احجز طاولتك الآن أو شاركنا تقييمك عن تجربتك.</p> [cite: 27]
+                    <div class="flex flex-wrap justify-center gap-4 mt-8">
+                        <a class="btn primary" href="booking.html"><i class="fa-regular fa-calendar-check mr-2"></i> احجز طاولتك الآن</a> [cite: 27]
+                        <a class="btn ghost" href="https://g.page/r/CQOviL4CDGx4EBM/review" target="_blank"> [cite: 28]
+                            <i class="fa-brands fa-google mr-2"></i> قيمنا على جوجل
+                        </a>
+                    </div>
+                </div> [cite: 29]
+            </div>
+        </section>
+    </main>
 
-      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
-      window.open(url, '_blank');
-      contactForm.reset();
-    });
-  }
-
-  // ===== (NEW) Reservation Form to WhatsApp =====
-  const reservationForm = document.getElementById('reservationForm');
-  if (reservationForm) {
-    reservationForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('full-name').value;
-      const phone = document.getElementById('phone').value;
-      const date = document.getElementById('date').value;
-      const time = document.getElementById('time').value;
-      const guests = document.getElementById('guests').value;
-      const email = document.getElementById('email').value;
-      const requests = document.getElementById('special-requests').value;
-
-      // Basic validation
-      if (!name || !phone || !date || !time) {
-        alert('يرجى ملء حقول الحجز المطلوبة (الاسم، الجوال، التاريخ، الوقت).');
-        return;
-      }
-
-      let text = `*طلب حجز جديد:*\n\n`;
-      text += `*الاسم:* ${name}\n`;
-      text += `*الجوال:* ${phone}\n`;
-      text += `*التاريخ:* ${date}\n`;
-      text += `*الوقت:* ${time}\n`;
-      text += `*عدد الضيوف:* ${guests}\n`;
-      if (email) text += `*الإيميل:* ${email}\n`;
-      if (requests) text += `*طلبات خاصة:*\n${requests}`;
-
-      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
-      window.open(url, '_blank');
-      
-      // Show success modal from booking.html [cite: 105]
-      const modal = document.getElementById('customModal');
-      const modalTitle = document.getElementById('modalTitle');
-      const modalMsg = document.getElementById('modalMessage');
-      if (modal && modalTitle && modalMsg) {
-        modalTitle.textContent = 'تم تجهيز طلب الحجز';
-        modalMsg.textContent = 'سيتم الآن فتح واتساب لإرسال تفاصيل حجزك. سنقوم بالتواصل معك للتأكيد.';
-        modal.classList.remove('hidden');
-        modal.classList.add('flex'); // Assuming it uses flex to show
-        
-        // Add close logic
-        const modalCloseBtn = document.getElementById('modalCloseBtn');
-        if (modalCloseBtn) {
-          modalCloseBtn.onclick = () => {
-              modal.classList.add('hidden');
-              modal.classList.remove('flex');
-          };
-        }
-      }
-      reservationForm.reset();
-    });
-  }
-
-  // ===== (NEW) FAQ Accordion (for booking.html) =====
-  const accordion = document.getElementById('faq-accordion');
-  if (accordion) {
-    const buttons = accordion.querySelectorAll('.acc-btn');
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const body = btn.nextElementSibling;
-        const isActive = btn.classList.contains('active');
-
-        // Close all others (optional)
-        // buttons.forEach(b => {
-        //     b.classList.remove('active');
-        //     b.nextElementSibling.style.maxHeight = null;
-        // });
-
-        if (isActive) {
-          btn.classList.remove('active');
-          body.style.maxHeight = null;
-        } else {
-          btn.classList.add('active');
-          body.style.maxHeight = body.scrollHeight + 'px';
-        }
-      });
-    });
-  }
-
-  // ===== Common (Footer Year) =====
-  const yearSpan = document.getElementById('year');
-  if (yearSpan) yearSpan.textContent = new Date().getFullYear();
-
-  // ===== Category normalization (Original Code) =====
-  const CAT_ALIASES = {
-    'starters': 'المقبلات',
-    'soups': 'الشوربات',
-    'mains': 'الأطباق الرئيسية',
-    'pasta': 'الباستا',
-    'pasta_risotto': 'الباستا',
-    'risotto': 'الباستا',
-    'pizza': 'البيتزا',
-    'burger': 'البرجر',
-    'burgers': 'البرجر',
-    'sandwiches': 'السندويتشات',
-    'kids_menu': 'قائمة الأطفال',
-    'desserts': 'الحلويات',
-    'hot_drinks': 'المشروبات الساخنة',
-    'cold_drinks': 'المشروبات الباردة',
-    'drinks': 'المشروبات الباردة',
-    'juices': 'العصائر',
-    'lascala_offers': 'عروض لاسكالا'
-  };
-  const ORDER_AR = [
-    'المقبلات','الشوربات','الأطباق الرئيسية','الباستا',
-    'البيتزا','البرجر','السندويتشات','الحلويات',
-    'المشروبات الباردة','المشروبات الساخنة','العصائر','قائمة الأطفال','عروض لاسكالا'
-  ];
-  const FEATURED_AR = ['الأطباق الرئيسية', 'الباستا', 'البيتزا'];
-
-  const normalizeCategory = (cat) => {
-    if (!cat) return '';
-    const key = String(cat).trim();
-    return CAT_ALIASES[key] || key;
-  };
-
-  // ===== Robust JSON loader (Original Code) =====
-  function buildMenuUrl() {
-    const u = new URL('assets/data/menu.json', document.baseURI);
-    u.searchParams.set('v', Date.now().toString());
-    return u.toString();
-  }
-
-  async function loadMenuJson() {
-    const url = buildMenuUrl();
-    try {
-      const res = await fetch(url, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}`);
-      const text = await res.text();
-      try {
-        const data = JSON.parse(text);
-        console.log('%c[menu.json loaded]', 'color:#0f0', url, data);
-        return { data, url };
-      } catch (parseErr) {
-        const preview = text.slice(0, 120).replace(/\s+/g, ' ');
-        throw new Error(`JSON parse error @ ${url} :: ${parseErr.message} :: preview="${preview}"`);
-      }
-    } catch (e) {
-      console.error('[fetch menu.json failed]', e);
-      throw e;
-    }
-  }
-
-  // ===== Menu Page (Original Code) =====
-  if (document.getElementById('menu-grid')) {
-    initMenuPage();
-  }
-
-  async function initMenuPage() {
-    const grid = document.getElementById('menu-grid');
-    const filtersContainer = document.getElementById('menu-filters');
-    const searchInput = document.getElementById('menuSearch');
-    let allDishes = [];
-
-    try {
-      const { data, url } = await loadMenuJson();
-      allDishes = data.map(it => ({ ...it, category: normalizeCategory(it.category) }));
-      console.log('[menu source used]', url);
-
-      renderFilters(allDishes);
-      renderMenu(allDishes);
-    } catch (err) {
-      console.error('Menu page load error:', err);
-      grid.innerHTML = `
-        <div class="col-span-full text-center">
-          <p>خطأ في تحميل المنيو.</p>
-          <small class="block opacity-70 mt-2" dir="ltr">${String(err.message || err)}</small>
-        </div>`;
-      return;
-    }
-
-    function renderFilters(dishes) {
-      const present = Array.from(new Set(dishes.map(d => d.category).filter(Boolean)));
-      const ordered = [
-        ...ORDER_AR.filter(cat => present.includes(cat)),
-        ...present.filter(cat => !ORDER_AR.includes(cat)).sort((a, b) => a.localeCompare(b, 'ar'))
-      ];
-      const categories = ['الكل', ...ordered];
-
-      filtersContainer.innerHTML = categories.map(cat => `
-        <button type="button" data-cat="${cat}" class="filter-chip ${cat === 'الكل' ? 'active' : ''}">
-          ${cat}
-        </button>
-      `).join('');
-      filtersContainer.addEventListener('click', (e) => {
-        const btn = e.target.closest('.filter-chip');
-        if (!btn) return;
-        filtersContainer.querySelector('.active')?.classList.remove('active');
-        btn.classList.add('active');
-        filterAndRender();
-      });
-    }
-
-    function renderMenu(dishes) {
-      if (!dishes.length) {
-        grid.innerHTML = `<p class="col-span-full text-center text-muted-text">لا توجد نتائج مطابقة.</p>`;
-        return;
-      }
-      grid.innerHTML = dishes.map(dish => `
-        <div class="menu-card-glass" data-id="${dish.id}">
-          <img src="${dish.image || 'assets/images/logo.png'}" alt="${dish.title || ''}" class="w-full h-48 object-cover">
-          <div class="p-4 flex flex-col h-full">
-            <h3 class="text-lg font-bold text-primary-gold">${dish.title || ''}</h3>
-            <p class="mt-2 line-clamp-2 text-muted-text flex-grow">${dish.desc ?? ''}</p>
-            <div class="mt-3 text-light-text font-bold">${dish.price ?? ''}</div>
+<footer class="site-footer"> [cite: 29]
+  <div class="container mx-auto px-4">
+    <div class="footer-glass-card">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>LaScala</h4>
+          <p>تجربة طعام فاخرة تجمع بين الأصالة الإيطالية واللمسات العصرية في قلب الخبر.</p>
+          <div class="footer-social-icons"> [cite: 30]
+            <a href="https://www.instagram.com/lascalasa" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a> [cite: 30]
+            <a href="#" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a> [cite: 30]
+            <a href="https://www.tiktok.com/@lascalasa" target="_blank" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a> [cite: 30]
+            <a href="#" target="_blank" aria-label="Snapchat"><i class="fa-brands fa-snapchat"></i></a> [cite: 30]
+            <a href="#" target="_blank" aria-label="Threads"><i class="fa-brands fa-threads"></i></a> [cite: 30]
+            <a href="https://x.com/lascalasa" target="_blank" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a> [cite: 31]
+            <a href="https://www.youtube.com/@lascalasa" target="_blank" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a> [cite: 31]
+            <a href="#" target="_blank" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a> [cite: 31]
           </div>
         </div>
-      `).join('');
-      grid.querySelectorAll('.menu-card-glass').forEach(card => {
-        card.addEventListener('click', () => {
-          const dish = allDishes.find(d => String(d.id) === String(card.dataset.id));
-          openQuickView(dish);
-        });
-      });
-    }
+        <div class="footer-links-grid">
+          <div class="footer-links-col">
+            <h4>المطعم</h4>
+            <a href="about.html">عن LaScala</a> [cite: 32]
+            <a href="menu.html">قائمة الطعام</a> [cite: 32]
+            <a href="booking.html">الحجز</a> [cite: 32]
+            <a href="contact.html">تواصل معنا</a> [cite: 32]
+          </div>
+          <div class="footer-links-col">
+            <h4>خدمات</h4>
+            <a href="#">الطلبات الخارجية</a> [cite: 32]
+            <a href="#">الفعاليات الخاصة</a> [cite: 33]
+            <a href="#">الوظائف</a> [cite: 33]
+          </div>
+          <div class="footer-links-col">
+            <h4>قانوني</h4>
+            <a href="#">سياسة الخصوصية</a> [cite: 33]
+            <a href="#">الشروط والأحكام</a> [cite: 33]
+          </div>
+        </div>
+      </div> [cite: 34]
+      <div class="footer-bottom">
+        © <span id="year"></span> LaScala Restaurant. [cite: 34]
+        جميع الحقوق محفوظة. [cite: 35]
+      </div>
+    </div>
+  </div>
+</footer>
 
-    function filterAndRender() {
-      const active = filtersContainer.querySelector('.active')?.dataset.cat || 'الكل';
-      const term = (searchInput?.value || '').toLowerCase();
-      const filtered = allDishes.filter(d => {
-        const catOK = active === 'الكل' || d.category === active;
-        const textOK =
-          (d.title || '').toLowerCase().includes(term) ||
-          (d.desc  || '').toLowerCase().push(term);
-        return catOK && textOK;
-      });
-      renderMenu(filtered);
-    }
+<div id="success-message"> [cite: 35]
+  <i class="fa-solid fa-check-circle"></i>
+  <span>تم الاشتراك بنجاح!</span>
+</div>
 
-    searchInput?.addEventListener('input', filterAndRender);
-  }
-
-  // ===== MODAL (Original Code - Modified for 'show' class) =====
-  const modal = document.getElementById('quickViewModal');
-  if (modal) {
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const modalBackdrop = modal.querySelector('.modal-backdrop');
-    const closeModal = () => {
-      modal.classList.remove('show'); // Use 'show' class to toggle
-      document.documentElement.classList.remove('overflow-hidden');
-    };
-    closeModalBtn?.addEventListener('click', closeModal);
-    modalBackdrop?.addEventListener('click', closeModal);
-  }
-
-  function openQuickView(dish) {
-    if (!dish || !modal) return;
-    const imgEl   = document.getElementById('qvImg');
-    const titleEl = document.getElementById('qvTitle');
-    const descEl  = document.getElementById('qvLongDesc');
-    const priceEl = document.getElementById('qvPrice');
-    if (imgEl)   { imgEl.src = dish.image || 'assets/images/logo.png'; imgEl.alt = dish.title || '';
-    }
-    if (titleEl) { titleEl.textContent = dish.title || '';
-    }
-    if (descEl)  { descEl.textContent = dish.long_desc || dish.desc || '';
-    }
-    if (priceEl) { priceEl.textContent = dish.price || ''; }
-
-    const allergensContainer = document.getElementById('qvAllergensContainer');
-    const allergensDiv       = document.getElementById('qvAllergens');
-    if (dish.allergens && dish.allergens.length && allergensDiv && allergensContainer) {
-      allergensDiv.innerHTML = dish.allergens.map(a => `<span class="allergen-tag">${a}</span>`).join('');
-      allergensContainer.classList.remove('hidden');
-    } else {
-      allergensContainer?.classList.add('hidden');
-    }
-
-    const chefNoteContainer = document.getElementById('qvChefNoteContainer');
-    const chefNoteP         = document.getElementById('qvChefNote');
-    if (dish.chef_note && chefNoteContainer && chefNoteP) {
-      chefNoteP.textContent = dish.chef_note;
-      chefNoteContainer.classList.remove('hidden');
-    } else {
-      chefNoteContainer?.classList.add('hidden');
-    }
-
-    modal.classList.add('show'); // Use 'show' class to toggle
-    document.documentElement.classList.add('overflow-hidden');
-  }
-});
+<script src="assets/js/main.js"></script> [cite: 35]
+</body>
+</html>
