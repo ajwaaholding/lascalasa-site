@@ -14,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.documentElement.classList.toggle('overflow-hidden');
     });
 
-    // اغلق القائمة عند الضغط على أي رابط داخلها
     mobileMenu.addEventListener('click', (e) => {
       if (e.target.matches('a')) {
         mobileMenu.classList.add('hidden');
@@ -24,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ===== Helper: توحيد أسماء الفئات =====
+  // ===== Category normalization =====
   const CAT_ALIASES = {
     'starters': 'المقبلات',
     'soups': 'الشوربات',
@@ -33,15 +32,16 @@ document.addEventListener('DOMContentLoaded', () => {
     'pasta_risotto': 'الباستا',
     'risotto': 'الباستا',
     'pizza': 'البيتزا',
+    'burger': 'البرجر',
+    'burgers': 'البرجر',
     'sandwiches': 'السندويتشات',
     'kids_menu': 'قائمة الأطفال',
     'desserts': 'الحلويات',
     'hot_drinks': 'المشروبات الساخنة',
     'cold_drinks': 'المشروبات الباردة',
     'drinks': 'المشروبات الباردة',
-    'lascala_offers': 'عروض لاسكالا',
-    'burger': 'البرجر',
-    'burgers': 'البرجر'
+    'juices': 'العصائر',
+    'lascala_offers': 'عروض لاسكالا'
   };
 
   const ORDER_AR = [
@@ -59,18 +59,53 @@ document.addEventListener('DOMContentLoaded', () => {
     'قائمة الأطفال',
     'عروض لاسكالا'
   ];
+  const FEATURED_AR = ['الأطباق الرئيسية', 'الباستا', 'البيتزا'];
 
-  const FEATURED_AR = ['الأطباق الرئيسية', 'الباستا', 'البيتزا']; // للأكثر طلباً بالصفحة الرئيسية
   const normalizeCategory = (cat) => {
     if (!cat) return '';
     const key = String(cat).trim();
     return CAT_ALIASES[key] || key;
   };
 
-  // احسب مسار menu.json بشكل آمن مهما كان المسار
-  const MENU_URL = new URL('assets/data/menu.json', document.baseURI).toString();
+  // ===== Robust JSON loader (يجرب مسارين ويطبع سبب الخطأ) =====
+  function buildMenuUrls() {
+    // URL نسبي اعتماداً على مكان الصفحة الحالية
+    const u1 = new URL('./assets/data/menu.json', document.baseURI);
+    // URL مطلق من جذور نفس الموقع
+    const u2 = new URL('/assets/data/menu.json', window.location.origin);
+    // أضف باراميتر لمنع الكاش
+    const v = Date.now().toString();
+    u1.searchParams.set('v', v);
+    u2.searchParams.set('v', v);
+    return [u1.toString(), u2.toString()];
+  }
 
-  // ===== Newsletter (اختياري) =====
+  async function loadMenuJson() {
+    const urls = buildMenuUrls();
+    let lastErr = null;
+    for (const url of urls) {
+      try {
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status} @ ${url}`);
+        const text = await res.text();
+        try {
+          const data = JSON.parse(text);
+          console.log('%c[menu.json loaded]', 'color: #0f0', url, data);
+          return { data, url };
+        } catch (parseErr) {
+          // أعرض أول 120 حرف للمعاينة
+          const preview = text.slice(0, 120).replace(/\s+/g, ' ');
+          throw new Error(`JSON parse error @ ${url} :: ${parseErr.message} :: preview="${preview}"`);
+        }
+      } catch (e) {
+        console.error('[fetch menu.json failed]', e);
+        lastErr = e;
+      }
+    }
+    throw lastErr || new Error('menu.json fetch failed (unknown)');
+  }
+
+  // ===== Newsletter (optional) =====
   const newsletterForm = document.getElementById('newsletter-form');
   if (newsletterForm) {
     newsletterForm.addEventListener('submit', (e) => {
@@ -114,18 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
   async function loadSignatureDishes() {
     const container = document.getElementById('signature-dishes-container');
     try {
-      const res = await fetch(MENU_URL, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const raw = await res.json();
-
-      const menu = raw.map(item => ({
-        ...item,
-        category: normalizeCategory(item.category)
-      }));
-
-      const items = menu
-        .filter(i => FEATURED_AR.includes(i.category))
-        .slice(0, 4);
+      const { data } = await loadMenuJson();
+      const menu = data.map(it => ({ ...it, category: normalizeCategory(it.category) }));
+      const items = menu.filter(i => FEATURED_AR.includes(i.category)).slice(0, 4);
 
       container.innerHTML = items.map(item => `
         <div class="bg-dark-card rounded-lg overflow-hidden shadow-lg transform transition-transform hover:scale-105">
@@ -135,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <p class="text-sm text-muted-text mt-2 h-10 overflow-hidden">${item.desc ?? ''}</p>
           </div>
         </div>
-      `).join(''); // << كان ينقصها الـ backtick هنا
+      `).join('');
     } catch (err) {
       console.error('Menu load error (home):', err);
       if (container) {
@@ -177,20 +203,19 @@ document.addEventListener('DOMContentLoaded', () => {
     let allDishes = [];
 
     try {
-      const res = await fetch(MENU_URL, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const raw = await res.json();
-
-      allDishes = raw.map(item => ({
-        ...item,
-        category: normalizeCategory(item.category)
-      }));
+      const { data, url } = await loadMenuJson();
+      allDishes = data.map(it => ({ ...it, category: normalizeCategory(it.category) }));
+      console.log('[menu source used]', url);
 
       renderFilters(allDishes);
       renderMenu(allDishes);
     } catch (err) {
       console.error('Menu page load error:', err);
-      grid.innerHTML = `<p class="col-span-full text-center">خطأ في تحميل المنيو.</p>`;
+      grid.innerHTML = `
+        <div class="col-span-full text-center">
+          <p>خطأ في تحميل المنيو.</p>
+          <small class="block opacity-70 mt-2" dir="ltr">${String(err.message || err)}</small>
+        </div>`;
     }
 
     function renderFilters(dishes) {
